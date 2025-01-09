@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   SunIcon,
   MoonIcon,
@@ -8,11 +8,21 @@ import {
   PhotoIcon,
   ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/outline";
+import Realistic from "react-canvas-confetti/dist/presets/realistic";
+import Confetti from "react-confetti";
+
 function App() {
   const search = window.location.search;
   const params = new URLSearchParams(search);
   const [guest, setGuest] = useState(params.get("to"));
   const [open, setOpen] = useState(false);
+  const [showConvetti, setShowConvetti] = useState(false);
+
+  const realistic = useRef();
+
+  const onInitHandler = ({ conductor }) => {
+    realistic.current = conductor;
+  };
 
   useEffect(() => {
     document.title = "The Wedding";
@@ -20,7 +30,12 @@ function App() {
 
   useEffect(() => {
     if (open) {
-      console.log("convetti");
+      realistic.current.shoot();
+      setShowConvetti(true);
+      const timer = setTimeout(() => {
+        setShowConvetti(false);
+      }, 15000);
+      return () => clearTimeout(timer);
     }
   }, [open]);
   // use theme from local storage if available or set light theme
@@ -102,6 +117,10 @@ function App() {
       </div>
 
       <div className={open == true ? "" : "hidden"}>
+        <Realistic onInit={onInitHandler} />
+        {showConvetti && (
+          <Confetti numberOfPieces={300} opacity={0.3} gravity={0.09} />
+        )}
         {/* Floating Button */}
         <div className="fixed bottom-20 right-4 floating-btn">
           <button className="btn btn-square btn-sm font-bold rounded-full shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-110 bounce relative">
