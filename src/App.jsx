@@ -61,6 +61,23 @@ function App() {
   }, [theme]);
   return (
     <div className="h-full min-h-full">
+      {showConvetti && (
+        <Confetti
+          numberOfPieces={150}
+          opacity={0.3}
+          gravity={0.06}
+          drawShape={(ctx) => {
+            ctx.beginPath();
+            ctx.moveTo(0, -5); // Top point
+            ctx.lineTo(5, 0); // Right point
+            ctx.lineTo(0, 5); // Bottom point
+            ctx.lineTo(-5, 0); // Left point
+            ctx.closePath();
+            ctx.fill();
+          }}
+          height={window.innerHeight * 2}
+        />
+      )}
       <div
         className={
           open == true
@@ -118,9 +135,6 @@ function App() {
 
       <div className={open == true ? "" : "hidden"}>
         <Realistic onInit={onInitHandler} />
-        {showConvetti && (
-          <Confetti numberOfPieces={300} opacity={0.3} gravity={0.09} />
-        )}
         {/* Floating Button */}
         <div className="fixed bottom-20 right-4 floating-btn">
           <button className="btn btn-square btn-sm font-bold rounded-full shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-110 bounce relative">
@@ -161,6 +175,9 @@ function App() {
             Ucapan
           </button>
         </div>
+
+        <div className="h-screen w-full bg-gray-200"></div>
+        <div className="h-screen w-full bg-red-200"></div>
       </div>
     </div>
   );
