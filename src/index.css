@@ -13,3 +13,36 @@ body {
 .font-arabic {
   font-family: "Noto Naskh Arabic", serif !important;
 }
+
+@keyframes bounce-custom {
+  0%,
+  100% {
+    transform: translateY(-50%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+.bounce-slow-1 {
+  animation: bounce-custom 4s infinite;
+}
+.bounce-slow-2 {
+  animation: bounce-custom 5s infinite;
+}
+.bounce-slow-3 {
+  animation: bounce-custom 3s infinite;
+}
+.bounce-slow-4 {
+  animation: bounce-custom 6s infinite;
+}
+
+@keyframes rotate360 {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.rotate-animation {
+  animation: 4s rotate360 infinite linear;
+}
