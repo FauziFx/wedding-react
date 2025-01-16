@@ -19,7 +19,9 @@ import {
   MusicalNoteIcon,
 } from "@heroicons/react/24/solid";
 import Confetti from "react-confetti";
-import Carousel from "./widgets/Carousel";
+// import Carousel from "./widgets/Carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -451,7 +453,17 @@ function App() {
                 <h1 className="font-esthetic text-4xl md:text-5xl">Galeri</h1>
               </div>
               <div data-aos="fade-up">
-                <Carousel />
+                <Carousel>
+                  <div>
+                    <img src="images/1.jpg" className="rounded-xl" />
+                  </div>
+                  <div>
+                    <img src="images/2.jpg" className="rounded-xl" />
+                  </div>
+                  <div>
+                    <img src="images/3.jpg" className="rounded-xl" />
+                  </div>
+                </Carousel>
               </div>
               <br />
             </div>
