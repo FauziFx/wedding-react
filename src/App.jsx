@@ -17,6 +17,7 @@ import {
   PauseCircleIcon,
   HeartIcon,
   MusicalNoteIcon,
+  PlayCircleIcon,
 } from "@heroicons/react/24/solid";
 import Confetti from "react-confetti";
 // import Carousel from "./widgets/Carousel";
@@ -32,6 +33,8 @@ function App() {
   const [open, setOpen] = useState(false);
   const [showConvetti, setShowConvetti] = useState(false);
   const [salin, setSalin] = useState(false);
+  const audio = document.getElementById("audio_tag");
+  const [play, setPlay] = useState(false);
 
   const home = useRef(null);
   const mempelai = useRef(null);
@@ -49,6 +52,8 @@ function App() {
   useEffect(() => {
     document.title = "The Wedding";
     if (open) {
+      setPlay(true);
+      audio.play();
       AOS.init({ duration: 1500, easing: "ease-out-cubic" });
       AOS.refresh();
       setShowConvetti(true);
@@ -94,6 +99,7 @@ function App() {
   }, [theme]);
   return (
     <>
+      <audio id="audio_tag" src="music/sound.mp3" />
       {showConvetti && (
         <Confetti
           style={{ zIndex: 9999, position: "fixed", top: 0, left: 0 }}
@@ -804,11 +810,11 @@ function App() {
                   <p className="text-sm">
                     <MusicalNoteIcon className="h-3 w-3 mb-1 inline" />
                     <a
-                      href="https://www.youtube.com/watch?v=0CviwiljtX0"
+                      href="https://www.youtube.com/watch?v=rk9rEfvJKL0"
                       target="_blank"
                       className="btn btn-link btn-sm inline px-1"
                     >
-                      Every Summertime
+                      My Love
                     </a>
                   </p>
                 </div>
@@ -818,8 +824,18 @@ function App() {
 
           {/* Floating Button */}
           <div className="fixed bottom-20 right-4 floating-btn z-50">
-            <button className="btn btn-square btn-sm font-bold rounded-full shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-110 bounce relative">
-              <PauseCircleIcon className="h-5 w-5 rotate-animation" />
+            <button
+              onClick={() => {
+                play ? setPlay(false) : setPlay(true);
+                play ? audio.pause() : audio.play();
+              }}
+              className="btn btn-square btn-sm font-bold rounded-full shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-110 bounce relative"
+            >
+              {play == true ? (
+                <PauseCircleIcon className="h-5 w-5 rotate-animation" />
+              ) : (
+                <PlayCircleIcon className="h-5 w-5" />
+              )}
             </button>
           </div>
           <div className="fixed bottom-32 right-4 floating-btn z-50">
