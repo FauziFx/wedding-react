@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   SunIcon,
   MoonIcon,
@@ -32,6 +32,19 @@ function App() {
   const [open, setOpen] = useState(false);
   const [showConvetti, setShowConvetti] = useState(false);
   const [salin, setSalin] = useState(false);
+
+  const home = useRef(null);
+  const mempelai = useRef(null);
+  const tanggal = useRef(null);
+  const galeri = useRef(null);
+  const ucapan = useRef(null);
+
+  const scrollIntoView = (elementRef) => {
+    window.scrollTo({
+      top: elementRef.current.offsetTop,
+      behavior: "smooth",
+    });
+  };
 
   useEffect(() => {
     document.title = "The Wedding";
@@ -165,6 +178,7 @@ function App() {
         <div className={open == true ? "" : "hidden"}>
           {/* Section 1 Home */}
           <section
+            ref={home}
             id="home"
             className="relative w-full h-auto md:h-[85vh] bg-cover bg-center"
             style={{
@@ -232,6 +246,7 @@ function App() {
 
           {/* Section 2 Mempelai */}
           <section
+            ref={mempelai}
             className={
               "h-auto flex flex-col items-center relative overflow-hidden pb-10 " +
               (theme == "dark" ? "bg-[#0b0f14]" : "bg-white")
@@ -343,6 +358,7 @@ function App() {
 
           {/* Section 4 Tanggal */}
           <section
+            ref={tanggal}
             className={
               "h-auto flex flex-col items-center relative overflow-hidden pt-32 md:pt-56 " +
               (theme == "dark" ? "bg-[#0b0f14]" : "bg-white")
@@ -452,6 +468,7 @@ function App() {
 
           {/* Section 5 Galeri */}
           <section
+            ref={galeri}
             className={
               "h-auto flex flex-col items-center relative overflow-hidden pb-10 " +
               (theme == "dark" ? "bg-[#0b0f14]" : "bg-white")
@@ -557,6 +574,7 @@ function App() {
           </section>
           {/* Section 7 Comment */}
           <section
+            ref={ucapan}
             className={
               "w-full h-auto flex flex-col items-center relative overflow-hidden pb-10 " +
               (theme == "dark" ? "bg-[#1f2937]" : "bg-[#e5e7eb]")
@@ -830,23 +848,38 @@ function App() {
                   : "rgb(249 250 250 / 90%)",
             }}
           >
-            <button className="hover:text-slate-500">
+            <button
+              className="hover:text-slate-500"
+              onClick={() => scrollIntoView(home)}
+            >
               <HomeIcon className="h-4 md:h-5 w-4 md:w-5" />
               Home
             </button>
-            <button className="hover:text-slate-500">
+            <button
+              className="hover:text-slate-500"
+              onClick={() => scrollIntoView(mempelai)}
+            >
               <UsersIcon className="h-4 md:h-5 w-4 md:w-5" />
               Mempelai
             </button>
-            <button className="hover:text-slate-500">
+            <button
+              className="hover:text-slate-500"
+              onClick={() => scrollIntoView(tanggal)}
+            >
               <CalendarDaysIcon className="h-4 md:h-5 w-4 md:w-5" />
               Tanggal
             </button>
-            <button className="hover:text-slate-500">
+            <button
+              className="hover:text-slate-500"
+              onClick={() => scrollIntoView(galeri)}
+            >
               <PhotoIcon className="h-4 md:h-5 w-4 md:w-5" />
               Galeri
             </button>
-            <button className="hover:text-slate-500">
+            <button
+              className="hover:text-slate-500"
+              onClick={() => scrollIntoView(ucapan)}
+            >
               <ChatBubbleLeftRightIcon className="h-4 md:h-5 w-4 md:w-5" />
               Ucapan
             </button>
