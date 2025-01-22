@@ -14,6 +14,9 @@ import {
   QuestionMarkCircleIcon,
   UserCircleIcon,
   UserIcon,
+  TrashIcon,
+  BuildingLibraryIcon,
+  CreditCardIcon,
   XCircleIcon,
 } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
@@ -316,7 +319,7 @@ Terima Kasih.`;
                 target="_blank"
                 className="btn btn-info btn-sm text-[#1d232a] rounded-badge"
               >
-                Preview <ArrowUpRightIcon className="h-4 w-4 mb-1 inline" />
+                Visit Web <ArrowUpRightIcon className="h-4 w-4 mb-1 inline" />
               </a>
             </div>
             <div className="w-full rounded-xl shadow-xl py-2 px-3 mb-6">
@@ -329,14 +332,13 @@ Terima Kasih.`;
                     </div>
                   </div>
                 )}
-                <div className="text-center">
+                <div className="flex gap-1 justify-center">
                   <input
                     type="file"
                     name="foto_pengantin"
                     onChange={handleChangeFoto}
                     className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
                   />
-                  <br />
                   <button className="btn btn-primary btn-sm md:btn-md">
                     Upload
                   </button>
@@ -349,18 +351,21 @@ Terima Kasih.`;
                 {file.background != "" && (
                   <div className="mx-auto py-4 md:py-0">
                     <div className="w-48 shadow-xl">
-                      <img src={file.background} alt="Background" />
+                      <img
+                        src={file.background}
+                        alt="Background"
+                        className="rounded-lg"
+                      />
                     </div>
                   </div>
                 )}
-                <div className="text-center">
+                <div className="flex gap-1 justify-center">
                   <input
                     type="file"
                     name="background"
                     onChange={handleChangeFoto}
                     className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
                   />
-                  <br />
                   <button className="btn btn-primary btn-sm md:btn-md">
                     Upload
                   </button>
@@ -591,6 +596,158 @@ Terima Kasih.`;
                 <button className="btn btn-primary btn-sm md:btn-md">
                   Save
                 </button>
+              </div>
+            </div>
+            <div className="w-full rounded-xl shadow-xl py-2 px-3 mb-6">
+              <h2 className="text-xl">Galeri Foto</h2>
+              <div className="flex flex-col gap-2 justify-center my-2">
+                <div className="text-center">
+                  <label htmlFor="" className="form-control w-full">
+                    <div className="flex gap-1">
+                      <input
+                        type="file"
+                        name="foto_pengantin"
+                        className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-0"
+                        multiple
+                      />
+                      <button className="btn btn-primary btn-sm md:btn-md">
+                        Upload
+                      </button>
+                    </div>
+                    <div className="label pt-1">
+                      <div className="label-text-alt">
+                        Maksimal 5 Foto aja ya
+                      </div>
+                    </div>
+                  </label>
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  <div>
+                    <img src="images/1.jpg" alt="" className="rounded-lg" />
+                    <button className="btn btn-error btn-xs text-gray-200 w-full rounded-full my-1">
+                      <TrashIcon className="h-4 w-4" />
+                    </button>
+                  </div>
+                  <div>
+                    <img src="images/1.jpg" alt="" className="rounded-lg" />
+                    <button className="btn btn-error btn-xs text-gray-200 w-full rounded-full my-1">
+                      <TrashIcon className="h-4 w-4" />
+                    </button>
+                  </div>
+                  <div>
+                    <img src="images/1.jpg" alt="" className="rounded-lg" />
+                    <button className="btn btn-error btn-xs text-gray-200 w-full rounded-full my-1">
+                      <TrashIcon className="h-4 w-4" />
+                    </button>
+                  </div>
+                  <div>
+                    <img src="images/1.jpg" alt="" className="rounded-lg" />
+                    <button className="btn btn-error btn-xs text-gray-200 w-full rounded-full my-1">
+                      <TrashIcon className="h-4 w-4" />
+                    </button>
+                  </div>
+                  <div>
+                    <img src="images/1.jpg" alt="" className="rounded-lg" />
+                    <button className="btn btn-error btn-xs text-gray-200 w-full rounded-full my-1">
+                      <TrashIcon className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="w-full rounded-xl shadow-xl py-2 px-3 mb-6">
+              <h2 className="text-xl">Rekening</h2>
+              <div className="my-2 text-center">
+                <label className="input input-bordered input-sm md:input-md flex items-center gap-2 mb-2">
+                  <UserIcon className="h-4 w-4" />
+                  <input
+                    type="text"
+                    className="grow"
+                    placeholder="Nama Rekening"
+                  />
+                </label>
+                <label className="input input-bordered input-sm md:input-md flex items-center gap-2 mb-2">
+                  <BuildingLibraryIcon className="h-4 w-4" />
+                  <input type="text" className="grow" placeholder="Nama Bank" />
+                </label>
+                <label className="input input-bordered input-sm md:input-md flex items-center gap-2 mb-2">
+                  <CreditCardIcon className="h-4 w-4" />
+                  <input
+                    type="text"
+                    className="grow"
+                    placeholder="Nomor Rekening"
+                  />
+                </label>
+                <div className="text-right">
+                  <button className="btn btn-primary btn-sm md:btn-md">
+                    Save
+                  </button>
+                </div>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="table text-white">
+                  {/* head */}
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th className="hidden md:block">Account</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* row 1 */}
+                    <tr>
+                      <td>
+                        Zemlak <br />
+                        <span className="badge badge-ghost badge-sm md:hidden">
+                          BCA : 085724219411
+                        </span>
+                      </td>
+                      <td className="hidden md:block">BCA : 085724219411</td>
+                      <td>
+                        <button className="btn btn-xs text-white bg-red-500 hover:bg-red-700">
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                    {/* row 2 */}
+                    <tr>
+                      <td>
+                        Daniel <br />
+                        <span className="badge badge-ghost badge-sm md:hidden">
+                          BRI : 085724219411
+                        </span>
+                      </td>
+                      <td className="hidden md:block">BRI : 085724219411</td>
+                      <td>
+                        <button className="btn btn-xs text-white bg-red-500 hover:bg-red-700">
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="w-full rounded-xl shadow-xl py-2 px-3 mb-6">
+              <h2 className="text-xl">Musik</h2>
+              <div className="flex flex-col gap-2 justify-center my-2">
+                <div className="mx-auto">
+                  <audio controls>
+                    <source src="music/sound.mp3" type="audio/mpeg" />
+                  </audio>
+                </div>
+                <div className="flex gap-1 justify-center">
+                  <input
+                    type="file"
+                    name="background"
+                    onChange={handleChangeFoto}
+                    className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
+                  />
+                  <button className="btn btn-primary btn-sm md:btn-md">
+                    Upload
+                  </button>
+                </div>
               </div>
             </div>
           </div>
