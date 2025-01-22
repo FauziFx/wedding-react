@@ -18,6 +18,7 @@ import {
   BuildingLibraryIcon,
   CreditCardIcon,
   XCircleIcon,
+  LockClosedIcon,
 } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
 
@@ -321,6 +322,48 @@ Terima Kasih.`;
               >
                 Visit Web <ArrowUpRightIcon className="h-4 w-4 mb-1 inline" />
               </a>
+            </div>
+            <div className="w-full rounded-xl shadow-xl py-2 px-3 mb-6">
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Name</td>
+                    <td className="mx-2">:</td>
+                    <td>Ahmad Fauzi</td>
+                  </tr>
+                  <tr>
+                    <td>Email</td>
+                    <td className="mx-2">:</td>
+                    <td>ahmadffauzi0@gmail.com</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div className="my-2 text-center">
+                <label className="input input-bordered input-sm md:input-md flex items-center gap-2 mb-2">
+                  <LockClosedIcon className="h-4 w-4" />
+                  <input
+                    type="password"
+                    className="grow"
+                    placeholder="Old Password"
+                  />
+                </label>
+                <label className="input input-bordered input-sm md:input-md flex items-center gap-2 mb-2">
+                  <LockClosedIcon className="h-4 w-4" />
+                  <input
+                    type="password"
+                    className="grow"
+                    placeholder="New Password"
+                  />
+                </label>
+                <div className="text-right">
+                  <button className="btn btn-primary btn-sm md:btn-md">
+                    Change Password
+                  </button>
+                </div>
+                <button className="btn btn-error btn-sm md:btn-md w-full mt-4 rounded-full md:hidden">
+                  Logout
+                </button>
+              </div>
             </div>
             <div className="w-full rounded-xl shadow-xl py-2 px-3 mb-6">
               <h2 className="text-xl">Foto Pengantin</h2>
