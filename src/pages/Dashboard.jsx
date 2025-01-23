@@ -21,6 +21,7 @@ import {
   LockClosedIcon,
 } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 function Dashboard() {
   const [linkWA, setLinkWA] = useState("");
@@ -99,6 +100,10 @@ Terima Kasih.`;
   const handleMenu = (menu) => {
     setMenu(menu);
   };
+  const handleLogout = () => {
+    Cookies.remove("token");
+    window.location.href = "/";
+  };
   return (
     <div className="container mx-auto">
       {/* Navbar */}
@@ -149,7 +154,10 @@ Terima Kasih.`;
           <hr className="my-2" />
           <ul className="menu bg-base-200 rounded-box">
             <li>
-              <a className="hover:bg-red-500 hover:text-white">
+              <a
+                className="hover:bg-red-500 hover:text-white"
+                onClick={handleLogout}
+              >
                 <ArrowRightStartOnRectangleIcon className="h-5 w-5 mb-1" />
                 Logout
               </a>
@@ -360,7 +368,10 @@ Terima Kasih.`;
                     Change Password
                   </button>
                 </div>
-                <button className="btn btn-error btn-sm md:btn-md w-full mt-4 rounded-full md:hidden">
+                <button
+                  className="btn btn-error btn-sm md:btn-md w-full mt-4 rounded-full md:hidden"
+                  onClick={handleLogout}
+                >
                   Logout
                 </button>
               </div>
