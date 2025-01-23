@@ -13,10 +13,24 @@ function App() {
       <Route element={<ProtectedAuth />}>
         <Route path="/auth" element={<Login />} />
       </Route>
+      <Route path="/auth/*" element={<NotFoundPage />} />
       <Route element={<Protected />}>
         <Route path="/dashboard" element={<Dashboard />} />
       </Route>
+      <Route path="/dashboard/*" element={<NotFoundPage />} />
+      <Route path="/*" element={<NotFoundPage />} />
     </Routes>
+  );
+}
+
+function NotFoundPage() {
+  return (
+    <div className="h-screen flex flex-col justify-center items-center">
+      <h1 className="text-2xl">404 Not Found</h1>
+      <a href="/" className="btn btn-sm">
+        Back to Home
+      </a>
+    </div>
   );
 }
 
