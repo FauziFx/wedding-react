@@ -34,6 +34,7 @@ function Login() {
         const config = {
           id: decode.id,
           name: decode.name,
+          email: decode.email,
         };
         localStorage.setItem("config", JSON.stringify(config));
         Cookies.set("token", token, { expires: 1 });
