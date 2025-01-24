@@ -8,28 +8,20 @@ import {
   FireIcon,
   HomeIcon,
   MapIcon,
-  NumberedListIcon,
-  PaperAirplaneIcon,
-  PhoneIcon,
   QuestionMarkCircleIcon,
-  UserCircleIcon,
   UserIcon,
   TrashIcon,
   BuildingLibraryIcon,
   CreditCardIcon,
   XCircleIcon,
-  LockClosedIcon,
 } from "@heroicons/react/24/solid";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Cookies from "js-cookie";
 import ChangePassword from "../components/ChangePassword";
+import Guestbook from "../components/Guestbook";
 
 function Dashboard() {
-  const [linkWA, setLinkWA] = useState("");
-  const [message, setMessage] = useState("");
-  const [onEdit, setOnEdit] = useState(true);
   const [menu, setMenu] = useState("home");
-  const [copy, setCopy] = useState(false);
   const [file, setFile] = useState({
     foto_pengantin: "images/bg.png",
     background: "images/1.jpg",
@@ -42,62 +34,7 @@ function Dashboard() {
       [e.target.name]: URL.createObjectURL(e.target.files[0]),
     }));
   };
-  const copyContent = async () => {
-    try {
-      await navigator.clipboard.writeText(message);
-      setCopy(true);
-      const timer = setTimeout(() => {
-        setCopy(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    } catch (err) {
-      console.error("Failed to copy: ", err);
-    }
-  };
-  const [undangan, setUndangan] = useState({
-    to: "",
-    link: "",
-    phone: "",
-    mempelai: "John Doe & Jane Doe",
-  });
-  const handleChangeMessage = (e) => {
-    const value = e.target.value;
-    setMessage(value);
-    const linkSend = `https://wa.me/${undangan.phone}?text=${encodeURIComponent(
-      value
-    )}`;
-    setLinkWA(linkSend);
-  };
-  const handleKirim = (name, phone) => {
-    const link = "https://ulems.my.id/?to=" + encodeURIComponent(name);
-    setUndangan((prev) => ({
-      ...prev,
-      to: name,
-      phone: phone,
-      link: link,
-    }));
-    const msg = `Assalamu'alaikum Wr. Wb
 
-Yth. ${name}
-
-Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i, teman sekaligus sahabat, untuk menghadiri acara pernikahan kami :
-
-${undangan.mempelai}
-
-Berikut link undangan kami untuk info lengkap dari acara bisa kunjungi :
- 
-${link}
-
-Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.
-
-Mohon maaf perihal undangan hanya di bagikan melalui  pesan ini. Terima kasih banyak atas perhatiannya.
-
-Wassalamu'alaikum Wr. Wb.
-Terima Kasih.`;
-    setMessage(msg);
-    const linkSend = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-    setLinkWA(linkSend);
-  };
   const handleMenu = (menu) => {
     setMenu(menu);
   };
@@ -226,100 +163,7 @@ Terima Kasih.`;
             </div>
           </div>
         )}
-        {menu == "guest" && (
-          <div className="col-span-3 px-4 pt-2">
-            <div className="w-full rounded-xl bg-white text-gray-900 py-2 px-3 mb-6">
-              Guest Book
-            </div>
-            <div className="md:flex gap-2 mb-2">
-              <label className="input input-bordered flex items-center gap-2 mb-2">
-                <UserIcon className="h-3 w-3 mb-1" />
-                <input type="text" placeholder="Name" />
-              </label>
-              <label className="input input-bordered flex items-center gap-2 mb-2">
-                +62
-                <input type="tel " placeholder="Whatsapp" />
-              </label>
-              <button className="btn btn-primary mb-2 w-full md:w-fit">
-                Save
-              </button>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="table text-white">
-                {/* head */}
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th className="hidden md:block">Whatsapp</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {/* row 1 */}
-                  <tr>
-                    <td>
-                      Zemlak <br />
-                      <span className="badge badge-ghost badge-sm md:hidden">
-                        085724219411
-                      </span>
-                    </td>
-                    <td className="hidden md:block">085724219411</td>
-                    <td>
-                      <button
-                        onClick={() => {
-                          document.getElementById("modal_send").showModal();
-                          handleKirim("Ahmad Fauzi", "6285724219411");
-                        }}
-                        className="btn btn-xs text-white bg-green-500 hover:bg-green-700 mr-2"
-                      >
-                        Send
-                      </button>
-                      <button className="btn btn-xs text-white bg-red-500 hover:bg-red-700">
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                  {/* row 2 */}
-                  <tr>
-                    <td>
-                      Daniel <br />
-                      <span className="badge badge-ghost badge-sm md:hidden">
-                        085724219411
-                      </span>
-                    </td>
-                    <td className="hidden md:block">085724219411</td>
-                    <td>
-                      <button className="btn btn-xs text-white bg-green-500 hover:bg-green-700 mr-2">
-                        Send
-                      </button>
-                      <button className="btn btn-xs text-white bg-red-500 hover:bg-red-700">
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                  {/* row 3 */}
-                  <tr>
-                    <td>
-                      Leannon <br />
-                      <span className="badge badge-ghost badge-sm md:hidden">
-                        085724219411
-                      </span>
-                    </td>
-                    <td className="hidden md:block">085724219411</td>
-                    <td>
-                      <button className="btn btn-xs text-white bg-green-500 hover:bg-green-700 mr-2">
-                        Send
-                      </button>
-                      <button className="btn btn-xs text-white bg-red-500 hover:bg-red-700">
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
+        {menu == "guest" && <Guestbook />}
         {menu == "setting" && (
           <div className="col-span-3 px-4 pt-2 pb-20">
             <div className="flex justify-between items-center w-full rounded-xl bg-white text-gray-900 py-1 px-3 mb-6">
@@ -790,53 +634,6 @@ Terima Kasih.`;
           Setting
         </button>
       </div>
-
-      {/* Modal Send */}
-      <dialog id="modal_send" className="modal" autoFocus="off">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg mb-4">Send Invitation!</h3>
-          <table>
-            <tbody className="text-left">
-              <tr>
-                <td>Send To</td>
-                <td className="px-4">:</td>
-                <td>John</td>
-              </tr>
-              <tr>
-                <td>Whatsapp</td>
-                <td className="px-4">:</td>
-                <td>
-                  <button>081234567</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <button className="btn btn-default btn-sm mb-1" onClick={copyContent}>
-            {copy ? "Copy to Clipboard" : "Copy Text"}
-          </button>
-          <textarea
-            className="textarea textarea-bordered w-full disabled:text-white disabled:cursor-text"
-            rows={12}
-            name=""
-            value={message}
-            onChange={(e) => handleChangeMessage(e)}
-          ></textarea>
-          <div className="modal-action flex justify-between">
-            <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn">Close</button>
-            </form>
-            <a
-              href={linkWA}
-              target="_blank"
-              className="btn bg-green-500 hover:bg-green-700 text-white"
-            >
-              <PaperAirplaneIcon className="h-5 w-5" />
-              Send
-            </a>
-          </div>
-        </div>
-      </dialog>
     </div>
   );
 }

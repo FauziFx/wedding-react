@@ -19,7 +19,8 @@
     "react-confetti": "^6.2.2",
     "react-dom": "^18.3.1",
     "react-responsive-carousel": "^3.2.23",
-    "react-router-dom": "^7.1.1"
+    "react-router-dom": "^7.1.1",
+    "swr": "^2.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
