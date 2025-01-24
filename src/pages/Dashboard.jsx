@@ -19,9 +19,11 @@ import React, { useState } from "react";
 import Cookies from "js-cookie";
 import ChangePassword from "../components/ChangePassword";
 import Guestbook from "../components/Guestbook";
+import BankAccount from "../components/BankAccount";
 
 function Dashboard() {
   const [menu, setMenu] = useState("home");
+  const [showAlert, setShowAlert] = useState("");
   const [file, setFile] = useState({
     foto_pengantin: "images/bg.png",
     background: "images/1.jpg",
@@ -163,7 +165,7 @@ function Dashboard() {
             </div>
           </div>
         )}
-        {menu == "guest" && <Guestbook />}
+        {menu == "guest" && <Guestbook setShowAlert={setShowAlert} />}
         {menu == "setting" && (
           <div className="col-span-3 px-4 pt-2 pb-20">
             <div className="flex justify-between items-center w-full rounded-xl bg-white text-gray-900 py-1 px-3 mb-6">
@@ -511,80 +513,7 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="w-full rounded-xl shadow-xl py-2 px-3 mb-6">
-              <h2 className="text-xl">Rekening</h2>
-              <div className="my-2 text-center">
-                <label className="input input-bordered input-sm md:input-md flex items-center gap-2 mb-2">
-                  <UserIcon className="h-4 w-4" />
-                  <input
-                    type="text"
-                    className="grow"
-                    placeholder="Nama Rekening"
-                  />
-                </label>
-                <label className="input input-bordered input-sm md:input-md flex items-center gap-2 mb-2">
-                  <BuildingLibraryIcon className="h-4 w-4" />
-                  <input type="text" className="grow" placeholder="Nama Bank" />
-                </label>
-                <label className="input input-bordered input-sm md:input-md flex items-center gap-2 mb-2">
-                  <CreditCardIcon className="h-4 w-4" />
-                  <input
-                    type="text"
-                    className="grow"
-                    placeholder="Nomor Rekening"
-                  />
-                </label>
-                <div className="text-right">
-                  <button className="btn btn-primary btn-sm md:btn-md">
-                    Save
-                  </button>
-                </div>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="table text-white">
-                  {/* head */}
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th className="hidden md:block">Account</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {/* row 1 */}
-                    <tr>
-                      <td>
-                        Zemlak <br />
-                        <span className="badge badge-ghost badge-sm md:hidden">
-                          BCA : 085724219411
-                        </span>
-                      </td>
-                      <td className="hidden md:block">BCA : 085724219411</td>
-                      <td>
-                        <button className="btn btn-xs text-white bg-red-500 hover:bg-red-700">
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                    {/* row 2 */}
-                    <tr>
-                      <td>
-                        Daniel <br />
-                        <span className="badge badge-ghost badge-sm md:hidden">
-                          BRI : 085724219411
-                        </span>
-                      </td>
-                      <td className="hidden md:block">BRI : 085724219411</td>
-                      <td>
-                        <button className="btn btn-xs text-white bg-red-500 hover:bg-red-700">
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            <BankAccount />
             <div className="w-full rounded-xl shadow-xl py-2 px-3 mb-6">
               <h2 className="text-xl">Musik</h2>
               <div className="flex flex-col gap-2 justify-center my-2">
@@ -634,6 +563,18 @@ function Dashboard() {
           Setting
         </button>
       </div>
+      {/* Alert */}
+      {showAlert != "" && (
+        <div
+          role="alert"
+          className="rounded-full bg-gradient-to-r from-cyan-500 to-blue-400 alert fixed top-2 left-1/2 transform -translate-x-1/2 w-[80%] md:w-fit border-none text-white"
+        >
+          <div>
+            <CheckCircleIcon className="h-5 w-5 mb-1 inline" />
+            <span>{showAlert}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
