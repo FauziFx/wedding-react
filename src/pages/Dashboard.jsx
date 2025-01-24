@@ -513,7 +513,7 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-            <BankAccount />
+            <BankAccount setShowAlert={setShowAlert} />
             <div className="w-full rounded-xl shadow-xl py-2 px-3 mb-6">
               <h2 className="text-xl">Musik</h2>
               <div className="flex flex-col gap-2 justify-center my-2">
