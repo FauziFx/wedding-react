@@ -180,44 +180,297 @@ function Dashboard() {
             </div>
             {/* Change password */}
             <ChangePassword logout={handleLogout} />
-            <div className="w-full rounded-xl shadow-xl py-2 px-3 mb-6">
-              <h2 className="text-xl">Foto Pengantin</h2>
-              <div className="flex flex-col gap-2 justify-center my-2">
-                {file.foto_pengantin != "" && (
-                  <div className="avatar mx-auto py-4 md:py-0">
-                    <div className="w-32 rounded-full border-4 border-white shadow-xl">
-                      <img src={file.foto_pengantin} alt="Foto Pengantin" />
+            <div className="w-full rounded-xl shadow-xl mb-6">
+              <h1 className="text-2xl text-center w-full py-2 bg-gray-700">
+                General
+              </h1>
+              <div className="py-2 px-3">
+                <h2 className="text-xl text-center mt-4">Foto Pengantin</h2>
+                <div className="flex flex-col gap-2 justify-center my-2">
+                  {file.foto_pengantin != "" && (
+                    <div className="avatar mx-auto py-2 md:py-0">
+                      <div className="w-32 rounded-full border-4 border-white shadow-xl">
+                        <img src={file.foto_pengantin} alt="Foto Pengantin" />
+                      </div>
                     </div>
+                  )}
+                  <div className="text-center">
+                    <input
+                      type="file"
+                      name="foto_pengantin"
+                      onChange={handleChangeFoto}
+                      className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
+                    />
                   </div>
-                )}
-                <div className="flex gap-1 justify-center">
-                  <input
-                    type="file"
-                    name="foto_pengantin"
-                    onChange={handleChangeFoto}
-                    className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
-                  />
+                </div>
+                <h2 className="text-xl text-center mt-4">Background</h2>
+                <div className="flex flex-col gap-2 justify-center my-2">
+                  {file.background != "" && (
+                    <div className="mx-auto py-2 md:py-0">
+                      <div className="w-48 shadow-xl">
+                        <img
+                          src={file.background}
+                          alt="Background"
+                          className="rounded-lg"
+                        />
+                      </div>
+                    </div>
+                  )}
+                  <div className="text-center">
+                    <input
+                      type="file"
+                      name="background"
+                      onChange={handleChangeFoto}
+                      className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
+                    />
+                  </div>
+                </div>
+                <h2 className="text-xl text-center mt-4">Musik</h2>
+                <div className="flex flex-col gap-2 justify-center my-2">
+                  <div className="mx-auto">
+                    <audio controls>
+                      <source src="music/sound.mp3" type="audio/mpeg" />
+                    </audio>
+                  </div>
+                  <div className="text-center">
+                    <input
+                      type="file"
+                      name="background"
+                      onChange={handleChangeFoto}
+                      className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
+                    />
+                  </div>
+                </div>
+                <h2 className="text-xl text-center mt-4">Tanggal & Tempat</h2>
+                <label htmlFor="" className="form-control w-full">
+                  <div className="label pb-0">
+                    <span className="label-text">Jam Berapa?</span>
+                  </div>
+                  <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
+                    <input type="time" className="grow" placeholder="Jam" />
+                  </label>
+                </label>
+                <label htmlFor="" className="form-control w-full">
+                  <div className="label pb-0">
+                    <span className="label-text">Tanggal Berapa?</span>
+                  </div>
+                  <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
+                    <input type="date" className="grow" placeholder="Tanggal" />
+                  </label>
+                </label>
+                <label className="form-control">
+                  <div className="label pb-0">
+                    <span className="label-text">Bertempat Di Mana?</span>
+                  </div>
+                  <textarea
+                    className="textarea textarea-bordered textarea-sm md:textarea-md"
+                    placeholder="Alamat"
+                  ></textarea>
+                </label>
+                <label htmlFor="" className="form-control w-full">
+                  <div className="label pb-0">
+                    <span className="label-text">Link Google Maps</span>
+                  </div>
+                  <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
+                    <MapIcon className="h-4 w-4" />
+                    <input type="url" className="grow" placeholder="https://" />
+                  </label>
+                </label>
+                <div className="text-right my-2">
                   <button className="btn btn-primary btn-sm md:btn-md">
-                    Upload
+                    Save
                   </button>
                 </div>
               </div>
             </div>
-            <div className="w-full rounded-xl shadow-xl py-2 px-3 mb-6">
-              <h2 className="text-xl">Background</h2>
-              <div className="flex flex-col gap-2 justify-center my-2">
-                {file.background != "" && (
-                  <div className="mx-auto py-4 md:py-0">
-                    <div className="w-48 shadow-xl">
-                      <img
-                        src={file.background}
-                        alt="Background"
-                        className="rounded-lg"
-                      />
+            <div className="w-full rounded-xl shadow-xl mb-6">
+              <h1 className="text-2xl text-center w-full py-2 bg-gray-700">
+                Pengantin
+              </h1>
+              <div className="py-2 px-3">
+                <h2 className="text-xl text-center">Pengantin 1</h2>
+                <div className="flex flex-col gap-2 justify-center my-2">
+                  {file.pengantin_1 != "" && (
+                    <div className="avatar mx-auto py-2 md:py-0">
+                      <div className="w-32 rounded-full border-4 border-white shadow-xl">
+                        <img src={file.pengantin_1} alt="Pengantin 1" />
+                      </div>
                     </div>
+                  )}
+                  <div className="text-center">
+                    <input
+                      type="file"
+                      name="pengantin_1"
+                      onChange={handleChangeFoto}
+                      className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit"
+                    />
                   </div>
-                )}
-                <div className="flex gap-1 justify-center">
+                </div>
+                <div>
+                  <label htmlFor="" className="form-control w-full">
+                    <div className="label pb-0">
+                      <span className="label-text">Nama</span>
+                    </div>
+                    <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
+                      <UserIcon className="h-4 w-4" />
+                      <input type="text" className="grow" placeholder="Nama" />
+                    </label>
+                  </label>
+                  <label htmlFor="" className="form-control w-full">
+                    <div className="label pb-0">
+                      <span className="label-text">Anak keberapa?</span>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-2">
+                      <input
+                        className="input input-sm md:input-md input-bordered grow mb-2 md:mb-0"
+                        placeholder="Anak keberapa?"
+                      />
+                      <div className="flex flex-row items-center">
+                        <div className="form-control">
+                          <label className="label cursor-pointer">
+                            <input
+                              type="radio"
+                              name="radio-10"
+                              className="radio radio-sm md:radio-md checked:bg-pink-500"
+                              defaultChecked
+                            />
+                            <span className="label-text ml-1">Perempuan</span>
+                          </label>
+                        </div>
+                        <div className="form-control">
+                          <label className="label cursor-pointer">
+                            <input
+                              type="radio"
+                              name="radio-10"
+                              className="radio radio-sm md:radio-md checked:bg-blue-500"
+                              defaultChecked
+                            />
+                            <span className="label-text ml-1">Laki-Laki</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </label>
+                  <label htmlFor="" className="form-control w-full mb-2">
+                    <div className="label pb-0">
+                      <span className="label-text">Nama Orang Tua</span>
+                    </div>
+                    <label className="input input-sm md:input-md input-bordered flex items-center gap-2 mb-1">
+                      <span>Bapak</span>
+                      <input
+                        type="text"
+                        className="grow"
+                        placeholder="Nama Bapak"
+                      />
+                    </label>
+                    <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
+                      <span>Ibu</span>
+                      <input
+                        type="text"
+                        className="grow"
+                        placeholder="Nama Ibu"
+                      />
+                    </label>
+                  </label>
+                </div>
+                <h2 className="text-xl text-center mt-4">Pengantin 2</h2>
+                <div className="flex flex-col gap-2 justify-center my-2">
+                  {file.pengantin_2 != "" && (
+                    <div className="avatar mx-auto py-2 md:py-0">
+                      <div className="w-32 rounded-full border-4 border-white shadow-xl">
+                        <img src={file.pengantin_2} alt="Pengantin 2" />
+                      </div>
+                    </div>
+                  )}
+                  <div className="text-center">
+                    <input
+                      type="file"
+                      name="pengantin_2"
+                      onChange={handleChangeFoto}
+                      className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="" className="form-control w-full">
+                    <div className="label pb-0">
+                      <span className="label-text">Nama</span>
+                    </div>
+                    <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
+                      <UserIcon className="h-4 w-4" />
+                      <input type="text" className="grow" placeholder="Nama" />
+                    </label>
+                  </label>
+                  <label htmlFor="" className="form-control w-full">
+                    <div className="label pb-0">
+                      <span className="label-text">Anak keberapa?</span>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-2">
+                      <input
+                        className="input input-sm md:input-md input-bordered grow mb-2 md:mb-0"
+                        placeholder="Anak keberapa?"
+                      />
+                      <div className="flex flex-row items-center">
+                        <div className="form-control">
+                          <label className="label cursor-pointer">
+                            <input
+                              type="radio"
+                              name="radio-1"
+                              className="radio radio-sm md:radio-md checked:bg-pink-500"
+                              defaultChecked
+                            />
+                            <span className="label-text ml-1">Perempuan</span>
+                          </label>
+                        </div>
+                        <div className="form-control">
+                          <label className="label cursor-pointer">
+                            <input
+                              type="radio"
+                              name="radio-1"
+                              className="radio radio-sm md:radio-md checked:bg-blue-500"
+                              defaultChecked
+                            />
+                            <span className="label-text ml-1">Laki-Laki</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </label>
+                  <label htmlFor="" className="form-control w-full mb-2">
+                    <div className="label pb-0">
+                      <span className="label-text">Nama Orang Tua</span>
+                    </div>
+                    <label className="input input-sm md:input-md input-bordered flex items-center gap-2 mb-1">
+                      <span>Bapak</span>
+                      <input
+                        type="text"
+                        className="grow"
+                        placeholder="Nama Bapak"
+                      />
+                    </label>
+                    <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
+                      <span>Ibu</span>
+                      <input
+                        type="text"
+                        className="grow"
+                        placeholder="Nama Ibu"
+                      />
+                    </label>
+                  </label>
+                  <div className="text-right mb-2">
+                    <button className="btn btn-primary btn-sm md:btn-md">
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="w-full rounded-xl shadow-xl mb-6">
+              <h1 className="text-2xl text-center w-full py-2 bg-gray-700">
+                Galeri
+              </h1>
+              <div className="py-2 px-3">
+                <div className="flex gap-1 justify-center my-2">
                   <input
                     type="file"
                     name="background"
@@ -228,258 +481,7 @@ function Dashboard() {
                     Upload
                   </button>
                 </div>
-              </div>
-            </div>
-            <div className="w-full rounded-xl shadow-xl py-2 px-3 mb-6">
-              <h2 className="text-xl">Pengantin 1</h2>
-              <div className="flex flex-col gap-2 justify-center my-2">
-                {file.pengantin_1 != "" && (
-                  <div className="avatar mx-auto py-4 md:py-0">
-                    <div className="w-32 rounded-full border-4 border-white shadow-xl">
-                      <img src={file.pengantin_1} alt="Pengantin 1" />
-                    </div>
-                  </div>
-                )}
-                <div className="text-center">
-                  <input
-                    type="file"
-                    name="pengantin_1"
-                    onChange={handleChangeFoto}
-                    className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit"
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="" className="form-control w-full">
-                  <div className="label pb-0">
-                    <span className="label-text">Nama</span>
-                  </div>
-                  <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
-                    <UserIcon className="h-4 w-4" />
-                    <input type="text" className="grow" placeholder="Nama" />
-                  </label>
-                </label>
-                <label htmlFor="" className="form-control w-full">
-                  <div className="label pb-0">
-                    <span className="label-text">Anak keberapa?</span>
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-2">
-                    <input
-                      className="input input-sm md:input-md input-bordered grow mb-2 md:mb-0"
-                      placeholder="Anak keberapa?"
-                    />
-                    <div className="flex flex-row items-center">
-                      <div className="form-control">
-                        <label className="label cursor-pointer">
-                          <input
-                            type="radio"
-                            name="radio-10"
-                            className="radio radio-sm md:radio-md checked:bg-pink-500"
-                            defaultChecked
-                          />
-                          <span className="label-text ml-1">Perempuan</span>
-                        </label>
-                      </div>
-                      <div className="form-control">
-                        <label className="label cursor-pointer">
-                          <input
-                            type="radio"
-                            name="radio-10"
-                            className="radio radio-sm md:radio-md checked:bg-blue-500"
-                            defaultChecked
-                          />
-                          <span className="label-text ml-1">Laki-Laki</span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </label>
-                <label htmlFor="" className="form-control w-full mb-2">
-                  <div className="label pb-0">
-                    <span className="label-text">Nama Orang Tua</span>
-                  </div>
-                  <label className="input input-sm md:input-md input-bordered flex items-center gap-2 mb-1">
-                    <span>Bapak</span>
-                    <input
-                      type="text"
-                      className="grow"
-                      placeholder="Nama Bapak"
-                    />
-                  </label>
-                  <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
-                    <span>Ibu</span>
-                    <input
-                      type="text"
-                      className="grow"
-                      placeholder="Nama Ibu"
-                    />
-                  </label>
-                </label>
-                <div className="text-right mb-2">
-                  <button className="btn btn-primary btn-sm md:btn-md">
-                    Save
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="w-full rounded-xl shadow-xl py-2 px-3 mb-6">
-              <h2 className="text-xl">Pengantin 2</h2>
-              <div className="flex flex-col gap-2 justify-center my-2">
-                {file.pengantin_2 != "" && (
-                  <div className="avatar mx-auto py-4 md:py-0">
-                    <div className="w-32 rounded-full border-4 border-white shadow-xl">
-                      <img src={file.pengantin_2} alt="Pengantin 2" />
-                    </div>
-                  </div>
-                )}
-                <div className="text-center">
-                  <input
-                    type="file"
-                    name="pengantin_2"
-                    onChange={handleChangeFoto}
-                    className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit"
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="" className="form-control w-full">
-                  <div className="label pb-0">
-                    <span className="label-text">Nama</span>
-                  </div>
-                  <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
-                    <UserIcon className="h-4 w-4" />
-                    <input type="text" className="grow" placeholder="Nama" />
-                  </label>
-                </label>
-                <label htmlFor="" className="form-control w-full">
-                  <div className="label pb-0">
-                    <span className="label-text">Anak keberapa?</span>
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-2">
-                    <input
-                      className="input input-sm md:input-md input-bordered grow mb-2 md:mb-0"
-                      placeholder="Anak keberapa?"
-                    />
-                    <div className="flex flex-row items-center">
-                      <div className="form-control">
-                        <label className="label cursor-pointer">
-                          <input
-                            type="radio"
-                            name="radio-1"
-                            className="radio radio-sm md:radio-md checked:bg-pink-500"
-                            defaultChecked
-                          />
-                          <span className="label-text ml-1">Perempuan</span>
-                        </label>
-                      </div>
-                      <div className="form-control">
-                        <label className="label cursor-pointer">
-                          <input
-                            type="radio"
-                            name="radio-1"
-                            className="radio radio-sm md:radio-md checked:bg-blue-500"
-                            defaultChecked
-                          />
-                          <span className="label-text ml-1">Laki-Laki</span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </label>
-                <label htmlFor="" className="form-control w-full mb-2">
-                  <div className="label pb-0">
-                    <span className="label-text">Nama Orang Tua</span>
-                  </div>
-                  <label className="input input-sm md:input-md input-bordered flex items-center gap-2 mb-1">
-                    <span>Bapak</span>
-                    <input
-                      type="text"
-                      className="grow"
-                      placeholder="Nama Bapak"
-                    />
-                  </label>
-                  <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
-                    <span>Ibu</span>
-                    <input
-                      type="text"
-                      className="grow"
-                      placeholder="Nama Ibu"
-                    />
-                  </label>
-                </label>
-                <div className="text-right mb-2">
-                  <button className="btn btn-primary btn-sm md:btn-md">
-                    Save
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="w-full rounded-xl shadow-xl py-2 px-3 mb-6">
-              <h2 className="text-xl">Tanggal & Tempat</h2>
-              <label htmlFor="" className="form-control w-full">
-                <div className="label pb-0">
-                  <span className="label-text">Jam Berapa?</span>
-                </div>
-                <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
-                  <input type="time" className="grow" placeholder="Jam" />
-                </label>
-              </label>
-              <label htmlFor="" className="form-control w-full">
-                <div className="label pb-0">
-                  <span className="label-text">Tanggal Berapa?</span>
-                </div>
-                <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
-                  <input type="date" className="grow" placeholder="Tanggal" />
-                </label>
-              </label>
-              <label className="form-control">
-                <div className="label pb-0">
-                  <span className="label-text">Bertempat Di Mana?</span>
-                </div>
-                <textarea
-                  className="textarea textarea-bordered textarea-sm md:textarea-md"
-                  placeholder="Alamat"
-                ></textarea>
-              </label>
-              <label htmlFor="" className="form-control w-full">
-                <div className="label pb-0">
-                  <span className="label-text">Link Google Maps</span>
-                </div>
-                <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
-                  <MapIcon className="h-4 w-4" />
-                  <input type="url" className="grow" placeholder="https://" />
-                </label>
-              </label>
-              <div className="text-right my-2">
-                <button className="btn btn-primary btn-sm md:btn-md">
-                  Save
-                </button>
-              </div>
-            </div>
-            <div className="w-full rounded-xl shadow-xl py-2 px-3 mb-6">
-              <h2 className="text-xl">Galeri Foto</h2>
-              <div className="flex flex-col gap-2 justify-center my-2">
-                <div className="text-center">
-                  <label htmlFor="" className="form-control w-full">
-                    <div className="flex gap-1">
-                      <input
-                        type="file"
-                        name="foto_pengantin"
-                        className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-0"
-                        multiple
-                      />
-                      <button className="btn btn-primary btn-sm md:btn-md">
-                        Upload
-                      </button>
-                    </div>
-                    <div className="label pt-1">
-                      <div className="label-text-alt">
-                        Maksimal 5 Foto aja ya
-                      </div>
-                    </div>
-                  </label>
-                </div>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 gap-2 mb-2">
                   <div>
                     <img src="images/1.jpg" alt="" className="rounded-lg" />
                     <button className="btn btn-error btn-xs text-gray-200 w-full rounded-full my-1">
@@ -514,27 +516,6 @@ function Dashboard() {
               </div>
             </div>
             <BankAccount setShowAlert={setShowAlert} />
-            <div className="w-full rounded-xl shadow-xl py-2 px-3 mb-6">
-              <h2 className="text-xl">Musik</h2>
-              <div className="flex flex-col gap-2 justify-center my-2">
-                <div className="mx-auto">
-                  <audio controls>
-                    <source src="music/sound.mp3" type="audio/mpeg" />
-                  </audio>
-                </div>
-                <div className="flex gap-1 justify-center">
-                  <input
-                    type="file"
-                    name="background"
-                    onChange={handleChangeFoto}
-                    className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
-                  />
-                  <button className="btn btn-primary btn-sm md:btn-md">
-                    Upload
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
         )}
       </div>
