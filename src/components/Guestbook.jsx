@@ -4,13 +4,10 @@ import api from "../utils/api";
 import LoadingSekeleton from "./LoadingSekeleton";
 import FailedToLoad from "./FailedToLoad";
 import useSWR, { useSWRConfig } from "swr";
-import { jwtDecode } from "jwt-decode";
-import Cookies from "js-cookie";
 
-function Guestbook({ setShowAlert }) {
+function Guestbook({ setShowAlert, dataUser }) {
   const API = import.meta.env.VITE_API_URL;
   const { mutate } = useSWRConfig();
-  const decode = jwtDecode(Cookies.get("token"));
   const [linkWA, setLinkWA] = useState("");
   const [message, setMessage] = useState("");
   const [copy, setCopy] = useState(false);
@@ -23,7 +20,7 @@ function Guestbook({ setShowAlert }) {
   const [guest, setGuest] = useState({
     name: "",
     whatsapp: "",
-    userId: decode.id,
+    userId: dataUser.id,
   });
 
   const handleChange = async (e) => {
@@ -48,7 +45,7 @@ function Guestbook({ setShowAlert }) {
         setGuest({
           name: "",
           whatsapp: "",
-          userId: decode.id,
+          userId: dataUser.id,
         });
         const timer = setTimeout(() => {
           setShowAlert("");

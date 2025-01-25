@@ -2,12 +2,12 @@ import { LockClosedIcon } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
 import api from "../utils/api";
 
-function ChangePassword({ logout }) {
+function ChangePassword({ logout, dataUser }) {
   const API = import.meta.env.VITE_API_URL;
   const [user, setUser] = useState({
-    id: "",
-    name: "",
-    email: "",
+    id: dataUser.id,
+    name: dataUser.name,
+    email: dataUser.email,
   });
 
   const [data, setData] = useState({
@@ -44,15 +44,6 @@ function ChangePassword({ logout }) {
     }
   };
 
-  useEffect(() => {
-    const config = localStorage.getItem("config");
-    const data = JSON.parse(config);
-    setUser({
-      id: data.id,
-      name: data.name,
-      email: data.email,
-    });
-  }, []);
   return (
     <div className="w-full rounded-xl shadow-xl mb-6">
       <h1 className="text-2xl text-center w-full py-2 bg-gray-700">Account</h1>

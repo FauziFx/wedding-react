@@ -3,23 +3,20 @@ import {
   BuildingLibraryIcon,
   CreditCardIcon,
 } from "@heroicons/react/24/solid";
-import { jwtDecode } from "jwt-decode";
 import React, { useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
-import Cookies from "js-cookie";
 import api from "../utils/api";
 import LoadingSekeleton from "./LoadingSekeleton";
 import FailedToLoad from "./FailedToLoad";
 
-function BankAccount({ setShowAlert }) {
+function BankAccount({ setShowAlert, dataUser }) {
   const API = import.meta.env.VITE_API_URL;
   const { mutate } = useSWRConfig();
-  const decode = jwtDecode(Cookies.get("token"));
   const [dataBank, setDataBank] = useState({
     name: "",
     bank: "",
     number: "",
-    userId: decode.id,
+    userId: dataUser.id,
   });
   const handleChange = async (e) => {
     setDataBank((prevState) => ({
@@ -44,7 +41,7 @@ function BankAccount({ setShowAlert }) {
           name: "",
           bank: "",
           number: "",
-          userId: decode.id,
+          userId: dataUser.id,
         });
         const timer = setTimeout(() => {
           setShowAlert("");

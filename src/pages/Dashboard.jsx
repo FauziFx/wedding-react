@@ -23,6 +23,7 @@ import BankAccount from "../components/BankAccount";
 
 function Dashboard() {
   const [menu, setMenu] = useState("home");
+  const dataUser = JSON.parse(localStorage.getItem("config"));
   const [showAlert, setShowAlert] = useState("");
   const [file, setFile] = useState({
     foto_pengantin: "images/bg.png",
@@ -56,7 +57,7 @@ function Dashboard() {
             </a>
           </h1>
         </div>
-        <div className="flex-none">Admin</div>
+        <div className="flex-none">{dataUser.name}</div>
       </div>
       {/* Main */}
       <div className="grid md:grid-cols-4 pt-6">
@@ -165,7 +166,9 @@ function Dashboard() {
             </div>
           </div>
         )}
-        {menu == "guest" && <Guestbook setShowAlert={setShowAlert} />}
+        {menu == "guest" && (
+          <Guestbook setShowAlert={setShowAlert} dataUser={dataUser} />
+        )}
         {menu == "setting" && (
           <div className="col-span-3 px-4 pt-2 pb-20">
             <div className="flex justify-between items-center w-full rounded-xl bg-white text-gray-900 py-1 px-3 mb-6">
@@ -179,7 +182,7 @@ function Dashboard() {
               </a>
             </div>
             {/* Change password */}
-            <ChangePassword logout={handleLogout} />
+            <ChangePassword logout={handleLogout} dataUser={dataUser} />
             <div className="w-full rounded-xl shadow-xl mb-6">
               <h1 className="text-2xl text-center w-full py-2 bg-gray-700">
                 General
@@ -515,7 +518,7 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-            <BankAccount setShowAlert={setShowAlert} />
+            <BankAccount setShowAlert={setShowAlert} dataUser={dataUser} />
           </div>
         )}
       </div>
