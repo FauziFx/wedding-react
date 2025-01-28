@@ -2,7 +2,7 @@ import { LockClosedIcon } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
 import api from "../utils/api";
 
-function ChangePassword({ logout, dataUser }) {
+function ChangePassword({ logout, setShowAlert, dataUser }) {
   const API = import.meta.env.VITE_API_URL;
   const [user, setUser] = useState({
     id: dataUser.id,
@@ -33,11 +33,15 @@ function ChangePassword({ logout, dataUser }) {
       if (!response.data.success) {
         alert(response.data.message);
       } else {
-        alert(response.data.message);
+        setShowAlert("Password Changed!");
         setData({
           oldPassword: "",
           newPassword: "",
         });
+        const timer = setTimeout(() => {
+          setShowAlert("");
+        }, 2000);
+        return () => clearTimeout(timer);
       }
     } catch (error) {
       console.log(error);
@@ -85,6 +89,7 @@ function ChangePassword({ logout, dataUser }) {
                 onChange={(e) => handleChange(e)}
                 className="grow"
                 placeholder="New Password"
+                min={8}
                 required
               />
             </label>

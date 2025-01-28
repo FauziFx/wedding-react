@@ -184,7 +184,11 @@ function Dashboard() {
               </a>
             </div>
             {/* Change password */}
-            <ChangePassword logout={handleLogout} dataUser={dataUser} />
+            <ChangePassword
+              logout={handleLogout}
+              setShowAlert={setShowAlert}
+              dataUser={dataUser}
+            />
             <General setShowAlert={setShowAlert} dataUser={dataUser} />
             <Foto setShowAlert={setShowAlert} dataUser={dataUser} />
 
