@@ -20,6 +20,8 @@ import Cookies from "js-cookie";
 import ChangePassword from "../components/ChangePassword";
 import Guestbook from "../components/Guestbook";
 import BankAccount from "../components/BankAccount";
+import General from "../components/General";
+import Foto from "../components/Foto";
 
 function Dashboard() {
   const [menu, setMenu] = useState("home");
@@ -183,109 +185,9 @@ function Dashboard() {
             </div>
             {/* Change password */}
             <ChangePassword logout={handleLogout} dataUser={dataUser} />
-            <div className="w-full rounded-xl shadow-xl mb-6">
-              <h1 className="text-2xl text-center w-full py-2 bg-gray-700">
-                General
-              </h1>
-              <div className="py-2 px-3">
-                <h2 className="text-xl text-center mt-4">Foto Pengantin</h2>
-                <div className="flex flex-col gap-2 justify-center my-2">
-                  {file.foto_pengantin != "" && (
-                    <div className="avatar mx-auto py-2 md:py-0">
-                      <div className="w-32 rounded-full border-4 border-white shadow-xl">
-                        <img src={file.foto_pengantin} alt="Foto Pengantin" />
-                      </div>
-                    </div>
-                  )}
-                  <div className="text-center">
-                    <input
-                      type="file"
-                      name="foto_pengantin"
-                      onChange={handleChangeFoto}
-                      className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
-                    />
-                  </div>
-                </div>
-                <h2 className="text-xl text-center mt-4">Background</h2>
-                <div className="flex flex-col gap-2 justify-center my-2">
-                  {file.background != "" && (
-                    <div className="mx-auto py-2 md:py-0">
-                      <div className="w-48 shadow-xl">
-                        <img
-                          src={file.background}
-                          alt="Background"
-                          className="rounded-lg"
-                        />
-                      </div>
-                    </div>
-                  )}
-                  <div className="text-center">
-                    <input
-                      type="file"
-                      name="background"
-                      onChange={handleChangeFoto}
-                      className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
-                    />
-                  </div>
-                </div>
-                <h2 className="text-xl text-center mt-4">Musik</h2>
-                <div className="flex flex-col gap-2 justify-center my-2">
-                  <div className="mx-auto">
-                    <audio controls>
-                      <source src="music/sound.mp3" type="audio/mpeg" />
-                    </audio>
-                  </div>
-                  <div className="text-center">
-                    <input
-                      type="file"
-                      name="background"
-                      onChange={handleChangeFoto}
-                      className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
-                    />
-                  </div>
-                </div>
-                <h2 className="text-xl text-center mt-4">Tanggal & Tempat</h2>
-                <label htmlFor="" className="form-control w-full">
-                  <div className="label pb-0">
-                    <span className="label-text">Jam Berapa?</span>
-                  </div>
-                  <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
-                    <input type="time" className="grow" placeholder="Jam" />
-                  </label>
-                </label>
-                <label htmlFor="" className="form-control w-full">
-                  <div className="label pb-0">
-                    <span className="label-text">Tanggal Berapa?</span>
-                  </div>
-                  <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
-                    <input type="date" className="grow" placeholder="Tanggal" />
-                  </label>
-                </label>
-                <label className="form-control">
-                  <div className="label pb-0">
-                    <span className="label-text">Bertempat Di Mana?</span>
-                  </div>
-                  <textarea
-                    className="textarea textarea-bordered textarea-sm md:textarea-md"
-                    placeholder="Alamat"
-                  ></textarea>
-                </label>
-                <label htmlFor="" className="form-control w-full">
-                  <div className="label pb-0">
-                    <span className="label-text">Link Google Maps</span>
-                  </div>
-                  <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
-                    <MapIcon className="h-4 w-4" />
-                    <input type="url" className="grow" placeholder="https://" />
-                  </label>
-                </label>
-                <div className="text-right my-2">
-                  <button className="btn btn-primary btn-sm md:btn-md">
-                    Save
-                  </button>
-                </div>
-              </div>
-            </div>
+            <General setShowAlert={setShowAlert} dataUser={dataUser} />
+            <Foto setShowAlert={setShowAlert} dataUser={dataUser} />
+
             <div className="w-full rounded-xl shadow-xl mb-6">
               <h1 className="text-2xl text-center w-full py-2 bg-gray-700">
                 Pengantin
