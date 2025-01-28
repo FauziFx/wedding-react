@@ -11,6 +11,9 @@ function Foto({ setShowAlert, dataUser }) {
   const fileInputImage = useRef(null);
   const fileInputBgImage = useRef(null);
   const fileInputMusic = useRef(null);
+  const [loadingImage, setLoadingImage] = useState(false);
+  const [loadingBgImage, setLoadingBgImage] = useState(false);
+  const [loadingMusic, setLoadingMusic] = useState(false);
   const { mutate } = useSWRConfig();
   const [file, setFile] = useState({
     id: "",
@@ -73,6 +76,7 @@ function Foto({ setShowAlert, dataUser }) {
   const handleSubmitImage = async (e) => {
     e.preventDefault();
     try {
+      setLoadingImage(true);
       const fileName = file.image.name;
       const formData = new FormData();
       formData.append("image_file", file.image);
@@ -81,6 +85,7 @@ function Foto({ setShowAlert, dataUser }) {
 
       const response = await api.post(API + "/general/image", formData);
       if (response.data.success) {
+        setLoadingImage(false);
         mutate("/v1/get/general/image");
         setShowAlert("Saved");
         fileInputImage.current.value = null;
@@ -97,6 +102,7 @@ function Foto({ setShowAlert, dataUser }) {
   const handleSubmitBgImage = async (e) => {
     e.preventDefault();
     try {
+      setLoadingBgImage(true);
       const fileName = file.bg_image.name;
       const formData = new FormData();
       formData.append("bg_image_file", file.bg_image);
@@ -105,6 +111,7 @@ function Foto({ setShowAlert, dataUser }) {
 
       const response = await api.post(API + "/general/bg_image", formData);
       if (response.data.success) {
+        setLoadingBgImage(false);
         mutate("/v1/get/general/image");
         setShowAlert("Saved");
         fileInputBgImage.current.value = null;
@@ -121,6 +128,7 @@ function Foto({ setShowAlert, dataUser }) {
   const handleSubmitMusic = async (e) => {
     e.preventDefault();
     try {
+      setLoadingMusic(true);
       const fileName = file.music.name;
       const formData = new FormData();
       formData.append("music_file", file.music);
@@ -129,6 +137,7 @@ function Foto({ setShowAlert, dataUser }) {
 
       const response = await api.post(API + "/general/music", formData);
       if (response.data.success) {
+        setLoadingMusic(false);
         mutate("/v1/get/general/image");
         setShowAlert("Saved");
         fileInputMusic.current.value = null;
@@ -197,8 +206,16 @@ function Foto({ setShowAlert, dataUser }) {
               className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
               required
             />
-            <button type="submit" className="btn btn-primary btn-sm md:btn-md">
-              Upload
+            <button
+              type="submit"
+              className="btn btn-primary btn-sm md:btn-md"
+              disabled={loadingImage}
+            >
+              {loadingImage ? (
+                <span className="loading loading-spinner"></span>
+              ) : (
+                "Upload"
+              )}
             </button>
           </form>
         </div>
@@ -224,8 +241,16 @@ function Foto({ setShowAlert, dataUser }) {
               className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
               required
             />
-            <button type="submit" className="btn btn-primary btn-sm md:btn-md">
-              Upload
+            <button
+              type="submit"
+              className="btn btn-primary btn-sm md:btn-md"
+              disabled={loadingBgImage}
+            >
+              {loadingBgImage ? (
+                <span className="loading loading-spinner"></span>
+              ) : (
+                "Upload"
+              )}
             </button>
           </form>
         </div>
@@ -251,8 +276,16 @@ function Foto({ setShowAlert, dataUser }) {
               className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
               required
             />
-            <button type="submit" className="btn btn-primary btn-sm md:btn-md">
-              Upload
+            <button
+              type="submit"
+              className="btn btn-primary btn-sm md:btn-md"
+              disabled={loadingMusic}
+            >
+              {loadingMusic ? (
+                <span className="loading loading-spinner"></span>
+              ) : (
+                "Upload"
+              )}
             </button>
           </form>
         </div>

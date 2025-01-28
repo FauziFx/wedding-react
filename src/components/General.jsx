@@ -14,6 +14,7 @@ dayjs.extend(timezone);
 function General({ setShowAlert, dataUser }) {
   const API = import.meta.env.VITE_API_URL;
   const { mutate } = useSWRConfig();
+  const [loading, setLoading] = useState(false);
   const [general, setGeneral] = useState({
     id: "",
     time: "",
@@ -32,6 +33,7 @@ function General({ setShowAlert, dataUser }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await api.patch(API + "/general/" + general.id, {
         time: general.time,
         date: general.date,
@@ -40,6 +42,7 @@ function General({ setShowAlert, dataUser }) {
       });
 
       if (response.data.success) {
+        setLoading(false);
         mutate("/v1/get/general");
         setShowAlert("Saved");
         const timer = setTimeout(() => {
@@ -146,8 +149,16 @@ function General({ setShowAlert, dataUser }) {
             </label>
           </label>
           <div className="text-right my-2">
-            <button type="submit" className="btn btn-primary btn-sm md:btn-md">
-              Save
+            <button
+              type="submit"
+              className="btn btn-primary btn-sm md:btn-md"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="loading loading-spinner"></span>
+              ) : (
+                "Save"
+              )}
             </button>
           </div>
         </div>
