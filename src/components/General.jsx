@@ -85,7 +85,12 @@ function General({ setShowAlert, dataUser }) {
     <div className="w-full rounded-xl shadow-xl mb-6">
       <h1 className="text-2xl text-center w-full py-2 bg-gray-700">General</h1>
       <form action="" onSubmit={handleSubmit}>
-        <div className="py-2 px-3">
+        <div
+          className={
+            "py-2 px-3 " +
+            (loading ? "opacity-50 cursor-not-allowed pointer-events-none" : "")
+          }
+        >
           <label htmlFor="" className="form-control w-full">
             <div className="label pb-0">
               <span className="label-text">Jam Berapa?</span>
