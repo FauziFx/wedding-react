@@ -23,6 +23,7 @@ import BankAccount from "../components/BankAccount";
 import General from "../components/General";
 import Foto from "../components/Foto";
 import Pengantin from "../components/Pengantin";
+import Gallery from "../components/Gallery";
 
 function Dashboard() {
   const [menu, setMenu] = useState("home");
@@ -193,56 +194,7 @@ function Dashboard() {
             <General setShowAlert={setShowAlert} dataUser={dataUser} />
             <Foto setShowAlert={setShowAlert} dataUser={dataUser} />
             <Pengantin setShowAlert={setShowAlert} dataUser={dataUser} />
-            <div className="w-full rounded-xl shadow-xl mb-6">
-              <h1 className="text-2xl text-center w-full py-2 bg-gray-700">
-                Galeri
-              </h1>
-              <div className="py-2 px-3">
-                <div className="flex gap-1 justify-center my-2">
-                  <input
-                    type="file"
-                    name="background"
-                    onChange={handleChangeFoto}
-                    className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
-                  />
-                  <button className="btn btn-primary btn-sm md:btn-md">
-                    Upload
-                  </button>
-                </div>
-                <div className="grid grid-cols-3 gap-2 mb-2">
-                  <div>
-                    <img src="images/1.jpg" alt="" className="rounded-lg" />
-                    <button className="btn btn-error btn-xs text-gray-200 w-full rounded-full my-1">
-                      <TrashIcon className="h-4 w-4" />
-                    </button>
-                  </div>
-                  <div>
-                    <img src="images/1.jpg" alt="" className="rounded-lg" />
-                    <button className="btn btn-error btn-xs text-gray-200 w-full rounded-full my-1">
-                      <TrashIcon className="h-4 w-4" />
-                    </button>
-                  </div>
-                  <div>
-                    <img src="images/1.jpg" alt="" className="rounded-lg" />
-                    <button className="btn btn-error btn-xs text-gray-200 w-full rounded-full my-1">
-                      <TrashIcon className="h-4 w-4" />
-                    </button>
-                  </div>
-                  <div>
-                    <img src="images/1.jpg" alt="" className="rounded-lg" />
-                    <button className="btn btn-error btn-xs text-gray-200 w-full rounded-full my-1">
-                      <TrashIcon className="h-4 w-4" />
-                    </button>
-                  </div>
-                  <div>
-                    <img src="images/1.jpg" alt="" className="rounded-lg" />
-                    <button className="btn btn-error btn-xs text-gray-200 w-full rounded-full my-1">
-                      <TrashIcon className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Gallery setShowAlert={setShowAlert} dataUser={dataUser} />
             <BankAccount setShowAlert={setShowAlert} dataUser={dataUser} />
           </div>
         )}
