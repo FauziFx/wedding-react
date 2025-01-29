@@ -4,6 +4,7 @@ import api from "../utils/api";
 
 function ChangePassword({ logout, setShowAlert, dataUser }) {
   const API = import.meta.env.VITE_API_URL;
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({
     id: dataUser.id,
     name: dataUser.name,
@@ -25,6 +26,7 @@ function ChangePassword({ logout, setShowAlert, dataUser }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await api.patch(`${API}/users/${user.id}`, {
         oldPassword: data.oldPassword,
         newPassword: data.newPassword,
@@ -38,6 +40,7 @@ function ChangePassword({ logout, setShowAlert, dataUser }) {
           oldPassword: "",
           newPassword: "",
         });
+        setLoading(false);
         const timer = setTimeout(() => {
           setShowAlert("");
         }, 2000);
@@ -51,7 +54,12 @@ function ChangePassword({ logout, setShowAlert, dataUser }) {
   return (
     <div className="w-full rounded-xl shadow-xl mb-6">
       <h1 className="text-2xl text-center w-full py-2 bg-gray-700">Account</h1>
-      <div className="py-2 px-3">
+      <div
+        className={
+          "py-2 px-3 " +
+          (loading ? "opacity-50 cursor-not-allowed pointer-events-none" : "")
+        }
+      >
         <table>
           <tbody>
             <tr>
@@ -97,8 +105,13 @@ function ChangePassword({ logout, setShowAlert, dataUser }) {
               <button
                 type="submit"
                 className="btn btn-primary btn-sm md:btn-md"
+                disabled={loading}
               >
-                Change Password
+                {loading ? (
+                  <span className="loading loading-spinner"></span>
+                ) : (
+                  "Change Password"
+                )}
               </button>
             </div>
           </form>
