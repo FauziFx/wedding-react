@@ -11,6 +11,7 @@ import FailedToLoad from "./FailedToLoad";
 
 function BankAccount({ setShowAlert, dataUser }) {
   const API = import.meta.env.VITE_API_URL;
+  const [loading, setLoading] = useState(false);
   const { mutate } = useSWRConfig();
   const [dataBank, setDataBank] = useState({
     name: "",
@@ -28,6 +29,7 @@ function BankAccount({ setShowAlert, dataUser }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await api.post(API + "/bankaccount", {
         name: dataBank.name,
         bank: dataBank.bank,
@@ -43,6 +45,7 @@ function BankAccount({ setShowAlert, dataUser }) {
           number: "",
           userId: dataUser.id,
         });
+        setLoading(false);
         const timer = setTimeout(() => {
           setShowAlert("");
         }, 2000);
@@ -61,10 +64,12 @@ function BankAccount({ setShowAlert, dataUser }) {
 
   const deleteBank = async (id) => {
     try {
+      setLoading(true);
       const response = await api.delete(API + "/bankaccount/" + id);
       if (response.data.success) {
         mutate("/v1/get/bankaccount");
         setShowAlert("Deleted Successfully");
+        setLoading(false);
         const timer = setTimeout(() => {
           setShowAlert("");
         }, 2000);
@@ -93,7 +98,12 @@ function BankAccount({ setShowAlert, dataUser }) {
   return (
     <div className="w-full rounded-xl shadow-xl mb-6">
       <h1 className="text-2xl text-center w-full py-2 bg-gray-700">Rekening</h1>
-      <div className="py-2 px-3">
+      <div
+        className={
+          "py-2 px-3 " +
+          (loading ? "opacity-50 cursor-not-allowed pointer-events-none" : "")
+        }
+      >
         <form action="" autoComplete="off" onSubmit={handleSubmit}>
           <div className="my-2 text-center">
             <label className="input input-bordered input-sm md:input-md flex items-center gap-2 mb-2">
@@ -144,8 +154,13 @@ function BankAccount({ setShowAlert, dataUser }) {
               <button
                 type="submit"
                 className="btn btn-primary btn-sm md:btn-md"
+                disabled={loading}
               >
-                Save
+                {loading ? (
+                  <span className="loading loading-spinner"></span>
+                ) : (
+                  "Save"
+                )}
               </button>
             </div>
           </div>
