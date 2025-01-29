@@ -29,18 +29,6 @@ function Dashboard() {
   const [menu, setMenu] = useState("home");
   const dataUser = JSON.parse(localStorage.getItem("config"));
   const [showAlert, setShowAlert] = useState("");
-  const [file, setFile] = useState({
-    foto_pengantin: "images/bg.png",
-    background: "images/1.jpg",
-    pengantin_1: "images/cowo.png",
-    pengantin_2: "images/cewe.png",
-  });
-  const handleChangeFoto = (e) => {
-    setFile((prev) => ({
-      ...prev,
-      [e.target.name]: URL.createObjectURL(e.target.files[0]),
-    }));
-  };
 
   const handleMenu = (menu) => {
     setMenu(menu);
