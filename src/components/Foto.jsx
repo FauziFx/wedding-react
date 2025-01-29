@@ -205,6 +205,7 @@ function Foto({ setShowAlert, dataUser }) {
               ref={fileInputImage}
               className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
               required
+              disabled={loadingImage}
             />
             <button
               type="submit"
@@ -240,6 +241,7 @@ function Foto({ setShowAlert, dataUser }) {
               ref={fileInputBgImage}
               className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
               required
+              disabled={loadingBgImage}
             />
             <button
               type="submit"
@@ -275,6 +277,7 @@ function Foto({ setShowAlert, dataUser }) {
               ref={fileInputMusic}
               className="file-input file-input-bordered file-input-sm md:file-input-md w-full md:w-fit mb-2"
               required
+              disabled={loadingMusic}
             />
             <button
               type="submit"
