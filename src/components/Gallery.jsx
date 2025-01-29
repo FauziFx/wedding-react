@@ -5,6 +5,7 @@ import { useSWRConfig } from "swr";
 import useSWRImmutable from "swr/immutable";
 import FailedToLoad from "./FailedToLoad";
 import LoadingSekeleton from "./LoadingSekeleton";
+import { v4 as uuidv4 } from "uuid";
 
 function Gallery({ setShowAlert, dataUser }) {
   const API = import.meta.env.VITE_API_URL;
@@ -18,7 +19,13 @@ function Gallery({ setShowAlert, dataUser }) {
     if (e.target.files.length != 0) {
       const max = 6 - images.length;
       if (e.target.files.length <= max) {
-        setFiles(e.target.files);
+        const selectedFiles = Array.from(e.target.files);
+        const renamedFiles = selectedFiles.map((file, index) => {
+          const newName =
+            uuidv4() + file.name.substring(file.name.lastIndexOf("."));
+          return new File([file], newName, { type: file.type });
+        });
+        setFiles(renamedFiles);
       } else {
         alert(`Maksimal 6 Foto, ${max} foto lagi`);
         // Reset value
@@ -53,6 +60,7 @@ function Gallery({ setShowAlert, dataUser }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setLoading(true);
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
