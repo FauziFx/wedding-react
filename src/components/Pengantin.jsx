@@ -1,5 +1,5 @@
 import { UserIcon } from "@heroicons/react/24/solid";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import api from "../utils/api";
 import { useSWRConfig } from "swr";
@@ -7,7 +7,7 @@ import useSWRImmutable from "swr/immutable";
 import FailedToLoad from "./FailedToLoad";
 import LoadingSekeleton from "./LoadingSekeleton";
 
-function Pengantin({ setShowAlert, dataUser }) {
+function Pengantin({ setShowAlert, dataUser, menu }) {
   const API = import.meta.env.VITE_API_URL;
   const { mutate } = useSWRConfig();
   const fileInput1 = useRef(null);
@@ -191,6 +191,12 @@ function Pengantin({ setShowAlert, dataUser }) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (menu == "setting") {
+      mutate("/v1/get/person");
+    }
+  }, [menu]);
 
   const { data, error, isLoading } = useSWRImmutable("/v1/get/person", fetcher);
   if (error) return <FailedToLoad />;

@@ -1,5 +1,5 @@
 import { MapIcon } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../utils/api";
 import useSWR, { useSWRConfig } from "swr";
 import FailedToLoad from "./FailedToLoad";
@@ -11,7 +11,7 @@ import timezone from "dayjs/plugin/timezone";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-function General({ setShowAlert, dataUser }) {
+function General({ setShowAlert, dataUser, menu }) {
   const API = import.meta.env.VITE_API_URL;
   const { mutate } = useSWRConfig();
   const [loading, setLoading] = useState(false);
@@ -75,6 +75,12 @@ function General({ setShowAlert, dataUser }) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (menu == "setting") {
+      mutate("/v1/get/general");
+    }
+  }, [menu]);
 
   const { data, error, isLoading } = useSWRImmutable(
     "/v1/get/general",

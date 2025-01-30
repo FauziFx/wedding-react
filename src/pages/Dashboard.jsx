@@ -179,10 +179,22 @@ function Dashboard() {
               setShowAlert={setShowAlert}
               dataUser={dataUser}
             />
-            <General setShowAlert={setShowAlert} dataUser={dataUser} />
-            <Foto setShowAlert={setShowAlert} dataUser={dataUser} />
-            <Pengantin setShowAlert={setShowAlert} dataUser={dataUser} />
-            <Gallery setShowAlert={setShowAlert} dataUser={dataUser} />
+            <General
+              setShowAlert={setShowAlert}
+              dataUser={dataUser}
+              menu={menu}
+            />
+            <Foto setShowAlert={setShowAlert} dataUser={dataUser} menu={menu} />
+            <Pengantin
+              setShowAlert={setShowAlert}
+              dataUser={dataUser}
+              menu={menu}
+            />
+            <Gallery
+              setShowAlert={setShowAlert}
+              dataUser={dataUser}
+              menu={menu}
+            />
             <BankAccount setShowAlert={setShowAlert} dataUser={dataUser} />
           </div>
         )}

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import FailedToLoad from "./FailedToLoad";
 import LoadingSekeleton from "./LoadingSekeleton";
@@ -6,7 +6,7 @@ import useSWRImmutable from "swr/immutable";
 import api from "../utils/api";
 import { useSWRConfig } from "swr";
 
-function Foto({ setShowAlert, dataUser }) {
+function Foto({ setShowAlert, dataUser, menu }) {
   const API = import.meta.env.VITE_API_URL;
   const fileInputImage = useRef(null);
   const fileInputBgImage = useRef(null);
@@ -173,6 +173,12 @@ function Foto({ setShowAlert, dataUser }) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (menu == "setting") {
+      mutate("/v1/get/general/image");
+    }
+  }, [menu]);
 
   const { data, error, isLoading } = useSWRImmutable(
     "/v1/get/general/image",

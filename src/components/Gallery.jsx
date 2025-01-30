@@ -1,5 +1,5 @@
 import { ExclamationCircleIcon, TrashIcon } from "@heroicons/react/24/outline";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import api from "../utils/api";
 import { useSWRConfig } from "swr";
 import useSWRImmutable from "swr/immutable";
@@ -7,7 +7,7 @@ import FailedToLoad from "./FailedToLoad";
 import LoadingSekeleton from "./LoadingSekeleton";
 import { v4 as uuidv4 } from "uuid";
 
-function Gallery({ setShowAlert, dataUser }) {
+function Gallery({ setShowAlert, dataUser, menu }) {
   const API = import.meta.env.VITE_API_URL;
   const inputFile = useRef(null);
   const [loading, setLoading] = useState(false);
@@ -99,6 +99,12 @@ function Gallery({ setShowAlert, dataUser }) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (menu == "setting") {
+      mutate("/v1/get/gallery");
+    }
+  }, [menu]);
 
   const { data, error, isLoading } = useSWRImmutable(
     "/v1/get/gallery",
