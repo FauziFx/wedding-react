@@ -59,12 +59,14 @@ function General({ setShowAlert, dataUser }) {
     try {
       const response = await api.get(API + "/general/" + dataUser.id);
       const data = response.data.data;
-
+      const date = data.date
+        ? dayjs(data.date).tz("Asia/Jakarta").format("YYYY-MM-DD")
+        : "";
       setGeneral((prevState) => ({
         ...prevState,
         id: data.id,
         time: data.time || "",
-        date: dayjs(data.date).tz("Asia/Jakarta").format("YYYY-MM-DD") || "",
+        date: date,
         address: data.address || "",
         maps: data.maps || "",
       }));
