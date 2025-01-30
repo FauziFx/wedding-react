@@ -104,7 +104,7 @@ function Home() {
         <Confetti
           style={{ zIndex: 9999, position: "fixed", top: 0, left: 0 }}
           numberOfPieces={150}
-          opacity={0.3}
+          opacity={0.5}
           gravity={0.06}
           drawShape={(ctx) => {
             ctx.beginPath();
@@ -116,7 +116,7 @@ function Home() {
             ctx.fill();
           }}
           height={window.innerHeight}
-          colors={["#4C0606", "#86003C", "#E41F7B"]}
+          colors={["#4C0606", "#86003C", "#E41F7B", "#FF8BA0", "#FFB6B3"]}
         />
       )}
 
@@ -335,7 +335,7 @@ function Home() {
                 <div
                   data-aos="fade-up"
                   className={
-                    "w-11/12 md:w-4/5 rounded-xl shadow-2xl my-4 p-4 " +
+                    "w-11/12 md:w-4/5 rounded-lg shadow-2xl my-4 p-4 " +
                     (theme == "dark" ? "bg-gray-700" : "bg-white")
                   }
                 >
@@ -348,7 +348,7 @@ function Home() {
                 <div
                   data-aos="fade-up"
                   className={
-                    "w-11/12 md:w-4/5 rounded-xl shadow-2xl my-4 p-4 " +
+                    "w-11/12 md:w-4/5 rounded-lg shadow-2xl my-4 p-4 " +
                     (theme == "dark" ? "bg-gray-700" : "bg-white")
                   }
                 >
