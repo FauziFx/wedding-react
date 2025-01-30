@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { PaperAirplaneIcon, UserIcon } from "@heroicons/react/24/solid";
+import {
+  ArrowUpRightIcon,
+  PaperAirplaneIcon,
+  UserIcon,
+} from "@heroicons/react/24/solid";
 import api from "../utils/api";
 import LoadingSekeleton from "./LoadingSekeleton";
 import FailedToLoad from "./FailedToLoad";
@@ -146,8 +150,15 @@ Terima Kasih.`;
   if (isLoading) return <LoadingSekeleton />;
   return (
     <div className="col-span-3 px-4 pt-2">
-      <div className="w-full rounded-xl bg-white text-gray-900 py-2 px-3 mb-6">
-        Guest Book
+      <div className="flex justify-between items-center w-full rounded-xl bg-white text-gray-900 py-1 px-3 mb-6">
+        <p>Guest Book</p>
+        <a
+          href="/"
+          target="_blank"
+          className="btn btn-primary pt-1 btn-sm text-[#1d232a] rounded-badge"
+        >
+          Visit Web <ArrowUpRightIcon className="h-4 w-4 mb-1 inline" />
+        </a>
       </div>
       <form action="" autoComplete="off" onSubmit={handleSubmit}>
         <div className="md:flex gap-2 mb-2">

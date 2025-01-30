@@ -100,8 +100,15 @@ function Dashboard() {
         {/* Content */}
         {menu == "home" && (
           <div className="col-span-3 px-4 pt-2">
-            <div className="w-full rounded-xl bg-white text-gray-900 py-2 px-3 mb-6">
-              Home
+            <div className="flex justify-between items-center w-full rounded-xl bg-white text-gray-900 py-1 px-3 mb-6">
+              <p>Home</p>
+              <a
+                href="/"
+                target="_blank"
+                className="btn btn-primary pt-1 btn-sm text-[#1d232a] rounded-badge"
+              >
+                Visit Web <ArrowUpRightIcon className="h-4 w-4 mb-1 inline" />
+              </a>
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 text-white mb-6">
               <div className="bg-gradient-to-r from-cyan-500 to-blue-400 rounded-xl px-4 py-6">
@@ -168,7 +175,7 @@ function Dashboard() {
               <a
                 href="/"
                 target="_blank"
-                className="btn btn-info btn-sm text-[#1d232a] rounded-badge"
+                className="btn btn-primary pt-1 btn-sm text-[#1d232a] rounded-badge"
               >
                 Visit Web <ArrowUpRightIcon className="h-4 w-4 mb-1 inline" />
               </a>
