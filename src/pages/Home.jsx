@@ -124,11 +124,16 @@ function Home() {
         {/* Opening */}
         <div
           className={
-            "hero min-h-full h-screen pt-[15%] md:pt-[5%] " +
+            "hero min-h-full h-screen pt-[8%] md:pt-[5%] " +
             (open == true && "hidden ") +
             (theme == "dark" ? "bg-[#0b0f14]" : "bg-white")
           }
         >
+          <img
+            src={"/images/" + (theme == "dark" ? "decor-w.png" : "decor-b.png")}
+            alt=""
+            className="absolute top-10 left-1/2 transform -translate-x-1/2 opacity-80 rotate-180 w-[75%] md:w-[30%]"
+          />
           <div className="hero-content text-center">
             <div
               className={
@@ -141,10 +146,19 @@ function Home() {
               >
                 The Wedding Of
               </h2>
-              <div className="avatar mb-6">
+              <div className="avatar mb-1">
                 <div className="w-56 rounded-full border-4 border-white shadow-2xl">
                   <img src="/images/bg.png" />
                 </div>
+              </div>
+              <div className="bottom-0 left-0 opacity-65 px-4 mb-2">
+                <img
+                  src={
+                    "/images/" +
+                    (theme == "dark" ? "decor-w.png" : "decor-b.png")
+                  }
+                  alt=""
+                />
               </div>
               <h2
                 className="text-4xl font-esthetic mb-6 font-medium"
@@ -160,7 +174,7 @@ function Home() {
               )}
 
               <button
-                className="btn shadow-xl rounded-full"
+                className="btn shadow-xl rounded-full btn-outline"
                 onClick={() => setOpen(!open)}
               >
                 <svg
