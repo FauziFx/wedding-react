@@ -20,13 +20,23 @@ import {
   PlayCircleIcon,
 } from "@heroicons/react/24/solid";
 import Confetti from "react-confetti";
-// import Carousel from "./widgets/Carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import api from "../utils/api";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import useSWR from "swr";
+import FailedToLoad from "../components/FailedToLoad";
+import LoadingSekeleton from "../components/LoadingSekeleton";
+import "dayjs/locale/id";
+dayjs.locale("id");
+import Countdown from "react-countdown";
 
 function Home() {
+  const API = import.meta.env.VITE_API_URL;
   const search = window.location.search;
   const params = new URLSearchParams(search);
   const [guest, setGuest] = useState(params.get("to"));
@@ -80,11 +90,7 @@ function Home() {
   const copyContent = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
-      setSalin(true);
-      const timer = setTimeout(() => {
-        setSalin(false);
-      }, 3000);
-      return () => clearTimeout(timer);
+      alert("Rekening tersalin");
     } catch (err) {
       console.error("Failed to copy: ", err);
     }
@@ -97,9 +103,77 @@ function Home() {
     // add custom data-theme attribute to html tag required to update theme using DaisyUI
     document.querySelector("html").setAttribute("data-theme", localTheme);
   }, [theme]);
+
+  const fetcher = async () => {
+    try {
+      const generalRes = await api.get(API + "/general");
+      const pengantinRes = await api.get(API + "/person");
+      const galleryRes = await api.get(API + "/gallery");
+      const bankRes = await api.get(API + "/bankaccount");
+
+      const [general] = generalRes.data.data;
+      const pengantin = pengantinRes.data.data;
+      const gallery = galleryRes.data.data;
+      const bank = bankRes.data.data;
+
+      const pengantin1 = pengantin.find((e) => e.pos == 1); //Pos 1
+      const pengantin2 = pengantin.find((e) => e.pos == 2); //Pos 2
+
+      const data = {
+        general: general,
+        pengantin1: pengantin1,
+        pengantin2: pengantin2,
+        gallery: gallery,
+        bank: bank,
+      };
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const renderer = ({ days, hours, minutes, seconds, completed }) => {
+    if (completed) {
+      // Render a completed state
+      return (
+        <h1 className="text-xl md:text-3xl py-4 text-center col-span-4">
+          Hari yang Dinanti Telah Tiba!
+        </h1>
+      );
+    } else {
+      // Render a countdown
+      return (
+        <>
+          <div className="py-4 inline">
+            <h2 className="text-xl md:text-3xl inline">{days}</h2>
+            <span className="text-xs inline"> Hari</span>
+          </div>
+          <div className="py-4 inline">
+            <h2 className="text-xl md:text-3xl inline">{hours}</h2>
+            <span className="text-xs inline"> Jam</span>
+          </div>
+          <div className="py-4 inline">
+            <h2 className="text-xl md:text-3xl inline">{minutes}</h2>
+            <span className="text-xs inline"> Menit</span>
+          </div>
+          <div className="py-4 inline">
+            <h2 className="text-xl md:text-3xl inline">{seconds}</h2>
+            <span className="text-xs inline"> Detik</span>
+          </div>
+        </>
+      );
+    }
+  };
+
+  const { data, error, isLoading } = useSWR("/v1/get/home", fetcher);
+
+  if (error) return <FailedToLoad />;
+  if (isLoading) return <LoadingSekeleton />;
+
   return (
     <>
-      <audio id="audio_tag" src="music/sound.mp3" />
+      <audio id="audio_tag" src={API + "/music/" + data.general.music} />
       {showConvetti && (
         <Confetti
           style={{ zIndex: 9999, position: "fixed", top: 0, left: 0 }}
@@ -124,7 +198,7 @@ function Home() {
         {/* Opening */}
         <div
           className={
-            "hero min-h-full h-screen pt-[8%] md:pt-[5%] " +
+            "hero min-h-full h-screen pt-[15%] md:pt-[5%] " +
             (open == true && "hidden ") +
             (theme == "dark" ? "bg-[#0b0f14]" : "bg-white")
           }
@@ -132,7 +206,7 @@ function Home() {
           <img
             src={"/images/" + (theme == "dark" ? "decor-w.png" : "decor-b.png")}
             alt=""
-            className="absolute top-10 left-1/2 transform -translate-x-1/2 opacity-80 rotate-180 w-[75%] md:w-[30%]"
+            className="absolute top-2 md:top-10 left-1/2 transform -translate-x-1/2 rotate-180 w-[75%] md:w-[30%]"
           />
           <div className="hero-content text-center">
             <div
@@ -141,17 +215,17 @@ function Home() {
               }
             >
               <h2
-                className="text-4xl font-esthetic mb-6 font-medium"
+                className="text-4xl font-esthetic mb-2 font-medium"
                 style={{ fontSize: "40px" }}
               >
                 The Wedding Of
               </h2>
-              <div className="avatar mb-1">
+              <div className="avatar mb-1 z-50">
                 <div className="w-56 rounded-full border-4 border-white shadow-2xl">
-                  <img src="/images/bg.png" />
+                  <img src={API + "/images/" + data.general.image} />
                 </div>
               </div>
-              <div className="bottom-0 left-0 opacity-65 px-4 mb-2">
+              <div className="bottom-0 left-0 px-4 mb-2 -mt-7">
                 <img
                   src={
                     "/images/" +
@@ -164,12 +238,16 @@ function Home() {
                 className="text-4xl font-esthetic mb-6 font-medium"
                 style={{ fontSize: "40px" }}
               >
-                John & Jane
+                {data.pengantin1.name}
+                <p className="text-6xl md:inline px-4">&</p>
+                {data.pengantin2.name}
               </h2>
               {guest && (
                 <>
                   <p>Kepada Yth Bapak/Ibu/Saudara/i</p>
-                  <h2 className="text-3xl mb-6 font-medium">{guest}</h2>
+                  <h2 className="text-2xl md:text-3xl mb-2 font-medium">
+                    {guest}
+                  </h2>
                 </>
               )}
 
@@ -202,7 +280,9 @@ function Home() {
             id="home"
             className="relative w-full h-auto md:h-[85vh] bg-cover bg-center"
             style={{
-              backgroundImage: "url('/images/bg.png')",
+              backgroundImage: `url('${
+                API + "/images/" + data.general.bg_image
+              }')`,
             }}
           >
             <div
@@ -228,17 +308,30 @@ function Home() {
                 </h2>
                 <div className="avatar my-6">
                   <div className="w-56 rounded-full border-4 border-white shadow-xl">
-                    <img src="/images/bg.png" />
+                    <img src={API + "/images/" + data.general.image} />
                   </div>
                 </div>
+                <div className="bottom-0 left-0 px-4 mb-2 -mt-12">
+                  <img
+                    src={
+                      "/images/" +
+                      (theme == "dark" ? "decor-w.png" : "decor-b.png")
+                    }
+                    alt=""
+                  />
+                </div>
                 <h2
-                  className="text-4xl font-esthetic my-6 font-medium"
+                  className="text-4xl font-esthetic my-2 md:my-6 font-medium"
                   style={{ fontSize: "40px" }}
                 >
-                  John & Jane
+                  {data.pengantin1.name}
+                  <p className="px-4 md:inline">&</p>
+                  {data.pengantin2.name}
                 </h2>
-                <h2 className="text-2xl mb-6 font-medium">
-                  Rabu, 31 Desember 2025
+                <h2 className="text-2xl my-6 font-medium">
+                  {dayjs(data.general.date)
+                    .tz("Asia/Jakarta")
+                    .format("dddd, DD MMMM YYYY")}
                 </h2>
                 <p className="py-2">Scroll Down</p>
                 <div className="flex justify-center">
@@ -296,30 +389,46 @@ function Home() {
               <h2 className="text-3xl font-esthetic py-4">
                 Assalamualaikum Warahmatullahi Wabarakatuh
               </h2>
-              <p className="py-4">
+              <p className="py-4 px-2">
                 Tanpa mengurangi rasa hormat, kami mengundang Anda untuk
                 berkenan menghadiri acara pernikahan kami:
               </p>
               <div data-aos="fade-right" className="avatar my-5">
                 <div className="w-56 rounded-full border-4 border-white shadow-xl">
-                  <img src="/images/cowo.png" />
+                  <img src={API + "/images/" + data.pengantin1.image} />
                 </div>
               </div>
               <div data-aos="fade-down">
-                <h2 className="text-4xl font-esthetic py-2">John Doe</h2>
-                <p className="pt-4 text-lg">Putra ke 1</p>
-                <p className="pb-4">Bapak Hans Muster dan Ibu Ivanov</p>
+                <h2 className="text-4xl font-esthetic py-2 capitalize">
+                  {data.pengantin1.name}
+                </h2>
+                <p className="pt-4 text-lg">
+                  Putra ke {data.pengantin1.child_number}
+                </p>
+                <p className="pb-4 capitalize">
+                  Bapak {data.pengantin1.father}
+                  <span className="lowercase"> dan </span>
+                  Ibu {data.pengantin1.mother}
+                </p>
               </div>
               <h2 className="text-6xl font-esthetic py-5">&</h2>
               <div data-aos="fade-left" className="avatar my-5">
                 <div className="w-56 rounded-full border-4 border-white shadow-xl">
-                  <img src="/images/cewe.png" />
+                  <img src={API + "/images/" + data.pengantin2.image} />
                 </div>
               </div>
               <div data-aos="fade-down">
-                <h2 className="text-4xl font-esthetic py-2">Jane Doe</h2>
-                <p className="pt-4 text-lg">Putri ke 2</p>
-                <p className="pb-4">Bapak Jan Kowalski dan Ibu Maria Inessa</p>
+                <h2 className="text-4xl font-esthetic py-2 capitalize">
+                  {data.pengantin2.name}
+                </h2>
+                <p className="pt-4 text-lg">
+                  Putra ke {data.pengantin2.child_number}
+                </p>
+                <p className="pb-4 capitalize">
+                  Bapak {data.pengantin2.father}
+                  <span className="lowercase"> dan </span>
+                  Ibu {data.pengantin2.mother}
+                </p>
               </div>
             </div>
           </section>
@@ -342,7 +451,7 @@ function Home() {
                 (theme == "dark" ? "text-white" : "text-gray-900")
               }
             >
-              <h2 className="text-3xl font-esthetic py-4">
+              <h2 className="text-3xl font-esthetic py-4 px-2">
                 Allah Subhanahu Wa Ta&apos;ala berfirman
               </h2>
               <div className="flex flex-col justify-center items-center">
@@ -415,22 +524,17 @@ function Home() {
                 (theme == "dark" ? "text-white" : "text-gray-900")
               }
             >
-              <div className="py-4 inline">
-                <h2 className="text-xl md:text-3xl inline">365</h2>
-                <span className="text-xs inline"> Hari</span>
-              </div>
-              <div className="py-4 inline">
-                <h2 className="text-xl md:text-3xl inline">16</h2>
-                <span className="text-xs inline"> Jam</span>
-              </div>
-              <div className="py-4 inline">
-                <h2 className="text-xl md:text-3xl inline">8</h2>
-                <span className="text-xs inline"> Menit</span>
-              </div>
-              <div className="py-4 inline">
-                <h2 className="text-xl md:text-3xl inline">55</h2>
-                <span className="text-xs inline"> Detik</span>
-              </div>
+              {/* Countdown */}
+              <Countdown
+                date={
+                  dayjs(data.general.date)
+                    .tz("Asia/Jakarta")
+                    .format("YYYY-MM-DD") +
+                  "T" +
+                  data.general.time
+                }
+                renderer={renderer}
+              />
             </div>
             <div
               className={
@@ -446,20 +550,30 @@ function Home() {
                 Akad & Resepsi
               </h2>
               <div data-aos="fade-left">
-                <p className="py-2 text-xl">Rabu</p>
-                <p className="text-2xl">31 Desember 2025</p>
+                <p className="py-2 text-xl">
+                  {dayjs(data.general.date).tz("Asia/Jakarta").format("dddd")}
+                </p>
+                <p className="text-xl">
+                  {dayjs(data.general.date)
+                    .tz("Asia/Jakarta")
+                    .format("DD MMMM YYYY")}
+                </p>
               </div>
               <div data-aos="fade-right">
                 <p className="py-2 text-xl">Pukul</p>
-                <p className="text-2xl pb-4">08.00 WIB - Selesai</p>
+                <p className="text-xl pb-4">
+                  {data.general.time.substring(0, 5)} WIB - Selesai
+                </p>
               </div>
               <div data-aos="fade-down">
                 <h2 className="text-3xl font-esthetic py-4">Bertempat Di</h2>
-                <p>
-                  11 Jalan Bunga Melati 16A Taman Seraya Cheras, Kuala Lumpur
-                </p>
+                <p className="capitalize">{data.general.address}</p>
 
-                <button className="btn btn-outline btn-sm rounded-full shadow-xl my-4">
+                <a
+                  href={data.general.maps}
+                  target="_blank"
+                  className="btn btn-outline btn-sm rounded-full shadow-xl my-4 text-white"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -473,9 +587,9 @@ function Home() {
                     />
                   </svg>
                   Lihat Google Maps
-                </button>
+                </a>
               </div>
-              <p className="p-4">
+              <p className="py-4 px-2">
                 Merupakan suatu kebahagiaan dan kehormatan bagi kami, <br />
                 apabila Bapak/Ibu/Saudara/i, berkenan hadir untuk memberikan doa
                 restu kepada putra-putri kami.
@@ -505,15 +619,14 @@ function Home() {
               </div>
               <div data-aos="fade-up">
                 <Carousel>
-                  <div>
-                    <img src="images/1.jpg" className="rounded-xl" />
-                  </div>
-                  <div>
-                    <img src="images/2.jpg" className="rounded-xl" />
-                  </div>
-                  <div>
-                    <img src="images/3.jpg" className="rounded-xl" />
-                  </div>
+                  {data.gallery.map(({ image }, key) => (
+                    <div key={key}>
+                      <img
+                        src={API + "/images/" + image}
+                        className="rounded-xl"
+                      />
+                    </div>
+                  ))}
                 </Carousel>
               </div>
               <br />
@@ -546,51 +659,52 @@ function Home() {
                 kepada kami, dapat melalui:
               </p>
             </div>
-            <div
-              data-aos="fade-up"
-              className={
-                "w-auto h-auto md:w-96 md:h-56 rounded-xl shadow-xl p-6 relative mx-2 " +
-                (theme == "dark"
-                  ? "text-white bg-gray-700"
-                  : "text-gray-900 bg-white")
-              }
-            >
-              <div className="text-sm">Bank HSBC</div>
-              <div className="mt-4 md:mt-8 text-lg md:text-2xl tracking-widest font-semibold">
-                1234 5678 9012 3456
-              </div>
-              <div className="mt-2 md:mt-4 flex justify-between items-center">
-                <div>
-                  <div className="text-xs">Card Holder</div>
-                  <div className="text-sm font-medium">John Doe</div>
+            {data.bank.map((item, key) => (
+              <div
+                key={key}
+                data-aos="fade-up"
+                className={
+                  "w-[75%] h-auto md:w-96 md:h-56 rounded-xl shadow-xl p-6 relative mx-2 mb-4 " +
+                  (theme == "dark"
+                    ? "text-white bg-gray-700"
+                    : "text-gray-900 bg-white")
+                }
+              >
+                <div className="text-sm">
+                  Bank <span className="capitalize">{item.bank}</span>
                 </div>
-                <div>
-                  <div className="text-xs">
-                    <button
-                      className="btn btn-outline btn-xs"
-                      onClick={() => copyContent("123456789")}
-                    >
-                      {salin ? (
-                        "Tersalin"
-                      ) : (
-                        <>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            className="h3 w-3"
-                          >
-                            <path d="M7.5 3.375c0-1.036.84-1.875 1.875-1.875h.375a3.75 3.75 0 0 1 3.75 3.75v1.875C13.5 8.161 14.34 9 15.375 9h1.875A3.75 3.75 0 0 1 21 12.75v3.375C21 17.16 20.16 18 19.125 18h-9.75A1.875 1.875 0 0 1 7.5 16.125V3.375Z" />
-                            <path d="M15 5.25a5.23 5.23 0 0 0-1.279-3.434 9.768 9.768 0 0 1 6.963 6.963A5.23 5.23 0 0 0 17.25 7.5h-1.875A.375.375 0 0 1 15 7.125V5.25ZM4.875 6H6v10.125A3.375 3.375 0 0 0 9.375 19.5H16.5v1.125c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V7.875C3 6.839 3.84 6 4.875 6Z" />
-                          </svg>
-                          Salin
-                        </>
-                      )}
-                    </button>
+                <div className="mt-4 md:mt-8 text-lg md:text-2xl tracking-widest font-semibold">
+                  {item.number}
+                </div>
+                <div className="mt-2 md:mt-4 flex justify-between items-center">
+                  <div>
+                    <div className="text-xs">Card Holder</div>
+                    <div className="text-sm font-medium capitalize">
+                      {item.name}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-xs">
+                      <button
+                        className="btn btn-outline btn-xs"
+                        onClick={() => copyContent(item.number)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="h3 w-3"
+                        >
+                          <path d="M7.5 3.375c0-1.036.84-1.875 1.875-1.875h.375a3.75 3.75 0 0 1 3.75 3.75v1.875C13.5 8.161 14.34 9 15.375 9h1.875A3.75 3.75 0 0 1 21 12.75v3.375C21 17.16 20.16 18 19.125 18h-9.75A1.875 1.875 0 0 1 7.5 16.125V3.375Z" />
+                          <path d="M15 5.25a5.23 5.23 0 0 0-1.279-3.434 9.768 9.768 0 0 1 6.963 6.963A5.23 5.23 0 0 0 17.25 7.5h-1.875A.375.375 0 0 1 15 7.125V5.25ZM4.875 6H6v10.125A3.375 3.375 0 0 0 9.375 19.5H16.5v1.125c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V7.875C3 6.839 3.84 6 4.875 6Z" />
+                        </svg>
+                        Salin
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ))}
           </section>
           {/* Section 7 Comment */}
           <section
