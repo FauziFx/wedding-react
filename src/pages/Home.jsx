@@ -7,13 +7,6 @@ import {
   CalendarDaysIcon,
   PhotoIcon,
   ChatBubbleLeftRightIcon,
-  UserIcon,
-  CheckCircleIcon,
-  PaperAirplaneIcon,
-  XCircleIcon,
-  QuestionMarkCircleIcon,
-  ChevronDoubleLeftIcon,
-  ChevronDoubleRightIcon,
   PauseCircleIcon,
   HeartIcon,
   MusicalNoteIcon,
@@ -50,6 +43,8 @@ function Home() {
   const [showConvetti, setShowConvetti] = useState(false);
   const audio = document.getElementById("audio_tag");
   const [play, setPlay] = useState(false);
+  const [loadingComment, setLoadingComment] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
   const dataUser = {
     uuid: uuidv4(),
     name: "",
@@ -67,6 +62,7 @@ function Home() {
 
   const handleSubmitComment = async (comment) => {
     try {
+      setLoadingComment(true);
       const response = await api.post(API + "/comment", {
         uuid: user.uuid,
         name: comment.name,
@@ -85,6 +81,7 @@ function Home() {
         localStorage.setItem("user", JSON.stringify(LS));
         setUser(LS);
         scrollIntoView(daftarKomentar);
+        setLoadingComment(false);
       }
     } catch (error) {
       console.log(error);
@@ -116,15 +113,25 @@ function Home() {
   };
 
   const handleEdit = async (id, text) => {
-    await api.patch(API + "/comment/" + id, {
-      text: text,
-    });
-    mutate("/v1/get/comment");
+    try {
+      await api.patch(API + "/comment/" + id, {
+        text: text,
+      });
+      mutate("/v1/get/comment");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleDelete = async (id) => {
-    await api.delete(API + "/comment/" + id);
-    mutate("/v1/get/comment");
+    try {
+      setLoadingDelete(true);
+      await api.delete(API + "/comment/" + id);
+      mutate("/v1/get/comment");
+      setLoadingDelete(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // useRef Section
@@ -710,7 +717,11 @@ function Home() {
                   <h1 className="font-esthetic text-4xl md:text-5xl py-4">
                     Ucapan & Doa
                   </h1>
-                  <CommentForm onSubmit={handleSubmitComment} name={guest} />
+                  <CommentForm
+                    onSubmit={handleSubmitComment}
+                    name={guest}
+                    isLoading={loadingComment}
+                  />
                 </div>
                 {/* Pagination */}
                 {/* <div className="join rounded-xl my-4">
@@ -742,6 +753,7 @@ function Home() {
               onDelete={handleDelete}
               currentUserId={user.uuid}
               theme={theme}
+              loadingDelete={loadingDelete}
             />
           </section>
 

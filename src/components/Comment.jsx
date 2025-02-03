@@ -12,7 +12,15 @@ import "dayjs/locale/id"; // Opsional: Gunakan locale Indonesia
 dayjs.extend(relativeTime);
 dayjs.locale("id"); // Set locale ke Indonesia
 
-function Comment({ comment, onReply, onEdit, onDelete, currentUserId, theme }) {
+function Comment({
+  comment,
+  onReply,
+  onEdit,
+  onDelete,
+  currentUserId,
+  theme,
+  loadingDelete,
+}) {
   const [isReplying, setIsReplying] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(comment.text);
@@ -40,21 +48,16 @@ function Comment({ comment, onReply, onEdit, onDelete, currentUserId, theme }) {
 
   return (
     <div
-      style={
-        {
-          // marginLeft: comment.parentId ? "20px" : "0",
-          // borderLeft: comment.parentId ? "2px solid #ccc" : "none",
-        }
-      }
       className={
-        "text-left my-2 p-4 " +
+        "text-left my-2 " +
         (theme == "dark" ? "bg-gray-700" : "bg-white") +
         (comment.parentId
-          ? " ml-2 border-l"
-          : " rounded-2xl shadow-2xl w-11/12 md:w-4/5")
+          ? " pt-4 pl-4 pb-4 pr-0 ml-2 border-l"
+          : " p-4 rounded-2xl shadow-2xl w-11/12 md:w-4/5")
       }
     >
       {isEditing ? (
+        // Edit Comment
         <div>
           <div
             className={
@@ -98,6 +101,7 @@ function Comment({ comment, onReply, onEdit, onDelete, currentUserId, theme }) {
           </div>
         </div>
       ) : (
+        // Text Comment
         <div>
           <div
             className={
@@ -125,34 +129,44 @@ function Comment({ comment, onReply, onEdit, onDelete, currentUserId, theme }) {
           >
             {comment.text}
           </p>
-          <button
-            className="btn btn-xs btn-outline rounded-badge"
-            onClick={() => setIsReplying(!isReplying)}
-            disabled={isReplying === true}
-          >
-            Reply
-          </button>
-          {isOwner && (
-            <>
-              <button
-                className="btn btn-xs btn-outline rounded-badge mx-1"
-                onClick={() => setIsEditing(true)}
-                disabled={isReplying === true}
-              >
-                Edit
-              </button>
-              <button
-                className="btn btn-xs btn-outline rounded-badge"
-                onClick={() => handleDelete(comment.id)}
-                disabled={isReplying === true}
-              >
-                Delete
-              </button>
-            </>
-          )}
+          <div className="flex">
+            <button
+              className="btn btn-xs btn-outline rounded-badge"
+              onClick={() => setIsReplying(!isReplying)}
+              disabled={isReplying === true || loadingDelete}
+            >
+              Reply
+            </button>
+            {isOwner && (
+              <>
+                <button
+                  className="btn btn-xs btn-outline rounded-badge mx-1"
+                  onClick={() => setIsEditing(true)}
+                  disabled={isReplying === true || loadingDelete}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-xs btn-outline rounded-badge"
+                  onClick={() => handleDelete(comment.id)}
+                  disabled={isReplying === true || loadingDelete}
+                >
+                  {loadingDelete ? (
+                    <>
+                      <span className="loading loading-dots loading-xs inline"></span>
+                      Loading
+                    </>
+                  ) : (
+                    <>Delete</>
+                  )}
+                </button>
+              </>
+            )}
+          </div>
         </div>
       )}
 
+      {/* Reply Comment */}
       {isReplying && (
         <div className="py-2">
           <textarea
@@ -189,6 +203,7 @@ function Comment({ comment, onReply, onEdit, onDelete, currentUserId, theme }) {
             onDelete={onDelete}
             currentUserId={currentUserId}
             theme={theme}
+            loadingDelete={loadingDelete}
           />
         ))}
     </div>

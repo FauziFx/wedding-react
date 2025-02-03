@@ -8,6 +8,7 @@ function CommentList({
   onDelete,
   currentUserId,
   theme,
+  loadingDelete,
 }) {
   return (
     <>
@@ -20,6 +21,7 @@ function CommentList({
           onDelete={onDelete}
           currentUserId={currentUserId}
           theme={theme}
+          loadingDelete={loadingDelete}
         />
       ))}
     </>

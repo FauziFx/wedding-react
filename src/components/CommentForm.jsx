@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
 
-function CommentForm({ onSubmit, name }) {
+function CommentForm({ onSubmit, name, isLoading }) {
   const [comment, setComment] = useState({
     name: "",
     presence: "",
@@ -97,9 +97,19 @@ function CommentForm({ onSubmit, name }) {
       <button
         type="submit"
         className="btn btn-primary my-4 text-white rounded-xl w-full btn-sm"
+        disabled={isLoading}
       >
-        <PaperAirplaneIcon className="h-4 w-4 inline mb-1 " />
-        Send
+        {isLoading ? (
+          <>
+            <span className="loading loading-dots"></span>
+            Loading
+          </>
+        ) : (
+          <>
+            <PaperAirplaneIcon className="h-4 w-4 inline mb-1 " />
+            Send
+          </>
+        )}
       </button>
     </form>
   );
