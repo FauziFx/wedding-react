@@ -4,9 +4,9 @@ import {
   PaperAirplaneIcon,
   UserIcon,
 } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-function CommentForm({ onSubmit }) {
+function CommentForm({ onSubmit, name }) {
   const [comment, setComment] = useState({
     name: "",
     presence: "",
@@ -28,6 +28,15 @@ function CommentForm({ onSubmit }) {
       text: "",
     }));
   };
+
+  useEffect(() => {
+    if (comment.name == "") {
+      setComment((prev) => ({
+        ...prev,
+        name: name,
+      }));
+    }
+  }, [name]);
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
       <label className="form-control w-full">

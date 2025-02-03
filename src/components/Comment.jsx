@@ -83,13 +83,13 @@ function Comment({ comment, onReply, onEdit, onDelete, currentUserId, theme }) {
             ></textarea>
             <div className="text-right">
               <button
-                className="btn btn-xs btn-outline rounded-badge text-white mr-1"
+                className="btn btn-xs btn-outline rounded-badge mr-1"
                 onClick={() => setIsEditing(false)}
               >
                 Cancel
               </button>
               <button
-                className="btn btn-xs btn-outline rounded-badge text-white"
+                className="btn btn-xs btn-outline rounded-badge"
                 onClick={handleEdit}
               >
                 Update
@@ -163,13 +163,13 @@ function Comment({ comment, onReply, onEdit, onDelete, currentUserId, theme }) {
           ></textarea>
           <div className="text-right">
             <button
-              className="btn btn-xs btn-outline rounded-badge text-white mr-1"
+              className="btn btn-xs btn-outline rounded-badge mr-1"
               onClick={() => setIsReplying(!isReplying)}
             >
               Cancel
             </button>
             <button
-              className="btn btn-xs btn-outline rounded-badge text-white"
+              className="btn btn-xs btn-outline rounded-badge"
               onClick={handleReply}
             >
               Send
