@@ -509,7 +509,7 @@ function Home() {
                 <div
                   data-aos="fade-up"
                   className={
-                    "w-11/12 md:w-4/5 rounded-lg shadow-2xl my-4 p-4 " +
+                    "w-11/12 md:w-4/5 rounded-lg shadow-xl my-4 p-4 " +
                     (theme == "dark" ? "bg-gray-700" : "bg-white")
                   }
                 >
@@ -604,7 +604,10 @@ function Home() {
                 <a
                   href={data.general.maps}
                   target="_blank"
-                  className="btn btn-outline btn-sm rounded-full shadow-xl my-4 text-white"
+                  className={
+                    "btn btn-outline btn-sm rounded-full shadow-xl my-4 " +
+                    (theme == "dark" ? "text-white" : "")
+                  }
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

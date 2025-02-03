@@ -118,9 +118,15 @@ function Comment({ comment, onReply, onEdit, onDelete, currentUserId, theme }) {
             <span className="text-xs">{formattedTime}</span>
           </div>
           <hr className="border-t" />
-          <p className="py-1 text-white text-sm mb-1">{comment.text}</p>
+          <p
+            className={
+              "py-1 text-sm mb-1 " + (theme == "dark" ? "text-white" : "")
+            }
+          >
+            {comment.text}
+          </p>
           <button
-            className="btn btn-xs btn-outline rounded-badge text-white"
+            className="btn btn-xs btn-outline rounded-badge"
             onClick={() => setIsReplying(!isReplying)}
             disabled={isReplying === true}
           >
@@ -129,14 +135,14 @@ function Comment({ comment, onReply, onEdit, onDelete, currentUserId, theme }) {
           {isOwner && (
             <>
               <button
-                className="btn btn-xs btn-outline rounded-badge text-white mx-1"
+                className="btn btn-xs btn-outline rounded-badge mx-1"
                 onClick={() => setIsEditing(true)}
                 disabled={isReplying === true}
               >
                 Edit
               </button>
               <button
-                className="btn btn-xs btn-outline rounded-badge text-white"
+                className="btn btn-xs btn-outline rounded-badge"
                 onClick={() => handleDelete(comment.id)}
                 disabled={isReplying === true}
               >
