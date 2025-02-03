@@ -24,7 +24,7 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import useSWR, { useSWRConfig } from "swr";
 import FailedToLoad from "../components/FailedToLoad";
-import LoadingSekeleton from "../components/LoadingSekeleton";
+import LoadingSekeletonPage from "../components/LoadingSekeletonPage";
 import "dayjs/locale/id";
 dayjs.locale("id");
 import { v4 as uuidv4 } from "uuid";
@@ -165,7 +165,7 @@ function Home() {
   }, [open]);
   // use theme from local storage if available or set light theme
   const [theme, setTheme] = useState(
-    localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
+    localStorage.getItem("theme") ? localStorage.getItem("theme") : "dark"
   );
 
   // update state on toggle Theme
@@ -217,7 +217,7 @@ function Home() {
   const { data, error, isLoading } = useSWR("/v1/get/home", fetcher);
 
   if (error) return <FailedToLoad />;
-  if (isLoading) return <LoadingSekeleton />;
+  if (isLoading) return <LoadingSekeletonPage />;
 
   return (
     <>
