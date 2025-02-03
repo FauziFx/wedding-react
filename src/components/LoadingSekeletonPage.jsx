@@ -2,7 +2,7 @@ import React from "react";
 
 function LoadingSekeletonPage() {
   return (
-    <div className="px-4 pt-2 h-screen">
+    <div className="col-span-3 px-4 pt-2 h-screen">
       <div className="shadow-lg rounded-md animate-pulse p-6 pt-8 h-full">
         <div className="w-2/3 h-4 bg-gray-700 mx-auto rounded mb-2"></div>
         <div className="w-2/3 h-4 bg-gray-700 mx-auto rounded mb-2"></div>

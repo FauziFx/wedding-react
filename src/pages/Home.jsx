@@ -20,10 +20,9 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import api from "../utils/api";
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 import useSWR, { useSWRConfig } from "swr";
 import FailedToLoad from "../components/FailedToLoad";
+import LoadingSekeleton from "../components/LoadingSekeleton";
 import LoadingSekeletonPage from "../components/LoadingSekeletonPage";
 import "dayjs/locale/id";
 dayjs.locale("id");
@@ -827,18 +826,9 @@ function Home() {
                     <a
                       href="https://github.com/fauzifx"
                       target="_blank"
-                      className="btn btn-link btn-sm inline px-1 mr-4"
-                    >
-                      FauziFx
-                    </a>
-                    <MusicalNoteIcon className="h-4 w-4 mb-1 inline" />
-                    {/* Music Link */}
-                    <a
-                      href=""
-                      target="_blank"
                       className="btn btn-link btn-sm inline px-1"
                     >
-                      Song Name
+                      FauziFx
                     </a>
                   </p>
                 </div>
