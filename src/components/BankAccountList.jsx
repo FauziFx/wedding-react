@@ -1,6 +1,14 @@
 import React from "react";
 
 function BankAccountList({ data, theme }) {
+  const copyContent = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("Rekening tersalin");
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  };
   return (
     <>
       {data.map((item, key) => (

@@ -28,30 +28,111 @@ import api from "../utils/api";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import FailedToLoad from "../components/FailedToLoad";
 import LoadingSekeleton from "../components/LoadingSekeleton";
 import "dayjs/locale/id";
 dayjs.locale("id");
+import { v4 as uuidv4 } from "uuid";
 import CountdownTimer from "../components/CountdownTimer";
 import BankAccountList from "../components/BankAccountList";
+import CommentForm from "../components/CommentForm";
+import CommentList from "../components/CommentList";
 
 function Home() {
   const API = import.meta.env.VITE_API_URL;
+  const { mutate } = useSWRConfig();
   const search = window.location.search;
   const params = new URLSearchParams(search);
   const [guest, setGuest] = useState(params.get("to"));
   const [open, setOpen] = useState(false);
   const [showConvetti, setShowConvetti] = useState(false);
-  const [salin, setSalin] = useState(false);
   const audio = document.getElementById("audio_tag");
   const [play, setPlay] = useState(false);
+  const dataUser = {
+    uuid: uuidv4(),
+    name: "",
+    presence: "",
+  };
+  const [user, setUser] = useState(
+    localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user"))
+      : dataUser
+  );
 
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(user));
+  }, [user]);
+
+  const handleSubmitComment = async (comment) => {
+    try {
+      const response = await api.post(API + "/comment", {
+        uuid: user.uuid,
+        name: comment.name,
+        text: comment.text,
+        presence: comment.presence,
+        parentId: null,
+      });
+
+      if (response.data.success) {
+        mutate("/v1/get/comment");
+        const LS = {
+          uuid: user.uuid,
+          name: comment.name,
+          presence: comment.presence,
+        };
+        localStorage.setItem("user", JSON.stringify(LS));
+        setUser(LS);
+        scrollIntoView(daftarKomentar);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchComment = async () => {
+    try {
+      const response = await api.get(API + "/comment");
+      return response.data.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleReply = async (parentId, text) => {
+    try {
+      await api.post(API + "/comment", {
+        uuid: user.uuid,
+        name: user.name,
+        text: text,
+        presence: user.presence,
+        parentId: parentId,
+      });
+      mutate("/v1/get/comment");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleEdit = async (id, text) => {
+    await api.patch(API + "/comment/" + id, {
+      text: text,
+    });
+    mutate("/v1/get/comment");
+  };
+
+  const handleDelete = async (id) => {
+    await api.delete(API + "/comment/" + id);
+    mutate("/v1/get/comment");
+  };
+
+  // useRef Section
   const home = useRef(null);
   const mempelai = useRef(null);
   const tanggal = useRef(null);
   const galeri = useRef(null);
   const ucapan = useRef(null);
+  const daftarKomentar = useRef(null);
 
   const scrollIntoView = (elementRef) => {
     window.scrollTo({
@@ -61,7 +142,7 @@ function Home() {
   };
 
   useEffect(() => {
-    document.title = "The Wedding";
+    document.title = `The Wedding`;
     if (open) {
       setPlay(true);
       audio.play();
@@ -76,24 +157,15 @@ function Home() {
   }, [open]);
   // use theme from local storage if available or set light theme
   const [theme, setTheme] = useState(
-    localStorage.getItem("theme") ? localStorage.getItem("theme") : "dark"
+    localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
   );
 
-  // update state on toggle
+  // update state on toggle Theme
   const handleToggle = (e) => {
     if (e.target.checked) {
       setTheme("dark");
     } else {
       setTheme("light");
-    }
-  };
-
-  const copyContent = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      alert("Rekening tersalin");
-    } catch (err) {
-      console.error("Failed to copy: ", err);
     }
   };
 
@@ -133,7 +205,7 @@ function Home() {
       console.log(error);
     }
   };
-
+  const { data: comments } = useSWR("/v1/get/comment", fetchComment);
   const { data, error, isLoading } = useSWR("/v1/get/home", fetcher);
 
   if (error) return <FailedToLoad />;
@@ -203,24 +275,22 @@ function Home() {
                 />
               </div>
               <h2
-                className="text-4xl font-esthetic mb-6 font-medium"
+                className="text-4xl font-esthetic mb-4 font-medium"
                 style={{ fontSize: "40px" }}
               >
                 {data.pengantin1.name}
                 <p className="text-6xl md:inline px-4">&</p>
                 {data.pengantin2.name}
               </h2>
+              <p>Kepada Yth Bapak/Ibu/Saudara/i</p>
               {guest && (
-                <>
-                  <p>Kepada Yth Bapak/Ibu/Saudara/i</p>
-                  <h2 className="text-2xl md:text-3xl mb-2 font-medium">
-                    {guest}
-                  </h2>
-                </>
+                <h2 className="text-2xl md:text-3xl mb-2 font-medium">
+                  {guest}
+                </h2>
               )}
 
               <button
-                className="btn shadow-xl rounded-full btn-outline"
+                className="btn shadow-xl rounded-full btn-outline mt-2"
                 onClick={() => setOpen(!open)}
               >
                 <svg
@@ -566,11 +636,11 @@ function Home() {
           <section
             ref={galeri}
             className={
-              "h-auto flex flex-col items-center relative overflow-hidden pb-10 " +
+              "h-auto flex flex-col items-center relative overflow-hidden pb-10 px-2 " +
               (theme == "dark" ? "bg-[#0b0f14]" : "bg-white")
             }
           >
-            <div className="border border-gray-300 shadow-xl rounded-badge pt-8 pb-2 md:pb-8 px-2 md:py-10 md:px-20">
+            <div className="md:w-[80%] border border-gray-300 shadow-xl rounded-badge pt-8 pb-2 md:pb-8 px-2 md:py-10 md:px-20">
               <div
                 className={
                   "z-10 text-center w-full mb-10 " +
@@ -623,11 +693,11 @@ function Home() {
             </div>
             <BankAccountList data={data.bank} theme={theme} />
           </section>
-          {/* Section 7 Comment */}
+          {/* Section 7 Comment Form */}
           <section
             ref={ucapan}
             className={
-              "w-full h-auto flex flex-col items-center relative overflow-hidden pb-10 " +
+              "w-full h-auto flex flex-col items-center relative overflow-hidden pb-2 " +
               (theme == "dark" ? "bg-[#1f2937]" : "bg-[#e5e7eb]")
             }
           >
@@ -647,163 +717,10 @@ function Home() {
                   <h1 className="font-esthetic text-4xl md:text-5xl py-4">
                     Ucapan & Doa
                   </h1>
-                  <label className="form-control w-full">
-                    <div className="label">
-                      <span className="label-text">
-                        <UserIcon className="h-4 w-4 inline mb-1 mr-1" />
-                        Nama Anda
-                      </span>
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Isikan Nama Anda"
-                      className="input input-sm input-bordered w-full rounded-xl"
-                    />
-                  </label>
-                  <label className="form-control w-full">
-                    <div className="label">
-                      <span className="label-text">
-                        <CheckCircleIcon className="h-4 w-4 inline mb-1 mr-1" />
-                        Kehadiran
-                      </span>
-                    </div>
-                    <select className="select select-sm select-bordered rounded-xl">
-                      <option disabled selected>
-                        Konfirmasi Kehadiran
-                      </option>
-                      <option>Hadir</option>
-                      <option>Mungkin Hadir</option>
-                      <option>Tidak Hadir</option>
-                    </select>
-                  </label>
-                  <label className="form-control w-full mb-2">
-                    <div className="label">
-                      <span className="label-text">
-                        <ChatBubbleLeftRightIcon className="h-4 w-4 inline mb-1 mr-1" />
-                        Ucapan & Doa
-                      </span>
-                    </div>
-                    <textarea
-                      className="textarea textarea-sm textarea-bordered h-24 rounded-xl"
-                      placeholder="Ucapan & Doa"
-                    ></textarea>
-                  </label>
-                  <button className="btn btn-primary my-4 text-white rounded-xl w-full btn-sm">
-                    <PaperAirplaneIcon className="h-4 w-4 inline mb-1 " />
-                    Send
-                  </button>
-                </div>
-                {/* Comment */}
-                <div
-                  className={
-                    "text-left rounded-2xl w-11/12 md:w-4/5 shadow-2xl my-2 p-4 " +
-                    (theme == "dark" ? "bg-gray-700" : "bg-white")
-                  }
-                >
-                  <div
-                    className={
-                      "flex justify-between items-center " +
-                      (theme == "dark" ? "text-white" : "text-gray-900")
-                    }
-                  >
-                    <div>
-                      <h2 className="font-semibold inline">Fufufafa</h2>
-                      <XCircleIcon className="h-4 w-4 inline mb-1 ml-1 text-red-500" />
-                    </div>
-                    <span className="text-xs">23 Jam Yang lalu</span>
-                  </div>
-                  <hr style={{ border: "1px solid gray" }} />
-                  <p className="py-1 text-s">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Vitae, possimus.
-                  </p>
-                  <button className="btn btn-xs btn-outline rounded-badge">
-                    Reply
-                  </button>
-                </div>
-                <div
-                  className={
-                    "text-left rounded-2xl w-11/12 md:w-4/5 shadow-2xl my-2 p-4 " +
-                    (theme == "dark" ? "bg-gray-700" : "bg-white")
-                  }
-                >
-                  <div
-                    className={
-                      "flex justify-between items-center " +
-                      (theme == "dark" ? "text-white" : "text-gray-900")
-                    }
-                  >
-                    <div>
-                      <h2 className="font-semibold inline">Fufufafa</h2>
-                      <QuestionMarkCircleIcon className="h-4 w-4 inline mb-1 ml-1 text-yellow-500" />
-                    </div>
-                    <span className="text-xs">23 Jam Yang lalu</span>
-                  </div>
-                  <hr style={{ border: "1px solid gray" }} />
-                  <p className="py-1 text-s">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Vitae, possimus.
-                  </p>
-                  <button className="btn btn-xs btn-outline rounded-badge">
-                    Reply
-                  </button>
-                </div>
-                <div
-                  className={
-                    "text-left rounded-2xl w-11/12 md:w-4/5 shadow-2xl my-2 p-4 " +
-                    (theme == "dark" ? "bg-gray-700" : "bg-white")
-                  }
-                >
-                  <div
-                    className={
-                      "flex justify-between items-center " +
-                      (theme == "dark" ? "text-white" : "text-gray-900")
-                    }
-                  >
-                    <div>
-                      <h2 className="font-semibold inline">Fufufafa</h2>
-                      <CheckCircleIcon className="h-4 w-4 inline mb-1 ml-1 text-green-500" />
-                    </div>
-                    <span className="text-xs">23 Jam Yang lalu</span>
-                  </div>
-                  <hr style={{ border: "1px solid gray" }} />
-                  <p className="py-1 text-s">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Vitae, possimus.
-                  </p>
-                  <button className="btn btn-xs btn-outline rounded-badge">
-                    Reply
-                  </button>
-                  <button
-                    className={
-                      "btn-link btn-xs text-white " +
-                      (theme == "dark" ? "text-white" : "text-gray-900")
-                    }
-                  >
-                    Hide Replies
-                  </button>
-                  {/* Reply Comment */}
-                  <div className="my-2 ml-2 p-2 border-l">
-                    <div
-                      className={
-                        "flex justify-between items-center " +
-                        (theme == "dark" ? "text-white" : "text-gray-900")
-                      }
-                    >
-                      <div>
-                        <h2 className="font-semibold inline">Fufufafa</h2>
-                      </div>
-                      <span className="text-xs">23 Jam Yang lalu</span>
-                    </div>
-                    <hr style={{ border: "1px solid gray" }} />
-                    <p className="py-1">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Vitae, possimus.
-                    </p>
-                  </div>
+                  <CommentForm onSubmit={handleSubmitComment} />
                 </div>
                 {/* Pagination */}
-                <div className="join rounded-xl my-4">
+                {/* <div className="join rounded-xl my-4">
                   <button className="join-item btn">
                     <ChevronDoubleLeftIcon className="h-5 w-5" />
                   </button>
@@ -811,9 +728,28 @@ function Home() {
                   <button className="join-item btn">
                     <ChevronDoubleRightIcon className="h-5 w-5" />
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
+          </section>
+
+          {/* Comment List */}
+          <section
+            ref={daftarKomentar}
+            className={
+              "w-full h-auto flex flex-col items-center relative overflow-hidden pb-10 " +
+              (theme == "dark" ? "bg-[#1f2937]" : "bg-[#e5e7eb]")
+            }
+          >
+            {/* Comment List */}
+            <CommentList
+              comments={comments}
+              onReply={handleReply}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              currentUserId={user.uuid}
+              theme={theme}
+            />
           </section>
 
           {/* Section 8 footer */}
