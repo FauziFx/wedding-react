@@ -130,13 +130,15 @@ function Comment({
             {comment.text}
           </p>
           <div className="flex">
-            <button
-              className="btn btn-xs btn-outline rounded-badge"
-              onClick={() => setIsReplying(!isReplying)}
-              disabled={isReplying === true || loadingDelete}
-            >
-              Reply
-            </button>
+            {comment.replies && (
+              <button
+                className="btn btn-xs btn-outline rounded-badge"
+                onClick={() => setIsReplying(!isReplying)}
+                disabled={isReplying === true || loadingDelete}
+              >
+                Reply
+              </button>
+            )}
             {isOwner && (
               <>
                 <button
