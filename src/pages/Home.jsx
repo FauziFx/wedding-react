@@ -253,6 +253,7 @@ function Home() {
         >
           <img
             src={"/images/" + (theme == "dark" ? "decor-w.png" : "decor-b.png")}
+            loading="lazy"
             alt=""
             className="absolute top-2 md:top-10 left-1/2 transform -translate-x-1/2 rotate-180 w-[75%] md:w-[30%]"
           />
@@ -270,7 +271,10 @@ function Home() {
               </h2>
               <div className="avatar mb-1 z-50">
                 <div className="w-56 rounded-full border-4 border-white shadow-2xl">
-                  <img src={API + "/images/" + data.general.image} />
+                  <img
+                    src={API + "/images/" + data.general.image}
+                    loading="lazy"
+                  />
                 </div>
               </div>
               <div className="bottom-0 left-0 px-4 mb-2 -mt-7">
@@ -279,6 +283,7 @@ function Home() {
                     "/images/" +
                     (theme == "dark" ? "decor-w.png" : "decor-b.png")
                   }
+                  loading="lazy"
                   alt=""
                 />
               </div>
@@ -343,7 +348,10 @@ function Home() {
                 </h2>
                 <div className="avatar my-6">
                   <div className="w-56 rounded-full border-4 border-white shadow-xl">
-                    <img src={API + "/images/" + data.general.image} />
+                    <img
+                      src={API + "/images/" + data.general.image}
+                      loading="lazy"
+                    />
                   </div>
                 </div>
                 <div className="bottom-0 left-0 px-4 mb-2 -mt-12">
@@ -352,6 +360,7 @@ function Home() {
                       "/images/" +
                       (theme == "dark" ? "decor-w.png" : "decor-b.png")
                     }
+                    loading="lazy"
                     alt=""
                   />
                 </div>
@@ -430,7 +439,10 @@ function Home() {
               </p>
               <div data-aos="fade-right" className="avatar my-5">
                 <div className="w-56 rounded-full border-4 border-white shadow-xl">
-                  <img src={API + "/images/" + data.pengantin1.image} />
+                  <img
+                    src={API + "/images/" + data.pengantin1.image}
+                    loading="lazy"
+                  />
                 </div>
               </div>
               <div data-aos="fade-down">
@@ -449,7 +461,10 @@ function Home() {
               <h2 className="text-6xl font-esthetic py-5">&</h2>
               <div data-aos="fade-left" className="avatar my-5">
                 <div className="w-56 rounded-full border-4 border-white shadow-xl">
-                  <img src={API + "/images/" + data.pengantin2.image} />
+                  <img
+                    src={API + "/images/" + data.pengantin2.image}
+                    loading="lazy"
+                  />
                 </div>
               </div>
               <div data-aos="fade-down">
@@ -655,6 +670,7 @@ function Home() {
                     <div key={key}>
                       <img
                         src={API + "/images/" + image}
+                        loading="lazy"
                         className="rounded-xl"
                       />
                     </div>
