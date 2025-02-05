@@ -816,7 +816,6 @@ function Home() {
                     Ahmad Fauzi
                   </p>
                   <p className="text-sm">
-                    {/* <MusicalNoteIcon className="h-3 w-3 mb-1 inline" /> */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       x="0px"
