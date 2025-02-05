@@ -212,11 +212,17 @@ function Home() {
       console.log(error);
     }
   };
-  const { data: comments } = useSWR("/v1/get/comment", fetchComment);
+  const {
+    data: comments,
+    error: errorComment,
+    isLoading: isLoadingComment,
+  } = useSWR("/v1/get/comment", fetchComment);
   const { data, error, isLoading } = useSWR("/v1/get/home", fetcher);
 
   if (error) return <FailedToLoad />;
+  if (errorComment) return <FailedToLoad />;
   if (isLoading) return <LoadingSekeletonPage />;
+  if (isLoadingComment) return <LoadingSekeletonPage />;
 
   return (
     <>
