@@ -251,16 +251,20 @@ function Home() {
         {/* Opening */}
         <div
           className={
-            "hero min-h-full h-screen pt-[15%] md:pt-[5%] " +
+            "hero min-h-full relative h-screen " +
             (open == true && "hidden ") +
             (theme == "dark" ? "bg-[#0b0f14]" : "bg-white")
           }
         >
           <img
-            src={"/images/" + (theme == "dark" ? "decor-w.png" : "decor-b.png")}
+            src="/images/flower-r.png"
+            className="absolute top-0 right-0 w-56 md:w-96 opacity-70"
             loading="lazy"
-            alt=""
-            className="absolute top-2 md:top-10 left-1/2 transform -translate-x-1/2 rotate-180 w-[75%] md:w-[30%]"
+          />
+          <img
+            src="/images/flower-l.png"
+            className="absolute bottom-0 left-0 w-72 md:w-96 opacity-70"
+            loading="lazy"
           />
           <div className="hero-content text-center">
             <div
@@ -274,22 +278,20 @@ function Home() {
               >
                 The Wedding Of
               </h2>
-              <div className="avatar mb-1 z-50">
-                <div className="w-56 rounded-full border-4 border-white shadow-2xl">
+              <div className="avatar mb-1">
+                <div className="w-56 rounded-full border-2 border-orange-600 shadow-2xl">
                   <img
                     src={API + "/images/" + data.general.image}
                     loading="lazy"
                   />
                 </div>
               </div>
-              <div className="bottom-0 left-0 px-4 mb-2 -mt-7">
+              <div className="px-4 mb-2 -mt-24 w-full flex justify-center relative z-50">
                 <img
-                  src={
-                    "/images/" +
-                    (theme == "dark" ? "decor-w.png" : "decor-b.png")
-                  }
+                  src="/images/decor1.png"
                   loading="lazy"
                   alt=""
+                  className="w-56"
                 />
               </div>
               <h2
@@ -308,7 +310,10 @@ function Home() {
               )}
 
               <button
-                className="btn shadow-xl rounded-full btn-outline mt-2"
+                className={
+                  "btn shadow-xl rounded-full btn-outline mt-2 bounce-btn " +
+                  (theme == "dark" ? "text-white" : " ")
+                }
                 onClick={() => setOpen(!open)}
               >
                 <EnvelopeOpenIcon className="h-5 w-5 mb-1" />
@@ -330,6 +335,11 @@ function Home() {
               }')`,
             }}
           >
+            <img
+              src="/images/flower-r.png"
+              className="absolute top-0 right-0 w-48 z-10 opacity-70"
+              loading="lazy"
+            />
             <div
               className={
                 "absolute inset-0 bg-gradient-to-b " +
@@ -342,7 +352,7 @@ function Home() {
               <div
                 className={
                   (theme == "dark" ? "text-white" : "text-gray-800") +
-                  " max-w-md text-center"
+                  " max-w-md text-center relative"
                 }
               >
                 <h2
@@ -352,21 +362,19 @@ function Home() {
                   Undangan Pernikahan
                 </h2>
                 <div className="avatar my-6">
-                  <div className="w-56 rounded-full border-4 border-white shadow-xl">
+                  <div className="w-56 rounded-full border-2 border-orange-600 shadow-xl">
                     <img
                       src={API + "/images/" + data.general.image}
                       loading="lazy"
                     />
                   </div>
                 </div>
-                <div className="bottom-0 left-0 px-4 mb-2 -mt-12">
+                <div className="px-4 mb-2 -mt-28 w-full flex justify-center relative z-50">
                   <img
-                    src={
-                      "/images/" +
-                      (theme == "dark" ? "decor-w.png" : "decor-b.png")
-                    }
+                    src="/images/decor1.png"
                     loading="lazy"
                     alt=""
+                    className="w-56"
                   />
                 </div>
                 <h2
@@ -463,7 +471,7 @@ function Home() {
                   Ibu {data.pengantin1.mother}
                 </p>
               </div>
-              <h2 className="text-6xl font-esthetic py-5">&</h2>
+              <h1 className="text-6xl font-esthetic py-5">&</h1>
               <div data-aos="fade-left" className="avatar my-5">
                 <div className="w-56 rounded-full border-4 border-white shadow-xl">
                   <img
@@ -614,13 +622,7 @@ function Home() {
                   {data.general.time.substring(0, 5)} WIB - Selesai
                 </p>
               </div>
-              <img
-                className="mx-auto h-20"
-                src={
-                  "/images/" +
-                  (theme == "dark" ? "decor2-w.png" : "decor2-b.png")
-                }
-              />
+              <img className="mx-auto h-20" src="/images/flower-decor.png" />
               <div data-aos="fade-down">
                 <h2 className="text-3xl font-esthetic py-4">Bertempat Di</h2>
                 <p className="capitalize">{data.general.address}</p>
@@ -666,7 +668,7 @@ function Home() {
               (theme == "dark" ? "bg-[#0b0f14]" : "bg-white")
             }
           >
-            <div className="md:w-[80%] border border-gray-300 shadow-xl rounded-badge pt-8 pb-2 md:pb-8 px-2 md:py-10 md:px-20">
+            <div className="w-[99%] md:w-[80%] border border-gray-300 shadow-xl rounded-badge pt-8 pb-2 md:pb-8 md:py-10 px-2 md:px-20">
               <div
                 className={
                   "z-10 text-center w-full mb-10 " +
