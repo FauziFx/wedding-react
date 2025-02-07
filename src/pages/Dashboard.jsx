@@ -7,12 +7,7 @@ import {
   CheckCircleIcon,
   FireIcon,
   HomeIcon,
-  MapIcon,
   QuestionMarkCircleIcon,
-  UserIcon,
-  TrashIcon,
-  BuildingLibraryIcon,
-  CreditCardIcon,
   XCircleIcon,
 } from "@heroicons/react/24/solid";
 import React, { useState } from "react";
@@ -24,8 +19,13 @@ import General from "../components/General";
 import Foto from "../components/Foto";
 import Pengantin from "../components/Pengantin";
 import Gallery from "../components/Gallery";
+import useSWR from "swr";
+import FailedToLoad from "../components/FailedToLoad";
+import LoadingSekeleton from "../components/LoadingSekeleton";
+import api from "../utils/api";
 
 function Dashboard() {
+  const API = import.meta.env.VITE_API_URL;
   const [menu, setMenu] = useState("home");
   const dataUser = JSON.parse(localStorage.getItem("config"));
   const [showAlert, setShowAlert] = useState("");
@@ -37,6 +37,21 @@ function Dashboard() {
     Cookies.remove("token");
     window.location.href = "/";
   };
+
+  const fetcher = async () => {
+    try {
+      const response = await api.get(API + "/dashboard");
+      return response.data.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const { data, error, isLoading } = useSWR("/v1/get/dashboard", fetcher);
+
+  if (error) return <FailedToLoad />;
+  if (isLoading) return <LoadingSekeleton />;
+
   return (
     <div className="container mx-auto">
       {/* Navbar */}
@@ -115,7 +130,7 @@ function Dashboard() {
                 <div className="grid grid-cols-4">
                   <div className="col-span-3">
                     <p>
-                      <strong>Comments</strong> <br /> 100
+                      <strong>Comments</strong> <br /> {data.comment || 0}
                     </p>
                   </div>
                   <div className="content-center">
@@ -127,7 +142,7 @@ function Dashboard() {
                 <div className="grid grid-cols-4">
                   <div className="col-span-3">
                     <p>
-                      <strong>Present</strong> <br /> 100
+                      <strong>Present</strong> <br /> {data.present || 0}
                     </p>
                   </div>
                   <div className="content-center">
@@ -139,7 +154,7 @@ function Dashboard() {
                 <div className="grid grid-cols-4">
                   <div className="col-span-3">
                     <p>
-                      <strong>Absent</strong> <br /> 100
+                      <strong>Absent</strong> <br /> {data.absent || 0}
                     </p>
                   </div>
                   <div className="content-center">
@@ -151,7 +166,7 @@ function Dashboard() {
                 <div className="grid grid-cols-4">
                   <div className="col-span-3">
                     <p>
-                      <strong>Tentative</strong> <br /> 100
+                      <strong>Tentative</strong> <br /> {data.tentative || 0}
                     </p>
                   </div>
                   <div className="content-center">

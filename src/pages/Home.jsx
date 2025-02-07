@@ -622,7 +622,11 @@ function Home() {
                   {data.general.time.substring(0, 5)} WIB - Selesai
                 </p>
               </div>
-              <img className="mx-auto h-20" src="/images/flower-decor.png" />
+              <img
+                className="mx-auto h-20"
+                src="/images/flower-decor.png"
+                loading="lazy"
+              />
               <div data-aos="fade-down">
                 <h2 className="text-3xl font-esthetic py-4">Bertempat Di</h2>
                 <p className="capitalize">{data.general.address}</p>
