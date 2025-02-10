@@ -82,7 +82,7 @@ function BankAccount({ setShowAlert, dataUser }) {
 
   const fetcher = async () => {
     try {
-      const response = await api.get(API + "/bankaccount");
+      const response = await api.get(API + "/bankaccount/" + dataUser.id);
 
       return response.data.data;
     } catch (error) {

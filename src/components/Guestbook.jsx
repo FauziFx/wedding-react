@@ -136,7 +136,7 @@ Terima Kasih.`;
 
   const fetcher = async () => {
     try {
-      const response = await api.get(API + "/guestbook");
+      const response = await api.get(API + "/guestbook/" + dataUser.id);
 
       return response.data.data;
     } catch (error) {
