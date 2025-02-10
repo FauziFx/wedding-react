@@ -23,6 +23,7 @@ import useSWR from "swr";
 import FailedToLoad from "../components/FailedToLoad";
 import LoadingSekeleton from "../components/LoadingSekeleton";
 import api from "../utils/api";
+import CustomUrl from "../components/CustomUrl";
 
 function Dashboard() {
   const API = import.meta.env.VITE_API_URL;
@@ -200,6 +201,11 @@ function Dashboard() {
               logout={handleLogout}
               setShowAlert={setShowAlert}
               dataUser={dataUser}
+            />
+            <CustomUrl
+              setShowAlert={setShowAlert}
+              dataUser={dataUser}
+              menu={menu}
             />
             <General
               setShowAlert={setShowAlert}
