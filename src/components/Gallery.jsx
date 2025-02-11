@@ -68,6 +68,7 @@ function Gallery({ setShowAlert, dataUser, menu }) {
     }
 
     formData.append("userId", dataUser.id);
+    formData.append("urlId", dataUser.urlId);
 
     try {
       const response = await api.post(API + "/gallery", formData);

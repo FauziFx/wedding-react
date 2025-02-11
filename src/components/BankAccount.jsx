@@ -35,6 +35,7 @@ function BankAccount({ setShowAlert, dataUser }) {
         bank: dataBank.bank,
         number: dataBank.number,
         userId: dataBank.userId,
+        urlId: dataUser.urlId,
       });
       if (response.data.success) {
         mutate("/v1/get/bankaccount");
