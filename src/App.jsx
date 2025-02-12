@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
+import InvitationPage from "./pages/InvitationPage";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import ProtectedAuth from "./utils/ProtectedAuth";
@@ -18,6 +19,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
       </Route>
       <Route path="/dashboard/*" element={<NotFoundPage />} />
+      <Route path="/:url" element={<InvitationPage />} />
       <Route path="/*" element={<NotFoundPage />} />
     </Routes>
   );
