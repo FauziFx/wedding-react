@@ -75,7 +75,9 @@ function Comment({
                 <QuestionMarkCircleIcon className="h-5 w-5 inline mb-1 ml-1 text-yellow-500" />
               )}
             </div>
-            <span className="text-xs">{formattedTime}</span>
+            <div className="text-xs text-right">
+              sldfnsldfnsldfnsldkfnsdlkfnl
+            </div>
           </div>
           <hr className="border-t" />
           <div className="py-2">
@@ -115,8 +117,10 @@ function Comment({
                 <CheckCircleIcon className="h-5 w-5 inline mb-1 ml-1 text-green-500" />
               ) : comment.presence == "tidak" ? (
                 <XCircleIcon className="h-5 w-5 inline mb-1 ml-1 text-red-500" />
-              ) : (
+              ) : comment.presence == "mungkin" ? (
                 <QuestionMarkCircleIcon className="h-5 w-5 inline mb-1 ml-1 text-yellow-500" />
+              ) : (
+                ""
               )}
             </div>
             <span className="text-xs">{formattedTime}</span>
