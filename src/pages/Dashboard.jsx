@@ -42,6 +42,7 @@ function Dashboard() {
   const fetcher = async () => {
     try {
       const response = await api.get(API + "/dashboard/" + dataUser.id);
+      localStorage.setItem("customUrl", response.data.data.url);
       return response.data.data;
     } catch (error) {
       console.log(error);
@@ -119,7 +120,9 @@ function Dashboard() {
             <div className="flex justify-between items-center w-full rounded-xl bg-white text-gray-900 py-1 px-3 mb-6">
               <p>Home</p>
               <a
-                href="/"
+                href={`${window.location.origin}/${
+                  localStorage.getItem("customUrl") || ""
+                }`}
                 target="_blank"
                 className="btn btn-primary pt-1 btn-sm text-[#1d232a] rounded-badge"
               >
@@ -143,7 +146,7 @@ function Dashboard() {
                 <div className="grid grid-cols-4">
                   <div className="col-span-3">
                     <p>
-                      <strong>Present</strong> <br /> {data.present || 0}
+                      <strong>Present</strong> <br /> {data.hadir || 0}
                     </p>
                   </div>
                   <div className="content-center">
@@ -155,7 +158,7 @@ function Dashboard() {
                 <div className="grid grid-cols-4">
                   <div className="col-span-3">
                     <p>
-                      <strong>Absent</strong> <br /> {data.absent || 0}
+                      <strong>Absent</strong> <br /> {data.tidak || 0}
                     </p>
                   </div>
                   <div className="content-center">
@@ -167,7 +170,7 @@ function Dashboard() {
                 <div className="grid grid-cols-4">
                   <div className="col-span-3">
                     <p>
-                      <strong>Tentative</strong> <br /> {data.tentative || 0}
+                      <strong>Tentative</strong> <br /> {data.mungkin || 0}
                     </p>
                   </div>
                   <div className="content-center">
@@ -189,7 +192,9 @@ function Dashboard() {
             <div className="flex justify-between items-center w-full rounded-xl bg-white text-gray-900 py-1 px-3 mb-6">
               <p>Setting</p>
               <a
-                href="/"
+                href={`${window.location.origin}/${
+                  localStorage.getItem("customUrl") || ""
+                }`}
                 target="_blank"
                 className="btn btn-primary pt-1 btn-sm text-[#1d232a] rounded-badge"
               >
