@@ -104,7 +104,10 @@ function Guestbook({ setShowAlert, dataUser }) {
     setLinkWA(linkSend);
   };
   const handleKirim = (name, phone) => {
-    const link = `${window.location.origin}/?to=${encodeURIComponent(name)}`;
+    const customUrl = localStorage.getItem("customUrl") || "";
+    const link = `${
+      window.location.origin
+    }/${customUrl}?to=${encodeURIComponent(name)}`;
     setUndangan((prev) => ({
       ...prev,
       to: name,
