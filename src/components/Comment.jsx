@@ -75,9 +75,6 @@ function Comment({
                 <QuestionMarkCircleIcon className="h-5 w-5 inline mb-1 ml-1 text-yellow-500" />
               )}
             </div>
-            <div className="text-xs text-right">
-              sldfnsldfnsldfnsldkfnsdlkfnl
-            </div>
           </div>
           <hr className="border-t" />
           <div className="py-2">
