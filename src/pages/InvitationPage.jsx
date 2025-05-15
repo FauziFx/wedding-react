@@ -261,7 +261,7 @@ function InvitationPage() {
         src={
           data.general.music
             ? API + "/music/" + data.general.music
-            : "https://thetestdata.com/assets/audio/mp3/thetestdata-sample-mp3-8.mp3"
+            : API + "/music/default.mp3"
         }
       />
       {showConvetti && (
