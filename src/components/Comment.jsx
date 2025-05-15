@@ -4,6 +4,7 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/solid";
 import React, { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/id"; // Opsional: Gunakan locale Indonesia
@@ -21,6 +22,8 @@ function Comment({
   theme,
   loadingDelete,
 }) {
+  let [searchParams] = useSearchParams();
+
   const [isReplying, setIsReplying] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(comment.text);
@@ -134,7 +137,13 @@ function Comment({
             {comment.Replies && (
               <button
                 className="btn btn-xs btn-outline rounded-badge"
-                onClick={() => setIsReplying(!isReplying)}
+                onClick={() => {
+                  if (searchParams.get("to")) {
+                    setIsReplying(!isReplying);
+                  } else {
+                    alert("Nama tidak boleh kosong!!");
+                  }
+                }}
                 disabled={isReplying === true || loadingDelete}
               >
                 Reply

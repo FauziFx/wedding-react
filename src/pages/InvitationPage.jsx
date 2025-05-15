@@ -21,7 +21,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/id";
 dayjs.locale("id");
 import { v4 as uuidv4 } from "uuid";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import api from "../utils/api";
 import FailedToLoad from "../components/FailedToLoad";
 import useSWR, { useSWRConfig } from "swr";
@@ -144,11 +144,13 @@ function InvitationPage() {
     }
   };
 
+  let [searchParams] = useSearchParams();
+
   const handleReply = async (parentId, text) => {
     try {
       await api.post(API + "/comment", {
         uuid: user.uuid,
-        name: user.name,
+        name: user.name || searchParams.get("to"),
         text: text,
         presence: user.presence,
         parentId: parentId,

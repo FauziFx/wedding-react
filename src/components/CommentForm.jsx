@@ -5,8 +5,10 @@ import {
   UserIcon,
 } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 function CommentForm({ onSubmit, name, isLoading }) {
+  let [searchParams, setSearchParams] = useSearchParams();
   const [comment, setComment] = useState({
     name: "",
     presence: "",
@@ -18,6 +20,10 @@ function CommentForm({ onSubmit, name, isLoading }) {
       ...prev,
       [e.target.name]: e.target.value,
     }));
+
+    if (e.target.name == "name") {
+      setSearchParams({ to: e.target.value });
+    }
   };
 
   const handleSubmit = (e) => {
