@@ -87,12 +87,22 @@ function General({ setShowAlert, dataUser, menu }) {
     try {
       const response = await api.get(API + "/general/" + dataUser.id);
       const data = response.data.data;
-      const dateCeremony = data.date
+      const dateCeremony = data.ceremony_date
         ? dayjs(data.ceremony_date).tz("Asia/Jakarta").format("YYYY-MM-DD")
         : "";
-      const dateReception = data.date
+      const dateReception = data.reception_date
         ? dayjs(data.reception_date).tz("Asia/Jakarta").format("YYYY-MM-DD")
         : "";
+
+      if (
+        data.ceremony_time == data.reception_time &&
+        data.ceremony_date == data.reception_date
+      ) {
+        setIsSameDate(true);
+      } else {
+        setIsSameDate(false);
+      }
+
       setGeneral((prevState) => ({
         ...prevState,
         id: data.id,
