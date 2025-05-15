@@ -14,20 +14,46 @@ dayjs.extend(timezone);
 function General({ setShowAlert, dataUser, menu }) {
   const API = import.meta.env.VITE_API_URL;
   const { mutate } = useSWRConfig();
+  const [isSameDate, setIsSameDate] = useState(true);
   const [loading, setLoading] = useState(false);
   const [general, setGeneral] = useState({
     id: "",
-    time: "",
-    date: "",
+    ceremony_time: "",
+    ceremony_date: "",
+    reception_time: "",
+    reception_date: "",
     address: "",
     maps: "",
   });
 
   const handleChange = (e) => {
-    setGeneral((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
+    const name = e.target.name;
+    const value = e.target.value;
+    if (isSameDate) {
+      if (name.includes("time")) {
+        setGeneral((prevState) => ({
+          ...prevState,
+          ceremony_time: value,
+          reception_time: value,
+        }));
+      } else if (name.includes("date")) {
+        setGeneral((prevState) => ({
+          ...prevState,
+          ceremony_date: value,
+          reception_date: value,
+        }));
+      } else {
+        setGeneral((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+      }
+    } else {
+      setGeneral((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -35,8 +61,10 @@ function General({ setShowAlert, dataUser, menu }) {
     try {
       setLoading(true);
       const response = await api.patch(API + "/general/" + general.id, {
-        time: general.time,
-        date: general.date,
+        ceremony_time: general.ceremony_time,
+        ceremony_date: general.ceremony_date,
+        reception_time: general.reception_time,
+        reception_date: general.reception_date,
         address: general.address,
         maps: general.maps,
       });
@@ -59,14 +87,19 @@ function General({ setShowAlert, dataUser, menu }) {
     try {
       const response = await api.get(API + "/general/" + dataUser.id);
       const data = response.data.data;
-      const date = data.date
-        ? dayjs(data.date).tz("Asia/Jakarta").format("YYYY-MM-DD")
+      const dateCeremony = data.date
+        ? dayjs(data.ceremony_date).tz("Asia/Jakarta").format("YYYY-MM-DD")
+        : "";
+      const dateReception = data.date
+        ? dayjs(data.reception_date).tz("Asia/Jakarta").format("YYYY-MM-DD")
         : "";
       setGeneral((prevState) => ({
         ...prevState,
         id: data.id,
-        time: data.time || "",
-        date: date,
+        ceremony_time: data.ceremony_time || "",
+        ceremony_date: dateCeremony,
+        reception_time: data.reception_time || "",
+        reception_date: dateReception,
         address: data.address || "",
         maps: data.maps || "",
       }));
@@ -99,15 +132,41 @@ function General({ setShowAlert, dataUser, menu }) {
             (loading ? "opacity-50 cursor-not-allowed pointer-events-none" : "")
           }
         >
+          <label htmlFor="" className="form-control w-full p-2">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                className="checkbox checkbox-primary checkbox-sm"
+                checked={isSameDate}
+                onChange={() => {
+                  if (isSameDate) {
+                    setIsSameDate(!isSameDate);
+                  } else {
+                    setIsSameDate(!isSameDate);
+                    setGeneral((prevState) => ({
+                      ...prevState,
+                      reception_time: general.ceremony_time,
+                      reception_date: general.ceremony_date,
+                    }));
+                  }
+                }}
+              />
+              <span className="cursor-pointer">
+                Tanggal Akad dan Respsi sama
+              </span>
+            </label>
+          </label>
+
+          {/* Ceremony Date */}
           <label htmlFor="" className="form-control w-full">
             <div className="label pb-0">
-              <span className="label-text">Jam Berapa?</span>
+              <span className="label-text">Jam Akad</span>
             </div>
             <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
               <input
                 type="time"
-                name="time"
-                value={general.time}
+                name="ceremony_time"
+                value={general.ceremony_time}
                 onChange={(e) => handleChange(e)}
                 className="grow"
                 placeholder="Jam"
@@ -117,13 +176,13 @@ function General({ setShowAlert, dataUser, menu }) {
           </label>
           <label htmlFor="" className="form-control w-full">
             <div className="label pb-0">
-              <span className="label-text">Tanggal Berapa?</span>
+              <span className="label-text">Tanggal Akad</span>
             </div>
             <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
               <input
                 type="date"
-                name="date"
-                value={general.date}
+                name="ceremony_date"
+                value={general.ceremony_date}
                 onChange={(e) => handleChange(e)}
                 className="grow"
                 placeholder="Tanggal"
@@ -131,6 +190,41 @@ function General({ setShowAlert, dataUser, menu }) {
               />
             </label>
           </label>
+
+          {/* Reception Date */}
+          <label htmlFor="" className="form-control w-full">
+            <div className="label pb-0">
+              <span className="label-text">Jam Resepsi</span>
+            </div>
+            <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
+              <input
+                type="time"
+                name="reception_time"
+                value={general.reception_time}
+                onChange={(e) => handleChange(e)}
+                className="grow"
+                placeholder="Jam"
+                required
+              />
+            </label>
+          </label>
+          <label htmlFor="" className="form-control w-full">
+            <div className="label pb-0">
+              <span className="label-text">Tanggal Respsi</span>
+            </div>
+            <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
+              <input
+                type="date"
+                name="reception_date"
+                value={general.reception_date}
+                onChange={(e) => handleChange(e)}
+                className="grow"
+                placeholder="Tanggal"
+                required
+              />
+            </label>
+          </label>
+
           <label className="form-control">
             <div className="label pb-0">
               <span className="label-text">Bertempat Di Mana?</span>
