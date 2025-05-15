@@ -647,8 +647,8 @@ function InvitationPage() {
             >
               {/* Countdown */}
               <CountdownTimer
-                date={data.general.date}
-                time={data.general.time}
+                date={data.general.ceremony_date}
+                time={data.general.ceremony_time}
               />
             </div>
             <div
@@ -661,32 +661,107 @@ function InvitationPage() {
                 Dengan memohon rahmat dan ridho Allah Subhanahu Wa Ta&apos;ala,
                 insyaAllah kami akan menyelenggarakan acara:
               </p>
-              <h2 data-aos="fade-down" className="text-3xl font-esthetic py-4">
-                Akad & Resepsi
-              </h2>
-              <div data-aos="fade-left">
-                <p className="py-2 text-xl">
-                  {data.general.date
-                    ? dayjs(data.general.date).tz("Asia/Jakarta").format("dddd")
-                    : "{Days}"}
-                </p>
-                <p className="text-xl">
-                  {data.general.date
-                    ? dayjs(data.general.date)
-                        .tz("Asia/Jakarta")
-                        .format("DD MMMM YYYY")
-                    : "{Date}"}
-                </p>
-              </div>
-              <div data-aos="fade-right">
-                <p className="py-2 text-xl">Pukul</p>
-                <p className="text-xl pb-4">
-                  {data.general.time
-                    ? data.general.time.substring(0, 5)
-                    : "{Time}"}{" "}
-                  WIB - Selesai
-                </p>
-              </div>
+              {data.general.ceremony_time == data.general.reception_time &&
+              data.general.ceremony_date == data.general.reception_date ? (
+                <>
+                  <h2
+                    data-aos="fade-down"
+                    className="text-3xl font-esthetic py-4"
+                  >
+                    Akad & Resepsi
+                  </h2>
+                  <div data-aos="fade-left">
+                    <p className="py-2 text-xl">
+                      {data.general.ceremony_date
+                        ? dayjs(data.general.ceremony_date)
+                            .tz("Asia/Jakarta")
+                            .format("dddd")
+                        : "{Days}"}
+                    </p>
+                    <p className="text-xl">
+                      {data.general.ceremony_date
+                        ? dayjs(data.general.ceremony_date)
+                            .tz("Asia/Jakarta")
+                            .format("DD MMMM YYYY")
+                        : "{Date}"}
+                    </p>
+                  </div>
+                  <div data-aos="fade-right">
+                    <p className="py-2 text-xl">Pukul</p>
+                    <p className="text-xl pb-4">
+                      {data.general.ceremony_time
+                        ? data.general.ceremony_time.substring(0, 5)
+                        : "{Time}"}{" "}
+                      WIB - Selesai
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h2
+                    data-aos="fade-down"
+                    className="text-3xl font-esthetic py-4"
+                  >
+                    Akad
+                  </h2>
+                  <div data-aos="fade-left">
+                    <p className="py-2 text-xl">
+                      {data.general.ceremony_date
+                        ? dayjs(data.general.ceremony_date)
+                            .tz("Asia/Jakarta")
+                            .format("dddd")
+                        : "{Days}"}
+                    </p>
+                    <p className="text-xl">
+                      {data.general.ceremony_date
+                        ? dayjs(data.general.ceremony_date)
+                            .tz("Asia/Jakarta")
+                            .format("DD MMMM YYYY")
+                        : "{Date}"}
+                    </p>
+                  </div>
+                  <div data-aos="fade-right">
+                    <p className="py-2 text-xl">Pukul</p>
+                    <p className="text-xl pb-4">
+                      {data.general.ceremony_time
+                        ? data.general.ceremony_time.substring(0, 5)
+                        : "{Time}"}{" "}
+                      WIB - Selesai
+                    </p>
+                  </div>
+                  <h2
+                    data-aos="fade-down"
+                    className="text-3xl font-esthetic py-4"
+                  >
+                    Resepsi
+                  </h2>
+                  <div data-aos="fade-left">
+                    <p className="py-2 text-xl">
+                      {data.general.reception_date
+                        ? dayjs(data.general.reception_date)
+                            .tz("Asia/Jakarta")
+                            .format("dddd")
+                        : "{Days}"}
+                    </p>
+                    <p className="text-xl">
+                      {data.general.reception_date
+                        ? dayjs(data.general.reception_date)
+                            .tz("Asia/Jakarta")
+                            .format("DD MMMM YYYY")
+                        : "{Date}"}
+                    </p>
+                  </div>
+                  <div data-aos="fade-right">
+                    <p className="py-2 text-xl">Pukul</p>
+                    <p className="text-xl pb-4">
+                      {data.general.reception_time
+                        ? data.general.reception_time.substring(0, 5)
+                        : "{Time}"}{" "}
+                      WIB - Selesai
+                    </p>
+                  </div>
+                </>
+              )}
               <img
                 className="mx-auto h-20"
                 src="/images/flower-decor.png"
