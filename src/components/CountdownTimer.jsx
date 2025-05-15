@@ -18,19 +18,19 @@ function CountdownTimer({ date, time }) {
       return (
         <>
           <div className="py-4 inline">
-            <h2 className="text-xl md:text-3xl inline">{days}</h2>
+            <h2 className="text-xl md:text-3xl inline">{days || 0}</h2>
             <span className="text-xs inline"> Hari</span>
           </div>
           <div className="py-4 inline">
-            <h2 className="text-xl md:text-3xl inline">{hours}</h2>
+            <h2 className="text-xl md:text-3xl inline">{hours || 0}</h2>
             <span className="text-xs inline"> Jam</span>
           </div>
           <div className="py-4 inline">
-            <h2 className="text-xl md:text-3xl inline">{minutes}</h2>
+            <h2 className="text-xl md:text-3xl inline">{minutes || 0}</h2>
             <span className="text-xs inline"> Menit</span>
           </div>
           <div className="py-4 inline">
-            <h2 className="text-xl md:text-3xl inline">{seconds}</h2>
+            <h2 className="text-xl md:text-3xl inline">{seconds || 0}</h2>
             <span className="text-xs inline"> Detik</span>
           </div>
         </>
