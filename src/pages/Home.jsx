@@ -140,10 +140,7 @@ function Home() {
                 <Link
                   to="/auth"
                   data-aos="fade-up"
-                  className={
-                    "btn shadow-xl rounded-2xl btn-outline mt-2 bounce-btn bg-slate-500 " +
-                    (theme == "dark" ? "text-white" : " ")
-                  }
+                  className="btn shadow-xl rounded-2xl btn-outline mt-2 bounce-btn bg-slate-500 text-white"
                 >
                   <EnvelopeIcon className="h-4" />
                   Buat Undangan
