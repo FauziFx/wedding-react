@@ -433,13 +433,37 @@ function InvitationPage() {
                   <p className="px-4 md:inline">&</p>
                   {data.pengantin2.name || "{Name}"}
                 </h2>
-                <h2 className="text-2xl my-6 font-medium">
-                  {data.general.date
-                    ? dayjs(data.general.date)
-                        .tz("Asia/Jakarta")
-                        .format("dddd, DD MMMM YYYY")
-                    : "{Date}"}
-                </h2>
+
+                {data.general.ceremony_time == data.general.reception_time &&
+                data.general.ceremony_date == data.general.reception_date ? (
+                  <h2 className="text-2xl my-6 font-medium">
+                    {data.general.ceremony_date
+                      ? dayjs(data.general.ceremony_date)
+                          .tz("Asia/Jakarta")
+                          .format("dddd, DD MMMM YYYY")
+                      : "{Date}"}
+                  </h2>
+                ) : (
+                  <>
+                    <h2 className="text-2xl font-medium">
+                      <span className="font-light">Akad : </span>
+                      {data.general.ceremony_date
+                        ? dayjs(data.general.ceremony_date)
+                            .tz("Asia/Jakarta")
+                            .format("dddd, DD MMMM YYYY")
+                        : "{Date}"}
+                    </h2>
+                    <h2 className="text-2xl font-medium">
+                      <span className="font-light">Resepsi : </span>
+                      {data.general.reception_date
+                        ? dayjs(data.general.reception_date)
+                            .tz("Asia/Jakarta")
+                            .format("dddd, DD MMMM YYYY")
+                        : "{Date}"}
+                    </h2>
+                  </>
+                )}
+
                 <p className="py-2">Scroll Down</p>
                 <div className="flex justify-center">
                   <svg
