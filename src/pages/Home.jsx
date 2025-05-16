@@ -51,9 +51,10 @@ function Home() {
   }, [theme]);
 
   const texts = [
-    "Rasa pasti akan mengudara ketika jatuh cinta, tapi yang utama adalah menyikapinya, karena sebaik-baiknya cinta adalah pernikahan",
-    "Pedekate tanpa perencanaan cuma bakal mengancam kesejahteraan, dibebani makin banyak modal akomodasi, belum lagi persaingan ketat karena sasaran tembak banyak peminat.",
-    "Kalau belum ada niat dan belum siap, jangan buru-buru diungkap, Kamu kira gemuruh di dada akan reda setelah mengungkapkan rasa.",
+    `"A successful marriage requires falling in love many times, always with the same person." – Mignon McLaughlin`,
+    `"Marriage is not about age; it’s about finding the right person." – Sophia Bush`,
+    `"A great marriage is not when the 'perfect couple' comes together. It is when an imperfect couple learns to enjoy their differences." – Dave Meurer`,
+    `"A good marriage is one where each partner secretly suspects they got the better deal." – Anonymous`,
   ];
 
   const [index, setIndex] = useState(0);
@@ -168,6 +169,17 @@ function Home() {
               }
             >
               <div className="flex flex-col justify-center items-center">
+                <div className="w-11/12 md:w-4/5 mt-4 p-4">
+                  Support Us 💰
+                  <br />
+                  <a
+                    href="https://saweria.co/WinterAct17"
+                    target="_blank"
+                    className="btn"
+                  >
+                    Buy Me a Coffee ☕
+                  </a>
+                </div>
                 <div className="w-11/12 md:w-4/5 border-t my-4 mb-0 p-4 md:flex md:justify-between text-center">
                   <p className="text-sm">
                     Built With
