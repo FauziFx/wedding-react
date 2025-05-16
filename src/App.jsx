@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import ProtectedAuth from "./utils/ProtectedAuth";
 import Protected from "./utils/Protected";
+import SignUp from "./pages/SignUp";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route element={<ProtectedAuth />}>
         <Route path="/auth" element={<Login />} />
+        <Route path="/auth/sign-up" element={<SignUp />} />
       </Route>
       <Route path="/auth/*" element={<NotFoundPage />} />
       <Route element={<Protected />}>
