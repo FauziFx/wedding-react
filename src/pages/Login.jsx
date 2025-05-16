@@ -2,6 +2,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import React, { useState } from "react";
 import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
 
 function Login() {
   const API = import.meta.env.VITE_API_URL;
@@ -49,9 +50,15 @@ function Login() {
   };
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="w-full max-w-md p-8 space-y-4 rounded-xl shadow-xl border border-gray-500">
-        <h2 className="text-2xl font-bold text-center">Login</h2>
-        <form className="space-y-4" autoComplete="off" onSubmit={handleSubmit}>
+      <div className="w-full max-w-md mx-4 p-8 space-y-4 rounded-xl shadow-xl border border-gray-500">
+        <h1
+          className="text-4xl font-medium text-center"
+          style={{ fontSize: "40px" }}
+        >
+          <Link to="/">Kabar Cinta</Link>
+        </h1>
+        <h2 className="text-2xl font-bold text-center">Sign In</h2>
+        <form className="space-y-1" autoComplete="off" onSubmit={handleSubmit}>
           <div className="form-control">
             <label className="label">
               <span className="label-text">Email</span>
@@ -80,9 +87,16 @@ function Login() {
               required
             />
           </div>
-          <button type="submit" className="btn btn-primary w-full">
-            Login
-          </button>
+          &nbsp;
+          <div className="space-y-2">
+            <button type="submit" className="btn btn-primary w-full">
+              Sign In
+            </button>
+            <div className="text-center text-xs">-OR-</div>
+            <Link to="/auth/sign-up" className="btn mt-0 w-full">
+              Sign Up
+            </Link>
+          </div>
         </form>
       </div>
     </div>
