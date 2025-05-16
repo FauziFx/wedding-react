@@ -8,6 +8,7 @@ import {
   FireIcon,
   HomeIcon,
   QuestionMarkCircleIcon,
+  UserIcon,
   XCircleIcon,
 } from "@heroicons/react/24/solid";
 import React, { useState } from "react";
@@ -24,12 +25,15 @@ import FailedToLoad from "../components/FailedToLoad";
 import LoadingSekeleton from "../components/LoadingSekeleton";
 import api from "../utils/api";
 import CustomUrl from "../components/CustomUrl";
+import { jwtDecode } from "jwt-decode";
+import Users from "../components/Users";
 
 function Dashboard() {
   const API = import.meta.env.VITE_API_URL;
   const [menu, setMenu] = useState("home");
   const dataUser = JSON.parse(localStorage.getItem("config"));
   const [showAlert, setShowAlert] = useState("");
+  const token = jwtDecode(Cookies.get("token"));
 
   const handleMenu = (menu) => {
     setMenu(menu);
@@ -100,6 +104,17 @@ function Dashboard() {
                 Setting
               </a>
             </li>
+            {token.role == "admin" && (
+              <li>
+                <a
+                  className={"" + (menu == "users" && "active")}
+                  onClick={() => handleMenu("users")}
+                >
+                  <UserIcon className="h-5 w-5 mb-1" />
+                  Users
+                </a>
+              </li>
+            )}
           </ul>
           <hr className="my-2" />
           <ul className="menu bg-base-200 rounded-box">
@@ -230,6 +245,9 @@ function Dashboard() {
             />
             <BankAccount setShowAlert={setShowAlert} dataUser={dataUser} />
           </div>
+        )}
+        {menu == "users" && (
+          <Users setShowAlert={setShowAlert} dataUser={dataUser} />
         )}
       </div>
 
