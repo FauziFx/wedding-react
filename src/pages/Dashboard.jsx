@@ -61,7 +61,7 @@ function Dashboard() {
         <div className="flex-1">
           <h1>
             <a className="btn btn-ghost text-xl inline">
-              Wedding
+              Kabar Cinta
               <FireIcon className="inline h-8 w-8 mb-2 text-orange-800" />
             </a>
           </h1>
