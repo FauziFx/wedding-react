@@ -116,6 +116,7 @@ function BankAccount({ setShowAlert, dataUser }) {
                 onChange={(e) => handleChange(e)}
                 className="grow"
                 placeholder="Nama Rekening"
+                required
               />
             </label>
             <label className="input input-bordered input-sm md:input-md flex items-center gap-2 mb-2">
@@ -127,6 +128,7 @@ function BankAccount({ setShowAlert, dataUser }) {
                 onChange={(e) => handleChange(e)}
                 className="grow"
                 placeholder="Nama Bank"
+                required
               />
             </label>
             <label className="input input-bordered input-sm md:input-md flex items-center gap-2 mb-2">
@@ -149,6 +151,7 @@ function BankAccount({ setShowAlert, dataUser }) {
                 }}
                 className="grow"
                 placeholder="Nomor Rekening"
+                required
               />
             </label>
             <div className="text-right">
