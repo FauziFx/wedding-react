@@ -11,6 +11,7 @@ import {
   HeartIcon,
   PlayCircleIcon,
   EnvelopeOpenIcon,
+  ClockIcon,
 } from "@heroicons/react/24/solid";
 import Confetti from "react-confetti";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -235,6 +236,7 @@ function InvitationPage() {
         pengantin1: pengantin1,
         pengantin2: pengantin2,
         gallery: data.gallery,
+        story: data.story,
         bank: data.bankaccount,
       };
 
@@ -838,7 +840,7 @@ function InvitationPage() {
               (theme == "dark" ? "bg-[#0b0f14]" : "bg-white")
             }
           >
-            <div className="w-[99%] md:w-[80%] border border-gray-300 shadow-xl rounded-badge pt-8 pb-2 md:pb-8 md:py-10 px-2 md:px-20">
+            <div className="w-[99%] md:w-[60%] border border-gray-500 shadow-xl rounded-badge pt-8 pb-2 md:pb-8 md:py-4 px-4 md:px-20">
               <div
                 className={
                   "z-10 text-center w-full mb-10 " +
@@ -873,6 +875,56 @@ function InvitationPage() {
               <br />
             </div>
           </section>
+
+          {/* Section 5.2 Our Story */}
+          {data.story.length > 0 && (
+            <section
+              className={
+                "h-auto flex flex-col items-center relative overflow-hidden pb-10 px-2 " +
+                (theme == "dark" ? "bg-[#0b0f14]" : "bg-white")
+              }
+            >
+              <div className="w-[99%] md:w-[80%] shadow-xl rounded-badge md:pt-8 pb-2 md:pb-8 md:py-5 px-2 md:px-20">
+                <div
+                  className={
+                    "z-10 text-center w-full my-10 " +
+                    (theme == "dark" ? "text-white" : "text-gray-900")
+                  }
+                >
+                  <h1 className="font-esthetic text-4xl md:text-5xl">
+                    Our Story
+                  </h1>
+                </div>
+                <ul
+                  className={
+                    "timeline timeline-snap-icon max-md:timeline-compact timeline-vertical text-sm md:text-md " +
+                    (theme == "dark" ? "text-white" : "text-gray-900")
+                  }
+                >
+                  {data.story.map((item, index) => (
+                    <li key={index}>
+                      <div className="timeline-middle">
+                        <ClockIcon className="h-5 w-5" />
+                      </div>
+                      <div
+                        className={
+                          index % 2 === 0
+                            ? "timeline-start md:text-end"
+                            : "timeline-end"
+                        }
+                      >
+                        <time className="font-mono italic">{item.year}</time>
+                        <div className="text-lg font-black">{item.title}</div>
+                        <p className="pb-5">{item.text}</p>
+                      </div>
+                      <hr />
+                    </li>
+                  ))}
+                </ul>
+                <br />
+              </div>
+            </section>
+          )}
 
           {/* Section 6 Gift */}
           <section
