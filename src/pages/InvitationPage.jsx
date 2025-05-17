@@ -236,7 +236,7 @@ function InvitationPage() {
         pengantin1: pengantin1,
         pengantin2: pengantin2,
         gallery: data.gallery,
-        story: data.story,
+        story: data.story.reverse(),
         bank: data.bankaccount,
       };
 
@@ -431,8 +431,8 @@ function InvitationPage() {
                   className="text-4xl font-esthetic my-2 md:my-6 font-medium"
                   style={{ fontSize: "40px" }}
                 >
-                  {data.pengantin1.name || "{Name}"}
-                  <p className="px-4 md:inline">&</p>
+                  {data.pengantin1.name || "{Name}"} <br />
+                  <span className="px-4 md:inline">&</span> <br />
                   {data.pengantin2.name || "{Name}"}
                 </h2>
 
