@@ -180,11 +180,12 @@ function Story({ setShowAlert, dataUser, menu }) {
             </label>
             <label className="flex items-center gap-2 mb-2">
               <textarea
-                className="grow textarea textarea-bordered textarea-sm md:textarea-md"
+                className="flex-1 textarea textarea-bordered leading-1"
                 name="text"
                 value={dataStory.text}
                 onChange={(e) => handleChange(e)}
                 placeholder="Cerita"
+                rows={5}
                 required
               ></textarea>
             </label>
