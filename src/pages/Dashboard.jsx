@@ -27,6 +27,7 @@ import api from "../utils/api";
 import CustomUrl from "../components/CustomUrl";
 import { jwtDecode } from "jwt-decode";
 import Users from "../components/Users";
+import Story from "../components/Story";
 
 function Dashboard() {
   const API = import.meta.env.VITE_API_URL;
@@ -239,6 +240,11 @@ function Dashboard() {
               menu={menu}
             />
             <Gallery
+              setShowAlert={setShowAlert}
+              dataUser={dataUser}
+              menu={menu}
+            />
+            <Story
               setShowAlert={setShowAlert}
               dataUser={dataUser}
               menu={menu}
