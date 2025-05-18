@@ -6,12 +6,15 @@ import {
 } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import Cookies from "js-cookie";
 
 function CommentForm({ onSubmit, name, isLoading }) {
   let [searchParams, setSearchParams] = useSearchParams();
   const [comment, setComment] = useState({
-    name: "",
-    presence: "",
+    name: Cookies.get("user") ? JSON.parse(Cookies.get("user")).name : "",
+    presence: Cookies.get("user")
+      ? JSON.parse(Cookies.get("user")).presence
+      : "",
     text: "",
   });
 
