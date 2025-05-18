@@ -60,6 +60,7 @@ function InvitationPage() {
     { url: "https://placehold.co/300x200?text=2" },
     { url: "https://placehold.co/300x200?text=3" },
   ]);
+  let [searchParams, setSearchParams] = useSearchParams();
 
   // useRef Section
   const home = useRef(null);
@@ -100,6 +101,8 @@ function InvitationPage() {
       expires: 30,
       path: `/${url}`,
     });
+    setSearchParams({ to: user.name });
+    setGuest(user.name);
   }, [user]);
 
   const handleSubmitComment = async (comment) => {
@@ -144,8 +147,6 @@ function InvitationPage() {
       console.log(error);
     }
   };
-
-  let [searchParams] = useSearchParams();
 
   const handleReply = async (parentId, text) => {
     try {
