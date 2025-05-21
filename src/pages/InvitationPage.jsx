@@ -844,7 +844,7 @@ function InvitationPage() {
               <p className="py-4 px-2">
                 Merupakan suatu kebahagiaan dan kehormatan bagi kami, <br />
                 apabila Bapak/Ibu/Saudara/i, berkenan hadir untuk memberikan doa
-                restu kepada putra-putri kami.
+                restu kepada kami.
               </p>
               <p className="p-3">
                 Atas kehadiran dan doa restunya kami ucapkan terima kasih.
