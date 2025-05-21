@@ -47,7 +47,7 @@ function CustomUrl({ setShowAlert, dataUser, menu }) {
       const response = await api.get(API + "/url/" + dataUser.id);
       setDataUrl({
         id: response.data.data.id,
-        url: response.data.data.url,
+        url: window.location.origin + "/" + response.data.data.url,
       });
       return response.data.data;
     } catch (error) {
@@ -75,26 +75,31 @@ function CustomUrl({ setShowAlert, dataUser, menu }) {
       >
         <div className="my-2 text-center">
           <form action="" autoComplete="off" onSubmit={handleSubmit}>
-            <label className="input input-bordered flex items-center mb-2">
-              <span>{window.location.origin}/</span>
+            <label className="input input-bordered input-sm md:input-md flex items-center gap-2 mb-2">
+              {/* {window.location.origin}/ */}
               <input
-                value={dataUrl.url}
-                onChange={(e) =>
-                  setDataUrl((prev) => ({
-                    ...prev,
-                    url: e.target.value,
-                  }))
-                }
                 type="text"
+                value={dataUrl.url}
+                onChange={(e) => {
+                  if (e.target.value.includes(`${window.location.origin}/`)) {
+                    setDataUrl((prev) => ({
+                      ...prev,
+                      url: e.target.value,
+                    }));
+                  }
+                }}
                 className="grow"
                 placeholder="CustomURL"
+                required
               />
             </label>
             <div className="text-right">
               <button
                 type="submit"
                 className="btn btn-primary btn-sm md:btn-md"
-                disabled={loading}
+                disabled={
+                  loading || dataUrl.url === `${window.location.origin}/`
+                }
               >
                 {loading ? (
                   <span className="loading loading-spinner"></span>

@@ -158,7 +158,7 @@ Terima Kasih.`;
             </a>
           </h1>
         </div>
-        <div className="flex-none">{dataUser.name}</div>
+        <div className="flex-none mr-2">{dataUser.name}</div>
       </div>
       {/* Main */}
       <div className="grid md:grid-cols-4 pt-6">
