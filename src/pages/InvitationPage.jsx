@@ -12,6 +12,8 @@ import {
   PlayCircleIcon,
   EnvelopeOpenIcon,
   ClockIcon,
+  ChevronDoubleLeftIcon,
+  ChevronDoubleRightIcon,
 } from "@heroicons/react/24/solid";
 import Confetti from "react-confetti";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -39,9 +41,11 @@ function InvitationPage() {
   const API = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const { url } = useParams();
-  const [id, setId] = useState(
-    Cookies.get("id") && JSON.parse(Cookies.get("id"))
-  );
+  const [id, setId] = useState({
+    urlId: "",
+    url: "",
+    userId: "",
+  });
   const { mutate } = useSWRConfig();
   const search = window.location.search;
   const params = new URLSearchParams(search);
@@ -61,6 +65,17 @@ function InvitationPage() {
     { url: "https://placehold.co/300x200?text=3" },
   ]);
   let [searchParams, setSearchParams] = useSearchParams();
+  const [comments, setComments] = useState({});
+
+  const [page, setPage] = useState(1);
+  const limit = 10;
+
+  // Query string berdasarkan filter
+  const query = new URLSearchParams({ page, limit });
+
+  useEffect(() => {
+    fetchComment();
+  }, [page]);
 
   // useRef Section
   const home = useRef(null);
@@ -98,11 +113,15 @@ function InvitationPage() {
 
   useEffect(() => {
     Cookies.set("user", JSON.stringify(user), {
-      expires: 30,
+      expires: 14,
       path: `/${url}`,
     });
-    setSearchParams({ to: user.name });
-    setGuest(user.name);
+    if (user.name != "") {
+      setSearchParams({ to: user.name });
+      setGuest(user.name);
+    } else {
+      setGuest(searchParams.get("to"));
+    }
   }, [user]);
 
   const handleSubmitComment = async (comment) => {
@@ -119,14 +138,14 @@ function InvitationPage() {
       });
 
       if (response.data.success) {
-        mutate("/v1/get/comment");
+        fetchComment();
         const LS = {
           uuid: user.uuid,
           name: comment.name,
           presence: comment.presence,
         };
         Cookies.set("user", JSON.stringify(LS), {
-          expires: 30,
+          expires: 14,
           path: `/${url}`,
         });
         setUser(LS);
@@ -140,9 +159,9 @@ function InvitationPage() {
 
   const fetchComment = async () => {
     try {
-      const response = await api.get(API + "/comment/" + url);
-      const data = response.data.data;
-      return data;
+      const response = await api.get(`/comment/${url}?${query.toString()}`);
+      const data = response.data;
+      setComments(data);
     } catch (error) {
       console.log(error);
     }
@@ -150,16 +169,19 @@ function InvitationPage() {
 
   const handleReply = async (parentId, text) => {
     try {
-      await api.post(API + "/comment", {
+      const payload = {
         uuid: user.uuid,
         name: user.name || searchParams.get("to"),
         text: text,
         presence: user.presence,
         parentId: parentId,
-        userId: id.userId,
-        urlId: id.urlId,
-      });
-      mutate("/v1/get/comment");
+        userId: Number(id.userId),
+        urlId: Number(id.urlId),
+      };
+      console.log(payload);
+
+      await api.post(API + "/comment", payload);
+      fetchComment();
     } catch (error) {
       console.log(error);
     }
@@ -170,7 +192,7 @@ function InvitationPage() {
       await api.patch(API + "/comment/" + id, {
         text: text,
       });
-      mutate("/v1/get/comment");
+      fetchComment();
     } catch (error) {
       console.log(error);
     }
@@ -180,7 +202,7 @@ function InvitationPage() {
     try {
       setLoadingDelete(true);
       await api.delete(API + "/comment/" + id);
-      mutate("/v1/get/comment");
+      fetchComment();
       setLoadingDelete(false);
     } catch (error) {
       console.log(error);
@@ -225,9 +247,11 @@ function InvitationPage() {
         userId: data.userId,
       };
 
-      Cookies.set("id", JSON.stringify(dataId), {
-        path: `/${url}`,
-      });
+      setId(dataId);
+
+      // Cookies.set("id", JSON.stringify(dataId), {
+      //   path: `/${url}`,
+      // });
 
       const pengantin1 = data.person.find((e) => e.pos == 1); //Pos 1
       const pengantin2 = data.person.find((e) => e.pos == 2); //Pos 2
@@ -248,14 +272,9 @@ function InvitationPage() {
   };
 
   const { data, error, isLoading } = useSWR("/v1/get/invitation", fetcher);
-  const {
-    data: comments,
-    error: errorComment,
-    isLoading: isLoadingComment,
-  } = useSWR("/v1/get/comment", fetchComment);
 
-  if (error || errorComment) return <FailedToLoad />;
-  if (isLoading || isLoadingComment) return <LoadingSekeletonPage />;
+  if (error) return <FailedToLoad />;
+  if (isLoading) return <LoadingSekeletonPage />;
 
   return (
     <>
@@ -986,16 +1005,6 @@ function InvitationPage() {
                     isLoading={loadingComment}
                   />
                 </div>
-                {/* Pagination */}
-                {/* <div className="join rounded-xl my-4">
-                  <button className="join-item btn">
-                    <ChevronDoubleLeftIcon className="h-5 w-5" />
-                  </button>
-                  <button className="join-item btn">Page 1</button>
-                  <button className="join-item btn">
-                    <ChevronDoubleRightIcon className="h-5 w-5" />
-                  </button>
-                </div> */}
               </div>
             </div>
           </section>
@@ -1010,7 +1019,7 @@ function InvitationPage() {
           >
             {/* Comment List */}
             <CommentList
-              comments={comments}
+              comments={comments.data || []}
               onReply={handleReply}
               onEdit={handleEdit}
               onDelete={handleDelete}
@@ -1018,6 +1027,26 @@ function InvitationPage() {
               theme={theme}
               loadingDelete={loadingDelete}
             />
+            {/* Pagination */}
+            <div className="join rounded-xl my-4">
+              <button
+                className="join-item btn"
+                disabled={page <= 1}
+                onClick={() => setPage(page - 1)}
+              >
+                <ChevronDoubleLeftIcon className="h-5 w-5" />
+              </button>
+              <button className="join-item btn">
+                Page {page} of {comments.totalPages}
+              </button>
+              <button
+                className="join-item btn"
+                disabled={page >= comments.totalPages}
+                onClick={() => setPage(page + 1)}
+              >
+                <ChevronDoubleRightIcon className="h-5 w-5" />
+              </button>
+            </div>
           </section>
 
           {/* Section 8 footer */}
