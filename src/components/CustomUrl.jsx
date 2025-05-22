@@ -25,7 +25,7 @@ function CustomUrl({ setShowAlert, dataUser, menu }) {
     try {
       setLoading(true);
       const response = await api.patch(`${API}/url/${dataUrl.id}`, {
-        url: dataUrl.url,
+        url: dataUrl.url.split("/")[3],
       });
 
       if (response.data.success) {
@@ -36,6 +36,9 @@ function CustomUrl({ setShowAlert, dataUser, menu }) {
           setShowAlert("");
         }, 2000);
         return () => clearTimeout(timer);
+      } else {
+        alert(response.data.message);
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
