@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 function Login() {
   const API = import.meta.env.VITE_API_URL;
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -21,6 +22,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       const response = await axios.post(API + "/auth", {
         email: user.email,
         password: user.password,
@@ -28,7 +30,9 @@ function Login() {
 
       if (!response.data.success) {
         alert(response.data.message);
+        setIsLoading(false);
       } else {
+        setIsLoading(false);
         const data = response.data.data;
         const token = data.token;
         const decode = jwtDecode(token);
@@ -89,11 +93,23 @@ function Login() {
           </div>
           &nbsp;
           <div className="space-y-2">
-            <button type="submit" className="btn btn-primary w-full">
-              Sign In
+            <button
+              type="submit"
+              className="btn btn-primary w-full"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <span className="loading loading-spinner loading-sm"></span>
+              ) : (
+                "Sign In"
+              )}
             </button>
             <div className="text-center text-xs">-OR-</div>
-            <Link to="/auth/sign-up" className="btn mt-0 w-full">
+            <Link
+              to="/auth/sign-up"
+              className="btn mt-0 w-full"
+              disabled={isLoading}
+            >
               Sign Up
             </Link>
           </div>
