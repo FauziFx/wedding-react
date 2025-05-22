@@ -39,9 +39,8 @@ function Dashboard() {
   const token = jwtDecode(Cookies.get("token"));
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
-  const customUrl = localStorage.getItem("customUrl") || "";
-  const newLink = `${window.location.origin}/${customUrl}?to=`;
-  const [link, setLink] = useState(newLink);
+  const [customUrl, setCustomUrl] = useState("");
+  const [link, setLink] = useState("");
   const [person, setPerson] = useState([]);
   const [copy, setCopy] = useState(false);
   const [linkWA, setLinkWA] = useState("");
@@ -56,7 +55,7 @@ ${person[0]?.name} & ${person[1]?.name}
 
 Berikut link undangan kami untuk info lengkap dari acara bisa kunjungi :
  
-${link}
+{link}
 
 Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.
 
@@ -79,11 +78,16 @@ Terima Kasih.`;
   };
 
   const handleShare = () => {
-    setMessage(msg);
+    let newMsg = msg.replace(
+      "{link}",
+      `${window.location.origin}/${customUrl}?to=`
+    );
+    setMessage(newMsg);
     const linkSend = `https://api.whatsapp.com/send?text=${encodeURIComponent(
-      msg
+      newMsg
     )}`;
     setLinkWA(linkSend);
+    document.getElementById("modal_share").showModal();
   };
 
   const handleChangeName = (e) => {
@@ -95,7 +99,7 @@ Terima Kasih.`;
         `${window.location.origin}/${customUrl}?to=${encodeURIComponent(name)}`,
         `${window.location.origin}/${customUrl}?to=${encodeURIComponent(value)}`
       );
-    setLink(newLink);
+    setLink(`${window.location.origin}/${customUrl}?to=`);
     setName(value);
     setMessage(newMsg);
     const linkSend = `https://api.whatsapp.com/send?text=${encodeURIComponent(
@@ -134,6 +138,7 @@ Terima Kasih.`;
       const response = await api.get("/dashboard/" + dataUser.id);
       const responsePeople = await api.get("/person/" + dataUser.id);
       localStorage.setItem("customUrl", response.data.data.url);
+      setCustomUrl(response.data.data.url);
       setPerson(responsePeople.data.data);
       return response.data.data;
     } catch (error) {
@@ -284,13 +289,7 @@ Terima Kasih.`;
             </div>
             <div className="p-4 shadow-xl rounded-xl text-center">
               Yuk bagikan undangan ini biar banyak komentarnya <br />
-              <button
-                className="btn btn-success"
-                onClick={() => {
-                  document.getElementById("modal_share").showModal();
-                  handleShare();
-                }}
-              >
+              <button className="btn btn-success" onClick={() => handleShare()}>
                 <span>Bagikan Undangan</span> <ShareIcon className="h-5 w-5" />
               </button>
             </div>
