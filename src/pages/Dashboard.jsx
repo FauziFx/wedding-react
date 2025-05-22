@@ -51,7 +51,9 @@ Yth.
 
 Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i, teman sekaligus sahabat, untuk menghadiri acara pernikahan kami :
 
-${person[0]?.name} & ${person[1]?.name}
+${person[0]?.name || "{Nama Pengantin}"} & ${
+    person[1]?.name || "{Nama Pengantin}"
+  }
 
 Berikut link undangan kami untuk info lengkap dari acara bisa kunjungi :
  
