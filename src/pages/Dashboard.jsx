@@ -227,7 +227,7 @@ Terima Kasih.`;
                   localStorage.getItem("customUrl") || ""
                 }`}
                 target="_blank"
-                className="btn btn-primary pt-1 btn-sm text-[#1d232a] rounded-badge"
+                className="btn btn-primary pt-1 btn-sm rounded-badge"
               >
                 Visit Web <ArrowUpRightIcon className="h-4 w-4 mb-1 inline" />
               </a>
@@ -308,7 +308,7 @@ Terima Kasih.`;
                   localStorage.getItem("customUrl") || ""
                 }`}
                 target="_blank"
-                className="btn btn-primary pt-1 btn-sm text-[#1d232a] rounded-badge"
+                className="btn btn-primary pt-1 btn-sm rounded-badge"
               >
                 Visit Web <ArrowUpRightIcon className="h-4 w-4 mb-1 inline" />
               </a>
