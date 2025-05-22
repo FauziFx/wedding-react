@@ -358,11 +358,11 @@ function InvitationPage() {
                 />
               </div>
               <h2
-                className="text-4xl font-esthetic mb-4 font-medium"
+                className="text-4xl font-esthetic my-2 md:my-6 font-medium"
                 style={{ fontSize: "40px" }}
               >
-                {data.pengantin1.name || "{Name}"}
-                <p className="text-6xl md:inline px-4">&</p>
+                {data.pengantin1.name || "{Name}"} <br />
+                <span className="px-4 md:inline">&</span> <br />
                 {data.pengantin2.name || "{Name}"}
               </h2>
               <p>Kepada Yth Bapak/Ibu/Saudara/i</p>
