@@ -237,6 +237,9 @@ function InvitationPage() {
       const response = await api.get(
         API + "/invitation/" + url + "?include=true"
       );
+      if (!response.data.success) {
+        return navigate("/");
+      }
       const data = response.data.data;
       if (!data) {
         navigate("/");
@@ -248,10 +251,6 @@ function InvitationPage() {
       };
 
       setId(dataId);
-
-      // Cookies.set("id", JSON.stringify(dataId), {
-      //   path: `/${url}`,
-      // });
 
       const pengantin1 = data.person.find((e) => e.pos == 1); //Pos 1
       const pengantin2 = data.person.find((e) => e.pos == 2); //Pos 2
@@ -281,8 +280,8 @@ function InvitationPage() {
       <audio
         id="audio_tag"
         src={
-          data.general.music
-            ? API + "/music/" + data.general.music
+          data?.general?.music
+            ? API + "/music/" + data?.general?.music
             : API + "/music/default.mp3"
         }
       />
@@ -341,8 +340,8 @@ function InvitationPage() {
                 <div className="w-56 rounded-full border-2 border-orange-600 shadow-2xl">
                   <img
                     src={
-                      data.general.image
-                        ? API + "/images/" + data.general.image
+                      data?.general?.image
+                        ? API + "/images/" + data?.general?.image
                         : "https://placehold.co/200x200?text=Image"
                     }
                     loading="lazy"
@@ -361,9 +360,9 @@ function InvitationPage() {
                 className="text-4xl font-esthetic my-2 md:my-6 font-medium"
                 style={{ fontSize: "40px" }}
               >
-                {data.pengantin1.name || "{Name}"} <br />
+                {data?.pengantin1?.name || "{Name}"} <br />
                 <span className="px-4 md:inline">&</span> <br />
-                {data.pengantin2.name || "{Name}"}
+                {data?.pengantin2?.name || "{Name}"}
               </h2>
               <p>Kepada Yth Bapak/Ibu/Saudara/i</p>
               {guest && (
@@ -394,8 +393,8 @@ function InvitationPage() {
             className="relative w-full h-auto md:h-[85vh] bg-cover bg-center"
             style={{
               backgroundImage: `url('${
-                data.general.bg_image
-                  ? API + "/images/" + data.general.bg_image
+                data?.general?.bg_image
+                  ? API + "/images/" + data?.general?.bg_image
                   : "https://placehold.co/400x400?text=BgImage"
               }')`,
             }}
@@ -431,8 +430,8 @@ function InvitationPage() {
                   <div className="w-56 rounded-full border-2 border-orange-600 shadow-xl">
                     <img
                       src={
-                        data.general.image
-                          ? API + "/images/" + data.general.image
+                        data?.general?.image
+                          ? API + "/images/" + data?.general?.image
                           : "https://placehold.co/200x200?text=Image"
                       }
                       loading="lazy"
@@ -451,16 +450,18 @@ function InvitationPage() {
                   className="text-4xl font-esthetic my-2 md:my-6 font-medium"
                   style={{ fontSize: "40px" }}
                 >
-                  {data.pengantin1.name || "{Name}"} <br />
+                  {data?.pengantin1?.name || "{Name}"} <br />
                   <span className="px-4 md:inline">&</span> <br />
-                  {data.pengantin2.name || "{Name}"}
+                  {data?.pengantin2?.name || "{Name}"}
                 </h2>
 
-                {data.general.ceremony_time == data.general.reception_time &&
-                data.general.ceremony_date == data.general.reception_date ? (
+                {data?.general?.ceremony_time ==
+                  data?.general?.reception_time &&
+                data?.general?.ceremony_date ==
+                  data?.general?.reception_date ? (
                   <h2 className="text-2xl my-6 font-medium">
-                    {data.general.ceremony_date
-                      ? dayjs(data.general.ceremony_date)
+                    {data?.general?.ceremony_date
+                      ? dayjs(data?.general?.ceremony_date)
                           .tz("Asia/Jakarta")
                           .format("dddd, DD MMMM YYYY")
                       : "{Date}"}
@@ -469,16 +470,16 @@ function InvitationPage() {
                   <>
                     <h2 className="text-2xl font-medium">
                       <span className="font-light">Akad : </span>
-                      {data.general.ceremony_date
-                        ? dayjs(data.general.ceremony_date)
+                      {data?.general?.ceremony_date
+                        ? dayjs(data?.general?.ceremony_date)
                             .tz("Asia/Jakarta")
                             .format("dddd, DD MMMM YYYY")
                         : "{Date}"}
                     </h2>
                     <h2 className="text-2xl font-medium">
                       <span className="font-light">Resepsi : </span>
-                      {data.general.reception_date
-                        ? dayjs(data.general.reception_date)
+                      {data?.general?.reception_date
+                        ? dayjs(data?.general?.reception_date)
                             .tz("Asia/Jakarta")
                             .format("dddd, DD MMMM YYYY")
                         : "{Date}"}
@@ -550,8 +551,8 @@ function InvitationPage() {
                 <div className="w-56 rounded-full border-4 border-white shadow-xl">
                   <img
                     src={
-                      data.pengantin1.image
-                        ? API + "/images/" + data.pengantin1.image
+                      data?.pengantin1?.image
+                        ? API + "/images/" + data?.pengantin1?.image
                         : "https://placehold.co/200x200?text=Img1"
                     }
                     loading="lazy"
@@ -560,15 +561,15 @@ function InvitationPage() {
               </div>
               <div data-aos="fade-down">
                 <h2 className="text-4xl font-esthetic py-2 capitalize">
-                  {data.pengantin1.name || "{Name}"}
+                  {data?.pengantin1?.name || "{Name}"}
                 </h2>
                 <p className="pt-4 text-lg">
-                  Putra ke {data.pengantin1.child_number || "{Number}"}
+                  Putra ke {data?.pengantin1?.child_number || "{Number}"}
                 </p>
                 <p className="pb-4 capitalize">
-                  Bapak {data.pengantin1.father || "{Name}"}
+                  Bapak {data?.pengantin1?.father || "{Name}"}
                   <span className="lowercase"> dan </span>
-                  Ibu {data.pengantin1.mother || "{Name}"}
+                  Ibu {data?.pengantin1?.mother || "{Name}"}
                 </p>
               </div>
               <h1 className="text-6xl font-esthetic py-5">&</h1>
@@ -576,8 +577,8 @@ function InvitationPage() {
                 <div className="w-56 rounded-full border-4 border-white shadow-xl">
                   <img
                     src={
-                      data.pengantin2.image
-                        ? API + "/images/" + data.pengantin2.image
+                      data?.pengantin2?.image
+                        ? API + "/images/" + data?.pengantin2?.image
                         : "https://placehold.co/200x200?text=Img2"
                     }
                     loading="lazy"
@@ -586,15 +587,15 @@ function InvitationPage() {
               </div>
               <div data-aos="fade-down">
                 <h2 className="text-4xl font-esthetic py-2 capitalize">
-                  {data.pengantin2.name || "{Name}"}
+                  {data?.pengantin2?.name || "{Name}"}
                 </h2>
                 <p className="pt-4 text-lg">
-                  Putra ke {data.pengantin2.child_number || "{Number}"}
+                  Putra ke {data?.pengantin2?.child_number || "{Number}"}
                 </p>
                 <p className="pb-4 capitalize">
-                  Bapak {data.pengantin2.father || "{Name}"}
+                  Bapak {data?.pengantin2?.father || "{Name}"}
                   <span className="lowercase"> dan </span>
-                  Ibu {data.pengantin2.mother || "{Name}"}
+                  Ibu {data?.pengantin2?.mother || "{Name}"}
                 </p>
               </div>
             </div>
@@ -693,8 +694,8 @@ function InvitationPage() {
             >
               {/* Countdown */}
               <CountdownTimer
-                date={data.general.ceremony_date}
-                time={data.general.ceremony_time}
+                date={data?.general?.ceremony_date}
+                time={data?.general?.ceremony_time}
               />
             </div>
             <div
@@ -707,8 +708,8 @@ function InvitationPage() {
                 Dengan memohon rahmat dan ridho Allah Subhanahu Wa Ta&apos;ala,
                 insyaAllah kami akan menyelenggarakan acara:
               </p>
-              {data.general.ceremony_time == data.general.reception_time &&
-              data.general.ceremony_date == data.general.reception_date ? (
+              {data?.general?.ceremony_time == data?.general?.reception_time &&
+              data?.general?.ceremony_date == data?.general?.reception_date ? (
                 <>
                   <h2
                     data-aos="fade-down"
@@ -718,15 +719,15 @@ function InvitationPage() {
                   </h2>
                   <div data-aos="fade-left">
                     <p className="py-2 text-xl">
-                      {data.general.ceremony_date
-                        ? dayjs(data.general.ceremony_date)
+                      {data?.general?.ceremony_date
+                        ? dayjs(data?.general?.ceremony_date)
                             .tz("Asia/Jakarta")
                             .format("dddd")
                         : "{Days}"}
                     </p>
                     <p className="text-xl">
-                      {data.general.ceremony_date
-                        ? dayjs(data.general.ceremony_date)
+                      {data?.general?.ceremony_date
+                        ? dayjs(data?.general?.ceremony_date)
                             .tz("Asia/Jakarta")
                             .format("DD MMMM YYYY")
                         : "{Date}"}
@@ -735,8 +736,8 @@ function InvitationPage() {
                   <div data-aos="fade-right">
                     <p className="py-2 text-xl">Pukul</p>
                     <p className="text-xl pb-4">
-                      {data.general.ceremony_time
-                        ? data.general.ceremony_time.substring(0, 5)
+                      {data?.general?.ceremony_time
+                        ? data?.general?.ceremony_time.substring(0, 5)
                         : "{Time}"}{" "}
                       WIB - Selesai
                     </p>
@@ -752,15 +753,15 @@ function InvitationPage() {
                   </h2>
                   <div data-aos="fade-left">
                     <p className="py-2 text-xl">
-                      {data.general.ceremony_date
-                        ? dayjs(data.general.ceremony_date)
+                      {data?.general?.ceremony_date
+                        ? dayjs(data?.general?.ceremony_date)
                             .tz("Asia/Jakarta")
                             .format("dddd")
                         : "{Days}"}
                     </p>
                     <p className="text-xl">
-                      {data.general.ceremony_date
-                        ? dayjs(data.general.ceremony_date)
+                      {data?.general?.ceremony_date
+                        ? dayjs(data?.general?.ceremony_date)
                             .tz("Asia/Jakarta")
                             .format("DD MMMM YYYY")
                         : "{Date}"}
@@ -769,8 +770,8 @@ function InvitationPage() {
                   <div data-aos="fade-right">
                     <p className="py-2 text-xl">Pukul</p>
                     <p className="text-xl pb-4">
-                      {data.general.ceremony_time
-                        ? data.general.ceremony_time.substring(0, 5)
+                      {data?.general?.ceremony_time
+                        ? data?.general?.ceremony_time.substring(0, 5)
                         : "{Time}"}{" "}
                       WIB - Selesai
                     </p>
@@ -783,15 +784,15 @@ function InvitationPage() {
                   </h2>
                   <div data-aos="fade-left">
                     <p className="py-2 text-xl">
-                      {data.general.reception_date
-                        ? dayjs(data.general.reception_date)
+                      {data?.general?.reception_date
+                        ? dayjs(data?.general?.reception_date)
                             .tz("Asia/Jakarta")
                             .format("dddd")
                         : "{Days}"}
                     </p>
                     <p className="text-xl">
-                      {data.general.reception_date
-                        ? dayjs(data.general.reception_date)
+                      {data?.general?.reception_date
+                        ? dayjs(data?.general?.reception_date)
                             .tz("Asia/Jakarta")
                             .format("DD MMMM YYYY")
                         : "{Date}"}
@@ -800,8 +801,8 @@ function InvitationPage() {
                   <div data-aos="fade-right">
                     <p className="py-2 text-xl">Pukul</p>
                     <p className="text-xl pb-4">
-                      {data.general.reception_time
-                        ? data.general.reception_time.substring(0, 5)
+                      {data?.general?.reception_time
+                        ? data?.general?.reception_time.substring(0, 5)
                         : "{Time}"}{" "}
                       WIB - Selesai
                     </p>
@@ -816,10 +817,10 @@ function InvitationPage() {
               <div data-aos="fade-down">
                 <h2 className="text-3xl font-esthetic py-4">Bertempat Di</h2>
                 <p className="capitalize">
-                  {data.general.address || "{Address}"}
+                  {data?.general?.address || "{Address}"}
                 </p>
                 <a
-                  href={data.general.maps || "https://www.google.co.id/maps"}
+                  href={data?.general?.maps || "https://www.google.co.id/maps"}
                   target="_blank"
                   className={
                     "btn btn-outline btn-sm rounded-full shadow-xl my-4 " +
@@ -871,8 +872,8 @@ function InvitationPage() {
               </div>
               <div data-aos="zoom-in-up">
                 <Carousel>
-                  {data.gallery.length != 0
-                    ? data.gallery.map(({ image }, key) => (
+                  {data?.gallery?.length != 0
+                    ? data?.gallery?.map(({ image }, key) => (
                         <div key={key}>
                           <img
                             src={API + "/images/" + image}
@@ -897,7 +898,7 @@ function InvitationPage() {
           </section>
 
           {/* Section 5.2 Our Story */}
-          {data.story.length > 0 && (
+          {data?.story?.length > 0 && (
             <section
               className={
                 "h-auto flex flex-col items-center relative overflow-hidden pb-10 px-2 " +
@@ -921,7 +922,7 @@ function InvitationPage() {
                     (theme == "dark" ? "text-white" : "text-gray-900")
                   }
                 >
-                  {data.story.map((item, index) => (
+                  {data?.story?.map((item, index) => (
                     <li key={index}>
                       <div className="timeline-middle">
                         <ClockIcon className="h-5 w-5" />
@@ -973,7 +974,7 @@ function InvitationPage() {
               </p>
             </div>
 
-            {data.bank && <BankAccountList data={data.bank} theme={theme} />}
+            {data?.bank && <BankAccountList data={data?.bank} theme={theme} />}
           </section>
           {/* Section 7 Comment Form */}
           <section
@@ -1019,7 +1020,7 @@ function InvitationPage() {
           >
             {/* Comment List */}
             <CommentList
-              comments={comments.data || []}
+              comments={comments?.data || []}
               onReply={handleReply}
               onEdit={handleEdit}
               onDelete={handleDelete}
@@ -1037,11 +1038,11 @@ function InvitationPage() {
                 <ChevronDoubleLeftIcon className="h-5 w-5" />
               </button>
               <button className="join-item btn">
-                Page {page} of {comments.totalPages}
+                Page {page} of {comments?.totalPages}
               </button>
               <button
                 className="join-item btn"
-                disabled={page >= comments.totalPages}
+                disabled={page >= comments?.totalPages}
                 onClick={() => setPage(page + 1)}
               >
                 <ChevronDoubleRightIcon className="h-5 w-5" />
