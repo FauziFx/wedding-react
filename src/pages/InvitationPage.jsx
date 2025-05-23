@@ -317,12 +317,12 @@ function InvitationPage() {
           <img
             src="/images/flower-r.png"
             className="absolute top-0 right-0 w-56 md:w-96 opacity-70"
-            loading="lazy"
+            loading="eager"
           />
           <img
             src="/images/flower-l.png"
             className="absolute bottom-0 left-0 w-72 md:w-96 opacity-70"
-            loading="lazy"
+            loading="eager"
           />
           <div className="hero-content text-center">
             <div
@@ -344,14 +344,14 @@ function InvitationPage() {
                         ? API + "/images/" + data?.general?.image
                         : "https://placehold.co/200x200?text=Image"
                     }
-                    loading="lazy"
+                    loading="eager"
                   />
                 </div>
               </div>
               <div className="px-4 mb-2 -mt-24 w-full flex justify-center relative z-50">
                 <img
                   src="/images/decor1.png"
-                  loading="lazy"
+                  loading="eager"
                   alt=""
                   className="w-56"
                 />
@@ -402,7 +402,7 @@ function InvitationPage() {
             <img
               src="/images/flower-r.png"
               className="absolute top-0 right-0 w-48 z-10 opacity-70"
-              loading="lazy"
+              loading="eager"
             />
             <div
               className={
@@ -434,14 +434,14 @@ function InvitationPage() {
                           ? API + "/images/" + data?.general?.image
                           : "https://placehold.co/200x200?text=Image"
                       }
-                      loading="lazy"
+                      loading="eager"
                     />
                   </div>
                 </div>
                 <div className="px-4 mb-2 -mt-28 w-full flex justify-center relative z-50">
                   <img
                     src="/images/decor1.png"
-                    loading="lazy"
+                    loading="eager"
                     alt=""
                     className="w-56"
                   />
@@ -555,7 +555,7 @@ function InvitationPage() {
                         ? API + "/images/" + data?.pengantin1?.image
                         : "https://placehold.co/200x200?text=Img1"
                     }
-                    loading="lazy"
+                    loading="eager"
                   />
                 </div>
               </div>
@@ -581,7 +581,7 @@ function InvitationPage() {
                         ? API + "/images/" + data?.pengantin2?.image
                         : "https://placehold.co/200x200?text=Img2"
                     }
-                    loading="lazy"
+                    loading="eager"
                   />
                 </div>
               </div>
@@ -812,7 +812,7 @@ function InvitationPage() {
               <img
                 className="mx-auto h-20"
                 src="/images/flower-decor.png"
-                loading="lazy"
+                loading="eager"
               />
               <div data-aos="fade-down">
                 <h2 className="text-3xl font-esthetic py-4">Bertempat Di</h2>
@@ -877,7 +877,7 @@ function InvitationPage() {
                         <div key={key}>
                           <img
                             src={API + "/images/" + image}
-                            loading="lazy"
+                            loading="eager"
                             className="rounded-xl"
                           />
                         </div>
@@ -886,7 +886,7 @@ function InvitationPage() {
                         <div key={key}>
                           <img
                             src={url}
-                            loading="lazy"
+                            loading="eager"
                             className="rounded-xl"
                           />
                         </div>

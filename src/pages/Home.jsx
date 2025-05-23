@@ -81,7 +81,7 @@ function Home() {
             <img
               src="/images/flower-r.png"
               className="absolute top-0 right-0 w-48 z-10 opacity-70"
-              loading="lazy"
+              loading="eager"
             />
             <div
               className={
@@ -122,7 +122,7 @@ function Home() {
                 >
                   <img
                     src="/images/decor1.png"
-                    loading="lazy"
+                    loading="eager"
                     alt=""
                     className="w-48 md:w-64"
                   />
