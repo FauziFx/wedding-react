@@ -7,11 +7,15 @@ import Login from "./pages/Login";
 import ProtectedAuth from "./utils/ProtectedAuth";
 import Protected from "./utils/Protected";
 import SignUp from "./pages/SignUp";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsConditions from "./pages/TermsConditions";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/terms-conditions" element={<TermsConditions />} />
       <Route element={<ProtectedAuth />}>
         <Route path="/auth" element={<Login />} />
         <Route path="/auth/sign-up" element={<SignUp />} />

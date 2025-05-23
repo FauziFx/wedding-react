@@ -15,16 +15,7 @@ dayjs.locale("id");
 import Wave from "../components/Wave";
 import { Link } from "react-router-dom";
 
-function Home() {
-  const API = import.meta.env.VITE_API_URL;
-
-  const scrollIntoView = (elementRef) => {
-    window.scrollTo({
-      top: elementRef.current.offsetTop,
-      behavior: "smooth",
-    });
-  };
-
+function PrivacyPolicy() {
   useEffect(() => {
     document.title = `The Wedding`;
   }, []);
@@ -50,23 +41,9 @@ function Home() {
     document.querySelector("html").setAttribute("data-theme", localTheme);
   }, [theme]);
 
-  const texts = [
-    `"A successful marriage requires falling in love many times, always with the same person." – Mignon McLaughlin`,
-    `"Marriage is not about age; it’s about finding the right person." – Sophia Bush`,
-    `"A great marriage is not when the 'perfect couple' comes together. It is when an imperfect couple learns to enjoy their differences." – Dave Meurer`,
-    `"A good marriage is one where each partner secretly suspects they got the better deal." – Anonymous`,
-  ];
-
-  const [index, setIndex] = useState(0);
-
   useEffect(() => {
     AOS.init({ duration: 1500, easing: "ease-out-cubic" });
     AOS.refresh();
-    const interval = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % texts.length);
-    }, 7000);
-
-    return () => clearInterval(interval); // Bersihkan interval saat komponen unmount
   }, []);
 
   return (
@@ -95,7 +72,7 @@ function Home() {
               <div
                 className={
                   (theme == "dark" ? "text-white" : "text-gray-800") +
-                  " max-w-md text-center relative"
+                  " max-w-md text-center relative p-2"
                 }
               >
                 <h1
@@ -105,47 +82,20 @@ function Home() {
                 >
                   <Link to="/">Kabar Cinta</Link>
                 </h1>
-                <div data-aos="fade-up" className="avatar my-6 mx-4">
-                  <div className="md:h-96 rounded-3xl border-2 border-orange-600 shadow-xl flex items-center justify-center">
-                    <p
-                      key={index}
-                      data-aos="fade-up"
-                      className="pt-12 md:pt-20 px-4 leading-[1.8]"
-                    >
-                      {texts[index]}
-                    </p>
-                  </div>
-                </div>
-                <div
-                  data-aos="fade-up"
-                  className="px-4 mb-2 -mt-24 md:-mt-28 w-full flex justify-center relative z-50"
-                >
-                  <img
-                    src="/images/decor1.png"
-                    loading="lazy"
-                    alt=""
-                    className="w-48 md:w-64"
-                  />
-                </div>
-                <a
-                  href="/demo"
-                  target="_blank"
-                  data-aos="fade-up"
-                  className={
-                    "btn shadow-xl rounded-2xl btn-outline mt-2 bounce-btn mr-2 " +
-                    (theme == "dark" ? "text-white" : " ")
-                  }
-                >
-                  <EyeIcon className="h-4" /> Preview
-                </a>
-                <Link
-                  to="/auth"
-                  data-aos="fade-up"
-                  className="btn shadow-xl rounded-2xl btn-outline mt-2 bounce-btn bg-slate-500 text-white"
-                >
-                  <EnvelopeIcon className="h-4" />
-                  Buat Undangan
-                </Link>
+                <h1 className="bg-gray-500 w-full my-10 p-4 rounded">
+                  Kebijakan Privasi
+                </h1>
+                <p className="text-justify p-4">
+                  Kami berkomitmen untuk melindungi privasi pengguna kami. Data
+                  yang dikumpulkan, termasuk nama, foto, dan informasi terkait
+                  undangan, digunakan semata-mata untuk keperluan pembuatan dan
+                  pengelolaan undangan digital. Kami tidak akan membagiakn
+                  informasi pribadi pengguna kepada pihak ketiga tanpa izin.{" "}
+                  <br />
+                  <br />
+                  jika Anda memiliki pertanyaan terkait privasi, silahkan
+                  hubungi kami melalui ahmadffauzi0@gmail.com
+                </p>
               </div>
             </div>
           </section>
@@ -247,4 +197,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default PrivacyPolicy;
