@@ -34,6 +34,7 @@ function ChangePassword({ logout, setShowAlert, dataUser }) {
 
       if (!response.data.success) {
         alert(response.data.message);
+        setLoading(false);
       } else {
         setShowAlert("Password Changed!");
         setData({
