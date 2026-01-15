@@ -30,7 +30,7 @@ function CustomUrl({ setShowAlert, dataUser, menu }) {
 
       if (response.data.success) {
         setShowAlert("Saved");
-        localStorage.setItem("customUrl", dataUrl.url);
+        localStorage.setItem("customUrl", dataUrl.url.split("/")[3]);
         setLoading(false);
         const timer = setTimeout(() => {
           setShowAlert("");
