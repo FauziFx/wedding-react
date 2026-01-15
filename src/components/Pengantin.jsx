@@ -142,6 +142,9 @@ function Pengantin({ setShowAlert, dataUser, menu }) {
           setShowAlert("");
         }, 2000);
         return () => clearTimeout(timer);
+      } else {
+        setLoading1(false);
+        setLoading2(false);
       }
     } catch (error) {
       console.log(error);
