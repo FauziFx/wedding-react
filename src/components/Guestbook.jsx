@@ -185,7 +185,7 @@ Terima Kasih.`;
                   whatsapp: onlyNumbers,
                 }));
               }}
-              placeholder="Whatsapp"
+              placeholder="857xxxxxx"
               required
             />
           </label>
