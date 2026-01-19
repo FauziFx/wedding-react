@@ -105,7 +105,7 @@ function CommentForm({ onSubmit, name, isLoading }) {
       </label>
       <button
         type="submit"
-        className="btn btn-primary my-4 text-white rounded-xl w-full btn-sm"
+        className="btn bg-blue-500 my-4 text-white rounded-xl w-full btn-sm"
         disabled={isLoading}
       >
         {isLoading ? (

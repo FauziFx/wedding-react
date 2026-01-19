@@ -134,7 +134,7 @@ function Comment({
             {comment.text}
           </p>
           <div className="flex">
-            {comment.Replies && (
+            {comment.replies && (
               <button
                 className="btn btn-xs btn-outline rounded-badge"
                 onClick={() => {
@@ -205,8 +205,8 @@ function Comment({
       )}
 
       {/* Render Replies */}
-      {comment.Replies &&
-        comment.Replies.map((reply) => (
+      {comment.replies &&
+        comment.replies.map((reply) => (
           <Comment
             key={reply.id}
             comment={reply}
