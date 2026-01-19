@@ -142,6 +142,7 @@ Terima Kasih.`;
       localStorage.setItem("customUrl", response.data.data.url);
       setCustomUrl(response.data.data.url);
       setPerson(responsePeople.data.data);
+
       return response.data.data;
     } catch (error) {
       console.log(error);
@@ -256,7 +257,7 @@ Terima Kasih.`;
                 <div className="grid grid-cols-4">
                   <div className="col-span-3">
                     <p>
-                      <strong>Present</strong> <br /> {data.hadir || 0}
+                      <strong>Present</strong> <br /> {data.present || 0}
                     </p>
                   </div>
                   <div className="content-center">
@@ -268,7 +269,7 @@ Terima Kasih.`;
                 <div className="grid grid-cols-4">
                   <div className="col-span-3">
                     <p>
-                      <strong>Absent</strong> <br /> {data.tidak || 0}
+                      <strong>Absent</strong> <br /> {data.absent || 0}
                     </p>
                   </div>
                   <div className="content-center">
@@ -280,7 +281,7 @@ Terima Kasih.`;
                 <div className="grid grid-cols-4">
                   <div className="col-span-3">
                     <p>
-                      <strong>Tentative</strong> <br /> {data.mungkin || 0}
+                      <strong>Tentative</strong> <br /> {data.tentative || 0}
                     </p>
                   </div>
                   <div className="content-center">
