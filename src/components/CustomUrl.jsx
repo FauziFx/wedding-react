@@ -60,7 +60,7 @@ function CustomUrl({ setShowAlert, dataUser, menu }) {
 
   const { data, error, isLoading } = useSWRImmutable(
     "/v1/get/custsomUrl",
-    fetcher
+    fetcher,
   );
 
   if (error) return <FailedToLoad />;
