@@ -10,6 +10,8 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 dayjs.extend(utc);
 dayjs.extend(timezone);
+import "dayjs/locale/id";
+dayjs.locale("id");
 
 function General({ setShowAlert, dataUser, menu }) {
   const API = import.meta.env.VITE_API_URL;
@@ -18,42 +20,25 @@ function General({ setShowAlert, dataUser, menu }) {
   const [loading, setLoading] = useState(false);
   const [general, setGeneral] = useState({
     id: "",
-    ceremony_time: "",
-    ceremony_date: "",
-    reception_time: "",
-    reception_date: "",
-    address: "",
-    maps: "",
+    date_name_1: "",
+    date_1: "",
+    time_1: "",
+    date_name_2: "",
+    date_2: "",
+    time_2: "",
+    address_1: "",
+    maps_1: "",
+    address_2: "",
+    maps_2: "",
   });
 
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    if (isSameDate) {
-      if (name.includes("time")) {
-        setGeneral((prevState) => ({
-          ...prevState,
-          ceremony_time: value,
-          reception_time: value,
-        }));
-      } else if (name.includes("date")) {
-        setGeneral((prevState) => ({
-          ...prevState,
-          ceremony_date: value,
-          reception_date: value,
-        }));
-      } else {
-        setGeneral((prevState) => ({
-          ...prevState,
-          [name]: value,
-        }));
-      }
-    } else {
-      setGeneral((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
-    }
+    setGeneral((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -61,14 +46,17 @@ function General({ setShowAlert, dataUser, menu }) {
     try {
       setLoading(true);
       const response = await api.patch(API + "/general/" + general.id, {
-        ceremony_time: general.ceremony_time,
-        ceremony_date: general.ceremony_date,
-        reception_time: general.reception_time,
-        reception_date: general.reception_date,
-        address: general.address,
-        maps: general.maps,
+        date_name_1: general.date_name_1,
+        date_1: general.date_1,
+        time_1: general.time_1,
+        date_name_2: general.date_name_2,
+        date_2: general.date_2,
+        time_2: general.time_2,
+        address_1: general.address_1,
+        maps_1: general.maps_1,
+        address_2: general.address_2,
+        maps_2: general.maps_2,
       });
-
       if (response.data.success) {
         setLoading(false);
         mutate("/v1/get/general");
@@ -79,6 +67,7 @@ function General({ setShowAlert, dataUser, menu }) {
         return () => clearTimeout(timer);
       }
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -87,31 +76,19 @@ function General({ setShowAlert, dataUser, menu }) {
     try {
       const response = await api.get(API + "/general/" + dataUser.id);
       const data = response.data.data;
-      const dateCeremony = data.ceremony_date
-        ? dayjs(data.ceremony_date).tz("Asia/Jakarta").format("YYYY-MM-DD")
-        : "";
-      const dateReception = data.reception_date
-        ? dayjs(data.reception_date).tz("Asia/Jakarta").format("YYYY-MM-DD")
-        : "";
-
-      if (
-        data.ceremony_time == data.reception_time &&
-        data.ceremony_date == data.reception_date
-      ) {
-        setIsSameDate(true);
-      } else {
-        setIsSameDate(false);
-      }
-
       setGeneral((prevState) => ({
         ...prevState,
         id: data.id,
-        ceremony_time: data.ceremony_time || "",
-        ceremony_date: dateCeremony,
-        reception_time: data.reception_time || "",
-        reception_date: dateReception,
-        address: data.address || "",
-        maps: data.maps || "",
+        date_name_1: data.date_name_1 || "",
+        date_1: data.date_1 || "",
+        time_1: data.time_1 || "",
+        date_name_2: data.date_name_2 || "",
+        date_2: data.date_2 || "",
+        time_2: data.time_2 || "",
+        address_1: data.address_1 || "",
+        maps_1: data.maps_1 || "",
+        address_2: data.address_2 || "",
+        maps_2: data.maps_2 || "",
       }));
       return data;
     } catch (error) {
@@ -142,107 +119,75 @@ function General({ setShowAlert, dataUser, menu }) {
             (loading ? "opacity-50 cursor-not-allowed pointer-events-none" : "")
           }
         >
-          <label htmlFor="" className="form-control w-full p-2">
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                className="checkbox checkbox-primary checkbox-sm"
-                checked={isSameDate}
-                onChange={() => {
-                  if (isSameDate) {
-                    setIsSameDate(!isSameDate);
-                  } else {
-                    setIsSameDate(!isSameDate);
-                    setGeneral((prevState) => ({
-                      ...prevState,
-                      reception_time: general.ceremony_time,
-                      reception_date: general.ceremony_date,
-                    }));
-                  }
-                }}
-              />
-              <span className="cursor-pointer">
-                Tanggal Akad dan Respsi sama
-              </span>
-            </label>
+          <h2 className="font-semibold text-xl">Tanggal 1</h2>
+
+          <label htmlFor="" className="form-control w-full">
+            <div className="label pb-0 pt-1">
+              <span className="label-text">Nama Acara</span>
+            </div>
+            <select
+              className="select select-bordered select-sm md:select-md w-full"
+              name="date_name_1"
+              value={general.date_name_1}
+              onChange={(e) => {
+                if (e.target.value == "") {
+                  setGeneral({
+                    ...general,
+                    date_name_1: "",
+                    date_1: "",
+                    time_1: "",
+                    address_1: "",
+                    maps_1: "",
+                  });
+                }
+                handleChange(e);
+              }}
+            >
+              <option value="">Tidak Ada</option>
+              <option value="akad">Akad</option>
+              <option value="resepsi">Resepsi</option>
+              <option value="akad&resepsi">Akad & Resepsi</option>
+            </select>
           </label>
 
-          {/* Ceremony Date */}
           <label htmlFor="" className="form-control w-full">
             <div className="label pb-0">
-              <span className="label-text">Jam Akad</span>
+              <span className="label-text">Jam</span>
             </div>
             <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
               <input
                 type="time"
-                name="ceremony_time"
-                value={general.ceremony_time}
+                name="time_1"
+                value={general.time_1}
                 onChange={(e) => handleChange(e)}
                 className="grow"
                 placeholder="Jam"
-                required
               />
             </label>
           </label>
           <label htmlFor="" className="form-control w-full">
             <div className="label pb-0">
-              <span className="label-text">Tanggal Akad</span>
+              <span className="label-text">Tanggal</span>
             </div>
             <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
               <input
                 type="date"
-                name="ceremony_date"
-                value={general.ceremony_date}
+                name="date_1"
+                value={general.date_1}
                 onChange={(e) => handleChange(e)}
                 className="grow"
                 placeholder="Tanggal"
-                required
               />
             </label>
           </label>
-
-          {/* Reception Date */}
-          <label htmlFor="" className="form-control w-full">
-            <div className="label pb-0">
-              <span className="label-text">Jam Resepsi</span>
-            </div>
-            <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
-              <input
-                type="time"
-                name="reception_time"
-                value={general.reception_time}
-                onChange={(e) => handleChange(e)}
-                className="grow"
-                placeholder="Jam"
-                required
-              />
-            </label>
-          </label>
-          <label htmlFor="" className="form-control w-full">
-            <div className="label pb-0">
-              <span className="label-text">Tanggal Respsi</span>
-            </div>
-            <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
-              <input
-                type="date"
-                name="reception_date"
-                value={general.reception_date}
-                onChange={(e) => handleChange(e)}
-                className="grow"
-                placeholder="Tanggal"
-                required
-              />
-            </label>
-          </label>
-
           <label className="form-control">
             <div className="label pb-0">
               <span className="label-text">Bertempat Di Mana?</span>
             </div>
             <textarea
               className="textarea textarea-bordered textarea-sm md:textarea-md"
-              name="address"
-              value={general.address}
+              name="address_1"
+              value={general.address_1}
               onChange={(e) => handleChange(e)}
               placeholder="Alamat"
               required
@@ -256,8 +201,8 @@ function General({ setShowAlert, dataUser, menu }) {
               <MapIcon className="h-4 w-4" />
               <input
                 type="url"
-                name="maps"
-                value={general.maps}
+                name="maps_1"
+                value={general.maps_1}
                 onChange={(e) => handleChange(e)}
                 className="grow"
                 placeholder="https://"
@@ -265,6 +210,158 @@ function General({ setShowAlert, dataUser, menu }) {
               />
             </label>
           </label>
+
+          <h2 className="font-semibold text-xl mt-6">Tanggal 2</h2>
+
+          <label htmlFor="" className="form-control w-full">
+            <div className="label pb-0 pt-1">
+              <span className="label-text">Nama Acara</span>
+            </div>
+            <select
+              className="select select-bordered select-sm md:select-md w-full"
+              name="date_name_2"
+              value={general.date_name_2}
+              onChange={(e) => {
+                if (e.target.value == "") {
+                  setGeneral({
+                    ...general,
+                    date_name_2: "",
+                    date_2: "",
+                    time_2: "",
+                    address_2: "",
+                    maps_2: "",
+                  });
+                }
+                handleChange(e);
+              }}
+            >
+              <option value="">Tidak Ada</option>
+              <option value="akad">Akad</option>
+              <option value="resepsi">Resepsi</option>
+              <option value="akad&resepsi">Akad & Resepsi</option>
+            </select>
+          </label>
+
+          <label htmlFor="" className="form-control w-full">
+            <div className="label pb-0">
+              <span className="label-text">Jam</span>
+            </div>
+            <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
+              <input
+                type="time"
+                name="time_2"
+                value={general.time_2}
+                onChange={(e) => handleChange(e)}
+                className="grow"
+                placeholder="Jam"
+              />
+            </label>
+          </label>
+          <label htmlFor="" className="form-control w-full">
+            <div className="label pb-0">
+              <span className="label-text">Tanggal</span>
+            </div>
+            <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
+              <input
+                type="date"
+                name="date_2"
+                value={general.date_2}
+                onChange={(e) => handleChange(e)}
+                className="grow"
+                placeholder="Tanggal"
+              />
+            </label>
+          </label>
+          <label className="form-control">
+            <div className="label pb-0">
+              <span className="label-text">Bertempat Di Mana?</span>
+            </div>
+            <textarea
+              className="textarea textarea-bordered textarea-sm md:textarea-md"
+              name="address_2"
+              value={general.address_2}
+              onChange={(e) => handleChange(e)}
+              placeholder="Alamat"
+              required
+            ></textarea>
+          </label>
+          <label htmlFor="" className="form-control w-full">
+            <div className="label pb-0">
+              <span className="label-text">Link Google Maps</span>
+            </div>
+            <label className="input input-sm md:input-md input-bordered flex items-center gap-2">
+              <MapIcon className="h-4 w-4" />
+              <input
+                type="url"
+                name="maps_2"
+                value={general.maps_2}
+                onChange={(e) => handleChange(e)}
+                className="grow"
+                placeholder="https://"
+                required
+              />
+            </label>
+          </label>
+          <div className="text-center mt-4">
+            {general.date_name_1 && (
+              <>
+                <p className="font-esthetic text-2xl capitalize">
+                  {general.date_name_1.replace("&", " & ")}
+                </p>
+                {general.date_1 && (
+                  <p className="text-sm">
+                    {dayjs(general.date_1).tz("Asia/Jakarta").format("dddd")}
+                    <br />
+                    {dayjs(general.date_1)
+                      .tz("Asia/Jakarta")
+                      .format("DD MMMM YYYY")}
+                  </p>
+                )}
+                {general.time_1 && (
+                  <p className="text-sm">
+                    Pukul <br />
+                    {general.time_1.substring(0, 5)} WIB - Selesai
+                  </p>
+                )}
+                {general.address_1 && (
+                  <p className="text-sm">
+                    Bertempat di <br />
+                    {general.address_1}
+                  </p>
+                )}
+              </>
+            )}
+
+            {general.date_name_2 && (
+              <>
+                <p className="font-esthetic text-2xl capitalize mt-2">
+                  {general.date_name_2.replace("&", " & ")}
+                </p>
+                {general.date_2 && (
+                  <p className="text-sm">
+                    {dayjs(general.date_2).tz("Asia/Jakarta").format("dddd")}
+                    <br />
+                    {dayjs(general.date_2)
+                      .tz("Asia/Jakarta")
+                      .format("DD MMMM YYYY")}
+                  </p>
+                )}
+                {general.time_2 && (
+                  <p className="text-sm">
+                    Pukul <br />
+                    {general.time_2.substring(0, 5)} WIB - Selesai
+                  </p>
+                )}
+                {general.address_2 && (
+                  <p className="text-sm">
+                    Bertempat di <br />
+                    {general.address_2}
+                  </p>
+                )}
+              </>
+            )}
+          </div>
+
           <div className="text-right my-2">
             <button
               type="submit"
