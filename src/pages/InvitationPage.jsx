@@ -57,7 +57,7 @@ function InvitationPage() {
   const [loadingComment, setLoadingComment] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [theme, setTheme] = useState(
-    localStorage.getItem("theme") ? localStorage.getItem("theme") : "dark"
+    localStorage.getItem("theme") ? localStorage.getItem("theme") : "dark",
   );
   const [placehold, setPlacehold] = useState([
     { url: "https://placehold.co/300x200?text=1" },
@@ -66,16 +66,6 @@ function InvitationPage() {
   ]);
   let [searchParams, setSearchParams] = useSearchParams();
   const [comments, setComments] = useState({});
-
-  const [page, setPage] = useState(1);
-  const limit = 10;
-
-  // Query string berdasarkan filter
-  const query = new URLSearchParams({ page, limit });
-
-  useEffect(() => {
-    fetchComment();
-  }, [page]);
 
   // useRef Section
   const home = useRef(null);
@@ -108,7 +98,7 @@ function InvitationPage() {
     presence: "",
   };
   const [user, setUser] = useState(
-    Cookies.get("user") ? JSON.parse(Cookies.get("user")) : dataUser
+    Cookies.get("user") ? JSON.parse(Cookies.get("user")) : dataUser,
   );
 
   useEffect(() => {
@@ -116,13 +106,20 @@ function InvitationPage() {
       expires: 14,
       path: `/${url}`,
     });
-    if (user.name != "") {
-      setSearchParams({ to: user.name });
+    const paramName = searchParams.get("to");
+
+    if (paramName !== user.name) {
+      setUser({
+        ...user,
+        name: paramName,
+      });
+      setGuest(paramName);
+    } else if (user.name) {
       setGuest(user.name);
     } else {
-      setGuest(searchParams.get("to"));
+      setGuest(paramName);
     }
-  }, [user]);
+  }, [user, searchParams]);
 
   const handleSubmitComment = async (comment) => {
     try {
@@ -134,7 +131,7 @@ function InvitationPage() {
         presence: comment.presence,
         parentId: null,
         userId: id.userId,
-        urlId: id.urlId,
+        url: id.url,
       });
 
       if (response.data.success) {
@@ -159,8 +156,9 @@ function InvitationPage() {
 
   const fetchComment = async () => {
     try {
-      const response = await api.get(`/comment/${url}?${query.toString()}`);
+      const response = await api.get(`/comment/${url}`);
       const data = response.data;
+
       setComments(data);
     } catch (error) {
       console.log(error);
@@ -176,9 +174,8 @@ function InvitationPage() {
         presence: user.presence,
         parentId: parentId,
         userId: Number(id.userId),
-        urlId: Number(id.urlId),
+        url: id.url,
       };
-      console.log(payload);
 
       await api.post(API + "/comment", payload);
       fetchComment();
@@ -211,6 +208,10 @@ function InvitationPage() {
   // ./ Comment
 
   useEffect(() => {
+    fetchComment();
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem("theme", theme);
     const localTheme = localStorage.getItem("theme");
     // add custom data-theme attribute to html tag required to update theme using DaisyUI
@@ -234,9 +235,7 @@ function InvitationPage() {
 
   const fetcher = async () => {
     try {
-      const response = await api.get(
-        API + "/invitation/" + url + "?include=true"
-      );
+      const response = await api.get(API + "/invitation/" + url);
       if (!response.data.success) {
         return navigate("/");
       }
@@ -260,8 +259,8 @@ function InvitationPage() {
         pengantin1: pengantin1,
         pengantin2: pengantin2,
         gallery: data.gallery,
-        story: data.story.reverse(),
-        bank: data.bankaccount,
+        story: data.story,
+        bank: data.bank,
       };
 
       return result;
@@ -337,7 +336,7 @@ function InvitationPage() {
                 The Wedding Of
               </h2>
               <div className="avatar mb-1">
-                <div className="w-56 rounded-full border-2 border-orange-600 shadow-2xl">
+                <div className="w-40 md:w-56 rounded-full border-2 border-orange-600 shadow-2xl">
                   <img
                     src={
                       data?.general?.image
@@ -427,7 +426,7 @@ function InvitationPage() {
                   Undangan Pernikahan
                 </h2>
                 <div className="avatar my-6">
-                  <div className="w-56 rounded-full border-2 border-orange-600 shadow-xl">
+                  <div className="w-40 md:w-56 rounded-full border-2 border-orange-600 shadow-xl">
                     <img
                       src={
                         data?.general?.image
@@ -454,38 +453,23 @@ function InvitationPage() {
                   <span className="px-4 md:inline">&</span> <br />
                   {data?.pengantin2?.name || "{Name}"}
                 </h2>
-
-                {data?.general?.ceremony_time ==
-                  data?.general?.reception_time &&
-                data?.general?.ceremony_date ==
-                  data?.general?.reception_date ? (
-                  <h2 className="text-2xl my-6 font-medium">
-                    {data?.general?.ceremony_date
-                      ? dayjs(data?.general?.ceremony_date)
+                <h2 className="text-2xl font-medium">
+                  {data?.general?.date_name_1.includes("akad")
+                    ? data?.general?.date_1
+                      ? dayjs(data?.general?.date_1)
                           .tz("Asia/Jakarta")
                           .format("dddd, DD MMMM YYYY")
-                      : "{Date}"}
-                  </h2>
-                ) : (
-                  <>
-                    <h2 className="text-2xl font-medium">
-                      <span className="font-light">Akad : </span>
-                      {data?.general?.ceremony_date
-                        ? dayjs(data?.general?.ceremony_date)
+                      : "{Date}"
+                    : data?.general?.date_name_2.includes("akad")
+                      ? data?.general?.date_2
+                        ? dayjs(data?.general?.date_2)
                             .tz("Asia/Jakarta")
                             .format("dddd, DD MMMM YYYY")
-                        : "{Date}"}
-                    </h2>
-                    <h2 className="text-2xl font-medium">
-                      <span className="font-light">Resepsi : </span>
-                      {data?.general?.reception_date
-                        ? dayjs(data?.general?.reception_date)
-                            .tz("Asia/Jakarta")
-                            .format("dddd, DD MMMM YYYY")
-                        : "{Date}"}
-                    </h2>
-                  </>
-                )}
+                        : "{Date}"
+                      : dayjs(data?.general?.date_1)
+                          .tz("Asia/Jakarta")
+                          .format("dddd, DD MMMM YYYY")}
+                </h2>
 
                 <p className="py-2">Scroll Down</p>
                 <div className="flex justify-center">
@@ -548,7 +532,7 @@ function InvitationPage() {
                 berkenan menghadiri acara pernikahan kami:
               </p>
               <div data-aos="fade-right" className="avatar my-5">
-                <div className="w-56 rounded-full border-4 border-white shadow-xl">
+                <div className="w-40 md:w-56 rounded-full border-4 border-white shadow-xl">
                   <img
                     src={
                       data?.pengantin1?.image
@@ -564,7 +548,8 @@ function InvitationPage() {
                   {data?.pengantin1?.name || "{Name}"}
                 </h2>
                 <p className="pt-4 text-lg">
-                  Putra ke {data?.pengantin1?.child_number || "{Number}"}
+                  {data?.pengantin1?.gender == "Laki-laki" ? "Putra" : "Putri"}{" "}
+                  {/* ke {data?.pengantin1?.child_number || "{Number}"} */}dari
                 </p>
                 <p className="pb-4 capitalize">
                   Bapak {data?.pengantin1?.father || "{Name}"}
@@ -574,7 +559,7 @@ function InvitationPage() {
               </div>
               <h1 className="text-6xl font-esthetic py-5">&</h1>
               <div data-aos="fade-left" className="avatar my-5">
-                <div className="w-56 rounded-full border-4 border-white shadow-xl">
+                <div className="w-40 md:w-56 rounded-full border-4 border-white shadow-xl">
                   <img
                     src={
                       data?.pengantin2?.image
@@ -590,7 +575,8 @@ function InvitationPage() {
                   {data?.pengantin2?.name || "{Name}"}
                 </h2>
                 <p className="pt-4 text-lg">
-                  Putra ke {data?.pengantin2?.child_number || "{Number}"}
+                  {data?.pengantin2?.gender == "Laki-laki" ? "Putra" : "Putri"}{" "}
+                  {/* ke {data?.pengantin2?.child_number || "{Number}"} */}dari
                 </p>
                 <p className="pb-4 capitalize">
                   Bapak {data?.pengantin2?.father || "{Name}"}
@@ -694,8 +680,16 @@ function InvitationPage() {
             >
               {/* Countdown */}
               <CountdownTimer
-                date={data?.general?.ceremony_date}
-                time={data?.general?.ceremony_time}
+                date={
+                  data?.general?.date_name_1.includes("akad")
+                    ? data?.general?.date_1 && data?.general?.date_1
+                    : data?.general?.date_2 && data?.general?.date_2
+                }
+                time={
+                  data?.general?.date_name_1.includes("akad")
+                    ? data?.general?.time_1 && data?.general?.time_1
+                    : data?.general?.time_2 && data?.general?.time_2
+                }
               />
             </div>
             <div
@@ -708,140 +702,140 @@ function InvitationPage() {
                 Dengan memohon rahmat dan ridho Allah Subhanahu Wa Ta&apos;ala,
                 insyaAllah kami akan menyelenggarakan acara:
               </p>
-              {data?.general?.ceremony_time == data?.general?.reception_time &&
-              data?.general?.ceremony_date == data?.general?.reception_date ? (
+              {data?.general?.date_name_1 && (
                 <>
                   <h2
                     data-aos="fade-down"
-                    className="text-3xl font-esthetic py-4"
+                    className="text-3xl font-esthetic font-semibold py-4 pb-2 capitalize"
                   >
-                    Akad & Resepsi
+                    {data?.general?.date_name_1.replace("&", " & ")}
                   </h2>
                   <div data-aos="fade-left">
-                    <p className="py-2 text-xl">
-                      {data?.general?.ceremony_date
-                        ? dayjs(data?.general?.ceremony_date)
-                            .tz("Asia/Jakarta")
-                            .format("dddd")
-                        : "{Days}"}
-                    </p>
                     <p className="text-xl">
-                      {data?.general?.ceremony_date
-                        ? dayjs(data?.general?.ceremony_date)
+                      {data?.general?.date_1
+                        ? dayjs(data?.general?.date_1)
                             .tz("Asia/Jakarta")
-                            .format("DD MMMM YYYY")
+                            .format("dddd, DD MMMM YYYY")
                         : "{Date}"}
                     </p>
                   </div>
                   <div data-aos="fade-right">
-                    <p className="py-2 text-xl">Pukul</p>
-                    <p className="text-xl pb-4">
-                      {data?.general?.ceremony_time
-                        ? data?.general?.ceremony_time.substring(0, 5)
-                        : "{Time}"}{" "}
+                    <p className="text-xl pb-2">
+                      Pukul{" "}
+                      {data?.general?.time_1
+                        ? data?.general?.time_1.substring(0, 5)
+                        : "{Time}"}
                       WIB - Selesai
                     </p>
                   </div>
-                </>
-              ) : (
-                <>
-                  <h2
-                    data-aos="fade-down"
-                    className="text-3xl font-esthetic py-4"
-                  >
-                    Akad
-                  </h2>
-                  <div data-aos="fade-left">
-                    <p className="py-2 text-xl">
-                      {data?.general?.ceremony_date
-                        ? dayjs(data?.general?.ceremony_date)
-                            .tz("Asia/Jakarta")
-                            .format("dddd")
-                        : "{Days}"}
+                  <div data-aos="fade-down">
+                    <h2 className="text-3xl font-esthetic py-2">
+                      Bertempat Di
+                    </h2>
+                    <p className="capitalize">
+                      {data?.general?.address_1 || "{Address}"}
                     </p>
-                    <p className="text-xl">
-                      {data?.general?.ceremony_date
-                        ? dayjs(data?.general?.ceremony_date)
-                            .tz("Asia/Jakarta")
-                            .format("DD MMMM YYYY")
-                        : "{Date}"}
-                    </p>
-                  </div>
-                  <div data-aos="fade-right">
-                    <p className="py-2 text-xl">Pukul</p>
-                    <p className="text-xl pb-4">
-                      {data?.general?.ceremony_time
-                        ? data?.general?.ceremony_time.substring(0, 5)
-                        : "{Time}"}{" "}
-                      WIB - Selesai
-                    </p>
-                  </div>
-                  <h2
-                    data-aos="fade-down"
-                    className="text-3xl font-esthetic py-4"
-                  >
-                    Resepsi
-                  </h2>
-                  <div data-aos="fade-left">
-                    <p className="py-2 text-xl">
-                      {data?.general?.reception_date
-                        ? dayjs(data?.general?.reception_date)
-                            .tz("Asia/Jakarta")
-                            .format("dddd")
-                        : "{Days}"}
-                    </p>
-                    <p className="text-xl">
-                      {data?.general?.reception_date
-                        ? dayjs(data?.general?.reception_date)
-                            .tz("Asia/Jakarta")
-                            .format("DD MMMM YYYY")
-                        : "{Date}"}
-                    </p>
-                  </div>
-                  <div data-aos="fade-right">
-                    <p className="py-2 text-xl">Pukul</p>
-                    <p className="text-xl pb-4">
-                      {data?.general?.reception_time
-                        ? data?.general?.reception_time.substring(0, 5)
-                        : "{Time}"}{" "}
-                      WIB - Selesai
-                    </p>
+                    {data?.general?.maps_1 && (
+                      <a
+                        href={
+                          data?.general?.maps_1 ||
+                          "https://www.google.co.id/maps"
+                        }
+                        target="_blank"
+                        className={
+                          "btn btn-outline btn-sm rounded-full shadow-xl my-2 " +
+                          (theme == "dark" ? "text-white" : "")
+                        }
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="h-5 w-5"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M8.161 2.58a1.875 1.875 0 0 1 1.678 0l4.993 2.498c.106.052.23.052.336 0l3.869-1.935A1.875 1.875 0 0 1 21.75 4.82v12.485c0 .71-.401 1.36-1.037 1.677l-4.875 2.437a1.875 1.875 0 0 1-1.676 0l-4.994-2.497a.375.375 0 0 0-.336 0l-3.868 1.935A1.875 1.875 0 0 1 2.25 19.18V6.695c0-.71.401-1.36 1.036-1.677l4.875-2.437ZM9 6a.75.75 0 0 1 .75.75V15a.75.75 0 0 1-1.5 0V6.75A.75.75 0 0 1 9 6Zm6.75 3a.75.75 0 0 0-1.5 0v8.25a.75.75 0 0 0 1.5 0V9Z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        Lihat Google Maps
+                      </a>
+                    )}
                   </div>
                 </>
               )}
+
+              {data?.general?.date_name_2 && (
+                <>
+                  <h2
+                    data-aos="fade-down"
+                    className="text-3xl font-esthetic font-semibold py-4 pb-2 mt-4 capitalize"
+                  >
+                    {data?.general?.date_name_2.replace("&", " & ")}
+                  </h2>
+                  <div data-aos="fade-left">
+                    <p className="text-xl">
+                      {data?.general?.date_2
+                        ? dayjs(data?.general?.date_2)
+                            .tz("Asia/Jakarta")
+                            .format("dddd, DD MMMM YYYY")
+                        : "{Date}"}
+                    </p>
+                  </div>
+                  <div data-aos="fade-right">
+                    <p className="text-xl pb-2">
+                      Pukul{" "}
+                      {data?.general?.time_2
+                        ? data?.general?.time_2.substring(0, 5)
+                        : "{Time}"}
+                      WIB - Selesai
+                    </p>
+                  </div>
+                  <div data-aos="fade-down">
+                    <h2 className="text-3xl font-esthetic py-2">
+                      Bertempat Di
+                    </h2>
+                    <p className="capitalize">
+                      {data?.general?.address_2 || "{Address}"}
+                    </p>
+                    {data?.general?.maps_2 && (
+                      <a
+                        href={
+                          data?.general?.maps_2 ||
+                          "https://www.google.co.id/maps"
+                        }
+                        target="_blank"
+                        className={
+                          "btn btn-outline btn-sm rounded-full shadow-xl my-2 " +
+                          (theme == "dark" ? "text-white" : "")
+                        }
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="h-5 w-5"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M8.161 2.58a1.875 1.875 0 0 1 1.678 0l4.993 2.498c.106.052.23.052.336 0l3.869-1.935A1.875 1.875 0 0 1 21.75 4.82v12.485c0 .71-.401 1.36-1.037 1.677l-4.875 2.437a1.875 1.875 0 0 1-1.676 0l-4.994-2.497a.375.375 0 0 0-.336 0l-3.868 1.935A1.875 1.875 0 0 1 2.25 19.18V6.695c0-.71.401-1.36 1.036-1.677l4.875-2.437ZM9 6a.75.75 0 0 1 .75.75V15a.75.75 0 0 1-1.5 0V6.75A.75.75 0 0 1 9 6Zm6.75 3a.75.75 0 0 0-1.5 0v8.25a.75.75 0 0 0 1.5 0V9Z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        Lihat Google Maps
+                      </a>
+                    )}
+                  </div>
+                </>
+              )}
+
               <img
                 className="mx-auto h-20"
                 src="/images/flower-decor.png"
                 loading="eager"
               />
-              <div data-aos="fade-down">
-                <h2 className="text-3xl font-esthetic py-4">Bertempat Di</h2>
-                <p className="capitalize">
-                  {data?.general?.address || "{Address}"}
-                </p>
-                <a
-                  href={data?.general?.maps || "https://www.google.co.id/maps"}
-                  target="_blank"
-                  className={
-                    "btn btn-outline btn-sm rounded-full shadow-xl my-4 " +
-                    (theme == "dark" ? "text-white" : "")
-                  }
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="h-5 w-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M8.161 2.58a1.875 1.875 0 0 1 1.678 0l4.993 2.498c.106.052.23.052.336 0l3.869-1.935A1.875 1.875 0 0 1 21.75 4.82v12.485c0 .71-.401 1.36-1.037 1.677l-4.875 2.437a1.875 1.875 0 0 1-1.676 0l-4.994-2.497a.375.375 0 0 0-.336 0l-3.868 1.935A1.875 1.875 0 0 1 2.25 19.18V6.695c0-.71.401-1.36 1.036-1.677l4.875-2.437ZM9 6a.75.75 0 0 1 .75.75V15a.75.75 0 0 1-1.5 0V6.75A.75.75 0 0 1 9 6Zm6.75 3a.75.75 0 0 0-1.5 0v8.25a.75.75 0 0 0 1.5 0V9Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Lihat Google Maps
-                </a>
-              </div>
+
               <p className="py-4 px-2">
                 Merupakan suatu kebahagiaan dan kehormatan bagi kami, <br />
                 apabila Bapak/Ibu/Saudara/i, berkenan hadir untuk memberikan doa
@@ -854,48 +848,50 @@ function InvitationPage() {
           </section>
 
           {/* Section 5 Galeri */}
-          <section
-            ref={galeri}
-            className={
-              "h-auto flex flex-col items-center relative overflow-hidden pb-10 px-2 " +
-              (theme == "dark" ? "bg-[#0b0f14]" : "bg-white")
-            }
-          >
-            <div className="w-[99%] md:w-[60%] border border-gray-500 shadow-xl rounded-badge pt-8 pb-2 md:pb-8 md:py-4 px-4 md:px-20">
-              <div
-                className={
-                  "z-10 text-center w-full mb-10 " +
-                  (theme == "dark" ? "text-white" : "text-gray-900")
-                }
-              >
-                <h1 className="font-esthetic text-4xl md:text-5xl">Galeri</h1>
+          {data?.gallery?.length > 0 && (
+            <section
+              ref={galeri}
+              className={
+                "h-auto flex flex-col items-center relative overflow-hidden pb-10 px-2 " +
+                (theme == "dark" ? "bg-[#0b0f14]" : "bg-white")
+              }
+            >
+              <div className="w-[99%] md:w-[60%] border border-gray-500 shadow-xl rounded-badge pt-8 pb-2 md:pb-8 md:py-4 px-4 md:px-20">
+                <div
+                  className={
+                    "z-10 text-center w-full mb-10 " +
+                    (theme == "dark" ? "text-white" : "text-gray-900")
+                  }
+                >
+                  <h1 className="font-esthetic text-4xl md:text-5xl">Galeri</h1>
+                </div>
+                <div data-aos="zoom-in-up">
+                  <Carousel>
+                    {data?.gallery?.length != 0
+                      ? data?.gallery?.map(({ image }, key) => (
+                          <div key={key}>
+                            <img
+                              src={API + "/images/" + image}
+                              loading="eager"
+                              className="rounded-xl"
+                            />
+                          </div>
+                        ))
+                      : placehold.map(({ url }, key) => (
+                          <div key={key}>
+                            <img
+                              src={url}
+                              loading="eager"
+                              className="rounded-xl"
+                            />
+                          </div>
+                        ))}
+                  </Carousel>
+                </div>
+                <br />
               </div>
-              <div data-aos="zoom-in-up">
-                <Carousel>
-                  {data?.gallery?.length != 0
-                    ? data?.gallery?.map(({ image }, key) => (
-                        <div key={key}>
-                          <img
-                            src={API + "/images/" + image}
-                            loading="eager"
-                            className="rounded-xl"
-                          />
-                        </div>
-                      ))
-                    : placehold.map(({ url }, key) => (
-                        <div key={key}>
-                          <img
-                            src={url}
-                            loading="eager"
-                            className="rounded-xl"
-                          />
-                        </div>
-                      ))}
-                </Carousel>
-              </div>
-              <br />
-            </div>
-          </section>
+            </section>
+          )}
 
           {/* Section 5.2 Our Story */}
           {data?.story?.length > 0 && (
@@ -976,6 +972,7 @@ function InvitationPage() {
 
             {data?.bank && <BankAccountList data={data?.bank} theme={theme} />}
           </section>
+
           {/* Section 7 Comment Form */}
           <section
             ref={ucapan}
@@ -1029,7 +1026,7 @@ function InvitationPage() {
               loadingDelete={loadingDelete}
             />
             {/* Pagination */}
-            <div className="join rounded-xl my-4">
+            {/* <div className="join rounded-xl my-4">
               <button
                 className="join-item btn"
                 disabled={page <= 1}
@@ -1047,7 +1044,7 @@ function InvitationPage() {
               >
                 <ChevronDoubleRightIcon className="h-5 w-5" />
               </button>
-            </div>
+            </div> */}
           </section>
 
           {/* Section 8 footer */}
@@ -1175,13 +1172,13 @@ function InvitationPage() {
               <CalendarDaysIcon className="h-4 md:h-5 w-4 md:w-5" />
               Tanggal
             </button>
-            <button
+            {/* <button
               className="hover:text-slate-500"
               onClick={() => scrollIntoView(galeri)}
             >
               <PhotoIcon className="h-4 md:h-5 w-4 md:w-5" />
               Galeri
-            </button>
+            </button> */}
             <button
               className="hover:text-slate-500"
               onClick={() => scrollIntoView(ucapan)}
