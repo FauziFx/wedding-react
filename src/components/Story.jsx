@@ -20,7 +20,6 @@ function Story({ setShowAlert, dataUser, menu }) {
     title: "",
     text: "",
     userId: dataUser.id,
-    urlId: dataUser.urlId,
   });
   const handleChange = async (e) => {
     setDataStory((prevState) => ({
@@ -59,7 +58,6 @@ function Story({ setShowAlert, dataUser, menu }) {
           title: dataStory.title,
           text: dataStory.text,
           userId: dataStory.userId,
-          urlId: dataStory.urlId,
         });
       }
       if (response.data.success) {
@@ -71,7 +69,6 @@ function Story({ setShowAlert, dataUser, menu }) {
           title: "",
           text: "",
           userId: dataUser.id,
-          urlId: dataUser.urlId,
         });
         setIsEditMode(false);
         setLoading(false);
@@ -79,7 +76,10 @@ function Story({ setShowAlert, dataUser, menu }) {
           setShowAlert("");
         }, 2000);
         return () => clearTimeout(timer);
+      } else {
+        setLoading(false);
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
