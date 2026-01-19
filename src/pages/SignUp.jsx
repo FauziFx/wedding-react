@@ -51,6 +51,7 @@ function SignUp() {
       if (!response.data.success) {
         alert(response.data.message);
       } else {
+        alert("Sign up successful, please login.");
         window.location.href = "/auth";
       }
       setIsLoading(false);
