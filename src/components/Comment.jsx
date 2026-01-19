@@ -55,7 +55,7 @@ function Comment({
         "text-left " +
         (theme == "dark" ? "bg-gray-700" : "bg-white") +
         (comment.parentId
-          ? " pt-4 pl-4 pb-4 pr-0 ml-2 border-l"
+          ? " pt-4 pl-4 pb-4 pr-0 ml-2 border-l border-l-gray-500"
           : " p-4 rounded-2xl shadow-2xl w-11/12 md:w-4/5 my-2")
       }
     >
@@ -125,7 +125,7 @@ function Comment({
             </div>
             <span className="text-xs">{formattedTime}</span>
           </div>
-          <hr className="border-t" />
+          <hr className="border-t border-gray-500" />
           <p
             className={
               "py-1 text-sm mb-1 " + (theme == "dark" ? "text-white" : "")
