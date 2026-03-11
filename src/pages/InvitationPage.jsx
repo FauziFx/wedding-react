@@ -64,6 +64,18 @@ function InvitationPage() {
     { url: "https://placehold.co/300x200?text=2" },
     { url: "https://placehold.co/300x200?text=3" },
   ]);
+  const [placeholdStory, setPlaceholdStory] = useState([
+    {
+      year: "2020",
+      title: "Story 1",
+      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores minima dolorem molestiae molestias laborum veniam natus minus suscipit illum beatae asperiores sunt quaerat enim reprehenderit, rem ullam architecto saepe error!",
+    },
+    {
+      year: "2021",
+      title: "Story 2",
+      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores minima dolorem molestiae molestias laborum veniam natus minus suscipit illum beatae asperiores sunt quaerat enim reprehenderit, rem ullam architecto saepe error!",
+    },
+  ]);
   let [searchParams, setSearchParams] = useSearchParams();
   const [comments, setComments] = useState({});
 
@@ -219,7 +231,6 @@ function InvitationPage() {
   }, [theme]);
 
   useEffect(() => {
-    document.title = `The Wedding`;
     if (open) {
       setPlay(true);
       audio.play();
@@ -237,7 +248,10 @@ function InvitationPage() {
     try {
       const response = await api.get(API + "/invitation/" + url);
       if (!response.data.success) {
-        return navigate("/");
+        if (url !== "demo") {
+          return navigate("/");
+        }
+        return;
       }
       const data = response.data.data;
       if (!data) {
@@ -253,6 +267,8 @@ function InvitationPage() {
 
       const pengantin1 = data.person.find((e) => e.pos == 1); //Pos 1
       const pengantin2 = data.person.find((e) => e.pos == 2); //Pos 2
+
+      document.title = `Undangannya ${pengantin1?.name.charAt(0).toUpperCase() + String(pengantin1?.name).slice(1)} & ${pengantin2?.name.charAt(0).toUpperCase() + String(pengantin2?.name).slice(1)}`;
 
       const result = {
         general: data.general,
@@ -330,12 +346,12 @@ function InvitationPage() {
               }
             >
               <h2
-                className="text-4xl font-esthetic mb-2 font-medium"
+                className="text-4xl font-esthetic mb-6 md:mb-12 font-bold"
                 style={{ fontSize: "40px" }}
               >
                 The Wedding Of
               </h2>
-              <div className="avatar mb-1">
+              {/* <div className="avatar mb-1">
                 <div className="w-40 md:w-56 rounded-full border-2 border-orange-600 shadow-2xl">
                   <img
                     src={
@@ -346,8 +362,16 @@ function InvitationPage() {
                     loading="eager"
                   />
                 </div>
-              </div>
-              <div className="px-4 mb-2 -mt-24 w-full flex justify-center relative z-50">
+              </div> */}
+              <h2
+                className="text-4xl font-esthetic my-2 md:my-16 font-medium mb-20"
+                style={{ fontSize: "40px" }}
+              >
+                {data?.pengantin1?.name || "{Name}"} <br />
+                <span className="px-4 md:inline">&</span> <br />
+                {data?.pengantin2?.name || "{Name}"}
+              </h2>
+              <div className="px-4 mb-20 -mt-24 w-full flex justify-center relative z-50">
                 <img
                   src="/images/decor1.png"
                   loading="eager"
@@ -355,14 +379,14 @@ function InvitationPage() {
                   className="w-56"
                 />
               </div>
-              <h2
+              {/* <h2
                 className="text-4xl font-esthetic my-2 md:my-6 font-medium"
                 style={{ fontSize: "40px" }}
               >
                 {data?.pengantin1?.name || "{Name}"} <br />
                 <span className="px-4 md:inline">&</span> <br />
                 {data?.pengantin2?.name || "{Name}"}
-              </h2>
+              </h2> */}
               <p>Kepada Yth Bapak/Ibu/Saudara/i</p>
               {guest && (
                 <h2 className="text-2xl md:text-3xl mb-2 font-medium">
@@ -420,12 +444,12 @@ function InvitationPage() {
                 }
               >
                 <h2
-                  className="text-4xl font-esthetic my-6 font-medium"
+                  className="text-4xl font-esthetic my-6 font-medium mb-20"
                   style={{ fontSize: "40px" }}
                 >
                   Undangan Pernikahan
                 </h2>
-                <div className="avatar my-6">
+                {/* <div className="avatar my-6">
                   <div className="w-40 md:w-56 rounded-full border-2 border-orange-600 shadow-xl">
                     <img
                       src={
@@ -436,8 +460,16 @@ function InvitationPage() {
                       loading="eager"
                     />
                   </div>
-                </div>
-                <div className="px-4 mb-2 -mt-28 w-full flex justify-center relative z-50">
+                </div> */}
+                <h2
+                  className="text-4xl font-esthetic my-2 md:my-20 font-medium mb-20"
+                  style={{ fontSize: "40px" }}
+                >
+                  {data?.pengantin1?.name || "{Name}"} <br />
+                  <span className="px-4 md:inline">&</span> <br />
+                  {data?.pengantin2?.name || "{Name}"}
+                </h2>
+                <div className="px-4 mb-20 -mt-28 w-full flex justify-center relative z-50">
                   <img
                     src="/images/decor1.png"
                     loading="eager"
@@ -445,14 +477,7 @@ function InvitationPage() {
                     className="w-56"
                   />
                 </div>
-                <h2
-                  className="text-4xl font-esthetic my-2 md:my-6 font-medium"
-                  style={{ fontSize: "40px" }}
-                >
-                  {data?.pengantin1?.name || "{Name}"} <br />
-                  <span className="px-4 md:inline">&</span> <br />
-                  {data?.pengantin2?.name || "{Name}"}
-                </h2>
+
                 <h2 className="text-2xl font-medium">
                   {data?.general?.date_name_1.includes("akad")
                     ? data?.general?.date_1
@@ -732,8 +757,9 @@ function InvitationPage() {
                     <h2 className="text-3xl font-esthetic py-2">
                       Bertempat Di
                     </h2>
-                    <p className="capitalize">
-                      {data?.general?.address_1 || "{Address}"}
+                    <p className="capitalize whitespace-pre-line">
+                      {data?.general?.address_1?.replace(/\\n/g, "\n") ||
+                        "{Address}"}
                     </p>
                     {data?.general?.maps_1 && (
                       <a
@@ -796,8 +822,9 @@ function InvitationPage() {
                     <h2 className="text-3xl font-esthetic py-2">
                       Bertempat Di
                     </h2>
-                    <p className="capitalize">
-                      {data?.general?.address_2 || "{Address}"}
+                    <p className="capitalize whitespace-pre-line">
+                      {data?.general?.address_2?.replace(/\\n/g, "\n") ||
+                        "{Address}"}
                     </p>
                     {data?.general?.maps_2 && (
                       <a
@@ -848,50 +875,53 @@ function InvitationPage() {
           </section>
 
           {/* Section 5 Galeri */}
-          {data?.gallery?.length > 0 && (
-            <section
-              ref={galeri}
-              className={
-                "h-auto flex flex-col items-center relative overflow-hidden pb-10 px-2 " +
-                (theme == "dark" ? "bg-[#0b0f14]" : "bg-white")
-              }
-            >
-              <div className="w-[99%] md:w-[60%] border border-gray-500 shadow-xl rounded-badge pt-8 pb-2 md:pb-8 md:py-4 px-4 md:px-20">
-                <div
-                  className={
-                    "z-10 text-center w-full mb-10 " +
-                    (theme == "dark" ? "text-white" : "text-gray-900")
-                  }
-                >
-                  <h1 className="font-esthetic text-4xl md:text-5xl">Galeri</h1>
+          {data?.gallery?.length > 0 ||
+            (url === "demo" && (
+              <section
+                ref={galeri}
+                className={
+                  "h-auto flex flex-col items-center relative overflow-hidden pb-10 px-2 " +
+                  (theme == "dark" ? "bg-[#0b0f14]" : "bg-white")
+                }
+              >
+                <div className="w-[99%] md:w-[60%] border border-gray-500 shadow-xl rounded-badge pt-8 pb-2 md:pb-8 md:py-4 px-4 md:px-20">
+                  <div
+                    className={
+                      "z-10 text-center w-full mb-10 " +
+                      (theme == "dark" ? "text-white" : "text-gray-900")
+                    }
+                  >
+                    <h1 className="font-esthetic text-4xl md:text-5xl">
+                      Galeri
+                    </h1>
+                  </div>
+                  <div data-aos="zoom-in-up">
+                    <Carousel>
+                      {data?.gallery?.length > 0
+                        ? data?.gallery?.map(({ image }, key) => (
+                            <div key={key}>
+                              <img
+                                src={API + "/images/" + image}
+                                loading="eager"
+                                className="rounded-xl"
+                              />
+                            </div>
+                          ))
+                        : placehold.map(({ url }, key) => (
+                            <div key={key}>
+                              <img
+                                src={url}
+                                loading="eager"
+                                className="rounded-xl"
+                              />
+                            </div>
+                          ))}
+                    </Carousel>
+                  </div>
+                  <br />
                 </div>
-                <div data-aos="zoom-in-up">
-                  <Carousel>
-                    {data?.gallery?.length != 0
-                      ? data?.gallery?.map(({ image }, key) => (
-                          <div key={key}>
-                            <img
-                              src={API + "/images/" + image}
-                              loading="eager"
-                              className="rounded-xl"
-                            />
-                          </div>
-                        ))
-                      : placehold.map(({ url }, key) => (
-                          <div key={key}>
-                            <img
-                              src={url}
-                              loading="eager"
-                              className="rounded-xl"
-                            />
-                          </div>
-                        ))}
-                  </Carousel>
-                </div>
-                <br />
-              </div>
-            </section>
-          )}
+              </section>
+            ))}
 
           {/* Section 5.2 Our Story */}
           {data?.story?.length > 0 && (
@@ -918,25 +948,53 @@ function InvitationPage() {
                     (theme == "dark" ? "text-white" : "text-gray-900")
                   }
                 >
-                  {data?.story?.map((item, index) => (
-                    <li key={index}>
-                      <div className="timeline-middle">
-                        <ClockIcon className="h-5 w-5" />
-                      </div>
-                      <div
-                        className={
-                          index % 2 === 0
-                            ? "timeline-start md:text-end"
-                            : "timeline-end"
-                        }
-                      >
-                        <time className="font-mono italic">{item.year}</time>
-                        <div className="text-lg font-black">{item.title}</div>
-                        <p className="pb-5">{item.text}</p>
-                      </div>
-                      <hr />
-                    </li>
-                  ))}
+                  {data?.story?.length > 0
+                    ? data?.story?.map((item, index) => (
+                        <li key={index}>
+                          <div className="timeline-middle">
+                            <ClockIcon className="h-5 w-5" />
+                          </div>
+                          <div
+                            className={
+                              index % 2 === 0
+                                ? "timeline-start md:text-end"
+                                : "timeline-end"
+                            }
+                          >
+                            <time className="font-mono italic">
+                              {item.year}
+                            </time>
+                            <div className="text-lg font-black">
+                              {item.title}
+                            </div>
+                            <p className="pb-5">{item.text}</p>
+                          </div>
+                          <hr />
+                        </li>
+                      ))
+                    : placeholdStory.map((item, index) => (
+                        <li key={index}>
+                          <div className="timeline-middle">
+                            <ClockIcon className="h-5 w-5" />
+                          </div>
+                          <div
+                            className={
+                              index % 2 === 0
+                                ? "timeline-start md:text-end"
+                                : "timeline-end"
+                            }
+                          >
+                            <time className="font-mono italic">
+                              {item.year}
+                            </time>
+                            <div className="text-lg font-black">
+                              {item.title}
+                            </div>
+                            <p className="pb-5">{item.text}</p>
+                          </div>
+                          <hr />
+                        </li>
+                      ))}
                 </ul>
                 <br />
               </div>
@@ -970,7 +1028,20 @@ function InvitationPage() {
               </p>
             </div>
 
-            {data?.bank && <BankAccountList data={data?.bank} theme={theme} />}
+            {data?.bank ? (
+              <BankAccountList data={data?.bank} theme={theme} />
+            ) : (
+              <BankAccountList
+                data={[
+                  {
+                    bank: "Nama Bank",
+                    number: "0000xxxxxx",
+                    name: "Nama Rekening",
+                  },
+                ]}
+                theme={theme}
+              />
+            )}
           </section>
 
           {/* Section 7 Comment Form */}
