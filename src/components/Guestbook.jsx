@@ -9,6 +9,9 @@ import api from "../utils/api";
 import LoadingSekeleton from "./LoadingSekeleton";
 import FailedToLoad from "./FailedToLoad";
 import useSWR, { useSWRConfig } from "swr";
+import dayjs from "dayjs";
+import "dayjs/locale/id";
+dayjs.locale("id");
 
 function Guestbook({ setShowAlert, dataUser }) {
   const API = import.meta.env.VITE_API_URL;
@@ -16,6 +19,7 @@ function Guestbook({ setShowAlert, dataUser }) {
   const [linkWA, setLinkWA] = useState("");
   const [message, setMessage] = useState("");
   const [copy, setCopy] = useState(false);
+  const [general, setGeneral] = useState({});
   const [undangan, setUndangan] = useState({
     to: "",
     link: "",
@@ -101,7 +105,7 @@ function Guestbook({ setShowAlert, dataUser }) {
     const value = e.target.value;
     setMessage(value);
     const linkSend = `https://wa.me/${undangan.phone}?text=${encodeURIComponent(
-      value
+      value,
     )}`;
     setLinkWA(linkSend);
   };
@@ -124,6 +128,14 @@ Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i, t
 
 ${person[0]?.name} & ${person[1]?.name}
 
+Yang akan dilaksanakan pada:
+Hari/Tanggal: ${
+      general?.date_1 &&
+      dayjs(general?.date_1).tz("Asia/Jakarta").format("dddd, DD MMMM YYYY")
+    }
+Waktu: Pukul ${general?.time_1 && general?.time_1.substring(0, 5)} s.d Selesai
+Tempat: ${general?.address_1 && general?.address_1.replace(/\\n/g, "\n")}
+
 Berikut link undangan kami untuk info lengkap dari acara bisa kunjungi :
  
 ${link}
@@ -143,7 +155,9 @@ Terima Kasih.`;
     try {
       const response = await api.get("/guestbook/" + dataUser.id);
       const responsePeople = await api.get("/person/" + dataUser.id);
+      const responseGeneral = await api.get("/general/" + dataUser.id);
       setPerson(responsePeople.data.data);
+      setGeneral(responseGeneral.data.data);
       return response.data.data;
     } catch (error) {
       console.log(error);

@@ -30,6 +30,9 @@ import CustomUrl from "../components/CustomUrl";
 import { jwtDecode } from "jwt-decode";
 import Users from "../components/Users";
 import Story from "../components/Story";
+import dayjs from "dayjs";
+import "dayjs/locale/id";
+dayjs.locale("id");
 
 function Dashboard() {
   const API = import.meta.env.VITE_API_URL;
@@ -42,6 +45,7 @@ function Dashboard() {
   const [customUrl, setCustomUrl] = useState("");
   const [link, setLink] = useState("");
   const [person, setPerson] = useState([]);
+  const [general, setGeneral] = useState({});
   const [copy, setCopy] = useState(false);
   const [linkWA, setLinkWA] = useState("");
 
@@ -54,6 +58,14 @@ Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i, t
 ${person[0]?.name || "{Nama Pengantin}"} & ${
     person[1]?.name || "{Nama Pengantin}"
   }
+
+Yang akan dilaksanakan pada:
+Hari/Tanggal: ${
+    general?.date_1 &&
+    dayjs(general?.date_1).tz("Asia/Jakarta").format("dddd, DD MMMM YYYY")
+  }
+Waktu: Pukul ${general?.time_1 && general?.time_1.substring(0, 5)} s.d Selesai
+Tempat: ${general?.address_1 && general?.address_1.replace(/\\n/g, "\n")}
 
 Berikut link undangan kami untuk info lengkap dari acara bisa kunjungi :
  
@@ -82,11 +94,11 @@ Terima Kasih.`;
   const handleShare = () => {
     let newMsg = msg.replace(
       "{link}",
-      `${window.location.origin}/${customUrl}?to=`
+      `${window.location.origin}/${customUrl}?to=`,
     );
     setMessage(newMsg);
     const linkSend = `https://api.whatsapp.com/send?text=${encodeURIComponent(
-      newMsg
+      newMsg,
     )}`;
     setLinkWA(linkSend);
     document.getElementById("modal_share").showModal();
@@ -99,13 +111,13 @@ Terima Kasih.`;
       .replace(`Yth. ${name}`, `Yth. ${value}`)
       .replace(
         `${window.location.origin}/${customUrl}?to=${encodeURIComponent(name)}`,
-        `${window.location.origin}/${customUrl}?to=${encodeURIComponent(value)}`
+        `${window.location.origin}/${customUrl}?to=${encodeURIComponent(value)}`,
       );
     setLink(`${window.location.origin}/${customUrl}?to=`);
     setName(value);
     setMessage(newMsg);
     const linkSend = `https://api.whatsapp.com/send?text=${encodeURIComponent(
-      newMsg
+      newMsg,
     )}`;
     setLinkWA(linkSend);
   };
@@ -115,13 +127,13 @@ Terima Kasih.`;
     if (
       value.includes(`Yth. ${name}`) &&
       value.includes(
-        `${window.location.origin}/${customUrl}?to=${encodeURIComponent(name)}`
+        `${window.location.origin}/${customUrl}?to=${encodeURIComponent(name)}`,
       ) &&
       value.includes(`${person[0].name} & ${person[1].name}`)
     ) {
       setMessage(value);
       const linkSend = `https://api.whatsapp.com/send?text=${encodeURIComponent(
-        value
+        value,
       )}`;
       setLinkWA(linkSend);
     }
@@ -139,9 +151,11 @@ Terima Kasih.`;
     try {
       const response = await api.get("/dashboard/" + dataUser.id);
       const responsePeople = await api.get("/person/" + dataUser.id);
+      const responseGeneral = await api.get("/general/" + dataUser.id);
       localStorage.setItem("customUrl", response.data.data.url);
       setCustomUrl(response.data.data.url);
       setPerson(responsePeople.data.data);
+      setGeneral(responseGeneral.data.data);
 
       return response.data.data;
     } catch (error) {
