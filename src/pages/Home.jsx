@@ -30,7 +30,7 @@ function Home() {
   }, []);
   // use theme from local storage if available or set light theme
   const [theme, setTheme] = useState(
-    localStorage.getItem("theme") ? localStorage.getItem("theme") : "dark"
+    localStorage.getItem("theme") ? localStorage.getItem("theme") : "dark",
   );
 
   // update state on toggle Theme
@@ -103,7 +103,7 @@ function Home() {
                   className="text-4xl my-6 mt-8 font-medium"
                   style={{ fontSize: "40px" }}
                 >
-                  <Link to="/">Kabar Cinta</Link>
+                  <Link to="/">Undangannya</Link>
                 </h1>
                 <div data-aos="fade-up" className="avatar my-6 mx-4">
                   <div className="md:h-96 rounded-3xl border-2 border-orange-600 shadow-xl flex items-center justify-center">

@@ -21,7 +21,7 @@ function PrivacyPolicy() {
   }, []);
   // use theme from local storage if available or set light theme
   const [theme, setTheme] = useState(
-    localStorage.getItem("theme") ? localStorage.getItem("theme") : "dark"
+    localStorage.getItem("theme") ? localStorage.getItem("theme") : "dark",
   );
 
   // update state on toggle Theme
@@ -80,9 +80,9 @@ function PrivacyPolicy() {
                   className="text-4xl my-6 mt-8 font-medium"
                   style={{ fontSize: "40px" }}
                 >
-                  <Link to="/">Kabar Cinta</Link>
+                  <Link to="/">Undangannya</Link>
                 </h1>
-                <h1 className="bg-gray-500 w-full my-10 p-4 rounded">
+                <h1 className="bg-gray-500 w-full my-10 p-4 rounded text-white">
                   Kebijakan Privasi
                 </h1>
                 <p className="text-justify p-4">
