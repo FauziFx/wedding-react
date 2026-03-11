@@ -59,7 +59,7 @@ function Login() {
           className="text-4xl font-medium text-center"
           style={{ fontSize: "40px" }}
         >
-          <Link to="/">Kabar Cinta</Link>
+          <Link to="/">Undangannya</Link>
         </h1>
         <h2 className="text-2xl font-bold text-center">Sign In</h2>
         <form className="space-y-1" autoComplete="off" onSubmit={handleSubmit}>
