@@ -279,6 +279,8 @@ function InvitationPage() {
         bank: data.bank,
       };
 
+      console.log(result);
+
       return result;
     } catch (error) {
       console.error(error);
@@ -479,21 +481,21 @@ function InvitationPage() {
                 </div>
 
                 <h2 className="text-2xl font-medium">
-                  {data?.general?.date_name_1.includes("akad")
-                    ? data?.general?.date_1
+                  {data?.general?.id == 1
+                    ? dayjs(data?.general?.date_2)
+                        .tz("Asia/Jakarta")
+                        .format("dddd, DD MMMM YYYY")
+                    : data?.general?.date_name_1.includes("akad")
                       ? dayjs(data?.general?.date_1)
                           .tz("Asia/Jakarta")
                           .format("dddd, DD MMMM YYYY")
-                      : "{Date}"
-                    : data?.general?.date_name_2.includes("akad")
-                      ? data?.general?.date_2
+                      : data?.general?.date_name_2.includes("akad")
                         ? dayjs(data?.general?.date_2)
                             .tz("Asia/Jakarta")
                             .format("dddd, DD MMMM YYYY")
-                        : "{Date}"
-                      : dayjs(data?.general?.date_1)
-                          .tz("Asia/Jakarta")
-                          .format("dddd, DD MMMM YYYY")}
+                        : dayjs(data?.general?.date_1)
+                            .tz("Asia/Jakarta")
+                            .format("dddd, DD MMMM YYYY")}
                 </h2>
 
                 <p className="py-2">Scroll Down</p>
