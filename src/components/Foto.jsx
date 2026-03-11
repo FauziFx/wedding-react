@@ -182,7 +182,7 @@ function Foto({ setShowAlert, dataUser, menu }) {
 
   const { data, error, isLoading } = useSWRImmutable(
     "/v1/get/general/image",
-    fetcher
+    fetcher,
   );
 
   if (error) return <FailedToLoad />;
@@ -192,7 +192,7 @@ function Foto({ setShowAlert, dataUser, menu }) {
     <div className="w-full rounded-xl shadow-xl mb-6">
       <h1 className="text-2xl text-center w-full py-2 bg-gray-700">Foto</h1>
       <div className="py-2 px-3">
-        <h2 className="text-xl text-center mt-4">Foto Pengantin</h2>
+        {/* <h2 className="text-xl text-center mt-4">Foto Pengantin</h2>
         <div className="flex flex-col gap-2 justify-center my-2">
           <div className="avatar mx-auto py-2 md:py-0">
             <div className="w-32 rounded-full border-4 border-white shadow-xl">
@@ -225,7 +225,7 @@ function Foto({ setShowAlert, dataUser, menu }) {
               )}
             </button>
           </form>
-        </div>
+        </div> */}
         <h2 className="text-xl text-center mt-4">Background</h2>
         <div className="flex flex-col gap-2 justify-center my-2">
           <div className="mx-auto py-2 md:py-0">
